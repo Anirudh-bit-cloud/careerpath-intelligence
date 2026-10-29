@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  careerpath-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: careerpath-intelligence
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./backend/careerpath.db
+      - SECRET_KEY=cp-super-secret-production-signing-key-change-me
+      - DEFAULT_WORKSPACE=panw-cyber
+    volumes:
+      - ./backend/data:/app/backend/data
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

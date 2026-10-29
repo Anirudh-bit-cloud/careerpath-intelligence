@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cp-bg-app: var(--cp-bg-app);
+  --color-cp-bg-sidebar: var(--cp-bg-sidebar);
+  --color-cp-bg-surface: var(--cp-bg-surface);
+  --color-cp-bg-elevated: var(--cp-bg-elevated);
+  --color-cp-bg-hover: var(--cp-bg-hover);
+  --color-cp-bg-input: var(--cp-bg-input);
+  --color-cp-text-primary: var(--cp-text-primary);
+  --color-cp-text-secondary: var(--cp-text-secondary);
+  --color-cp-text-muted: var(--cp-text-muted);
+  --color-cp-border: var(--cp-border);
+  --color-cp-border-subtle: var(--cp-border-subtle);
+  --color-cp-accent: var(--cp-accent);
+  --color-cp-accent-hover: var(--cp-accent-hover);
+  --color-cp-accent-bg: var(--cp-accent-bg);
+  --color-cp-secondary: var(--cp-secondary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   1. LINEAR NAVY (DEFAULT FLAGSHIP) - High-contrast engineering precision
+   ───────────────────────────────────────────────────────────────────────────── */
+:root, [data-theme="midnight"] {
+  --cp-bg-app: #080A0F;
+  --cp-bg-sidebar: #0C0F17;
+  --cp-bg-surface: #101420;
+  --cp-bg-elevated: #161C2C;
+  --cp-bg-hover: #1D2438;
+  --cp-bg-input: #0B0E16;
+  --cp-text-primary: #F8FAFC;
+  --cp-text-secondary: #CBD5E1;
+  --cp-text-muted: #7A899E;
+  --cp-border: #1E273B;
+  --cp-border-subtle: #141A29;
+  --cp-accent: #4F75FF;
+  --cp-accent-hover: #3B62F0;
+  --cp-accent-bg: rgba(79, 117, 255, 0.14);
+  --cp-secondary: #06B6D4;
+  --cp-secondary-bg: rgba(6, 182, 212, 0.12);
+  --cp-chart-grid: #182033;
+  --cp-chart-axis: #64748B;
+  --cp-dot-color: rgba(255, 255, 255, 0.04);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   2. VERCEL MONOLITH (OLED MINIMALIST) - Zero-distraction true black
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-theme="obsidian"] {
+  --cp-bg-app: #000000;
+  --cp-bg-sidebar: #080808;
+  --cp-bg-surface: #0E0E0E;
+  --cp-bg-elevated: #141414;
+  --cp-bg-hover: #1C1C1C;
+  --cp-bg-input: #080808;
+  --cp-text-primary: #FFFFFF;
+  --cp-text-secondary: #D4D4D8;
+  --cp-text-muted: #71717A;
+  --cp-border: #27272A;
+  --cp-border-subtle: #18181B;
+  --cp-accent: #FAFAFA;
+  --cp-accent-hover: #E4E4E7;
+  --cp-accent-bg: rgba(255, 255, 255, 0.12);
+  --cp-secondary: #38BDF8;
+  --cp-secondary-bg: rgba(56, 189, 248, 0.12);
+  --cp-chart-grid: #202022;
+  --cp-chart-axis: #71717A;
+  --cp-dot-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   3. STRIPE PRECISION (EDITORIAL LIGHT) - High-contrast paper clarity
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-theme="arctic"] {
+  --cp-bg-app: #F8FAFC;
+  --cp-bg-sidebar: #FFFFFF;
+  --cp-bg-surface: #FFFFFF;
+  --cp-bg-elevated: #F1F5F9;
+  --cp-bg-hover: #E2E8F0;
+  --cp-bg-input: #FFFFFF;
+  --cp-text-primary: #0F172A;
+  --cp-text-secondary: #334155;
+  --cp-text-muted: #64748B;
+  --cp-border: #E2E8F0;
+  --cp-border-subtle: #F1F5F9;
+  --cp-accent: #2563EB;
+  --cp-accent-hover: #1D4ED8;
+  --cp-accent-bg: rgba(37, 99, 235, 0.08);
+  --cp-secondary: #0D9488;
+  --cp-secondary-bg: rgba(13, 148, 136, 0.08);
+  --cp-chart-grid: #EAEFF6;
+  --cp-chart-axis: #94A3B8;
+  --cp-dot-color: rgba(0, 0, 0, 0.04);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   4. BLOOMBERG TERMINAL (EMERALD TELEMETRY) - Dense, dark green terminal
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-theme="emerald"] {
+  --cp-bg-app: #040806;
+  --cp-bg-sidebar: #070F0B;
+  --cp-bg-surface: #0B1812;
+  --cp-bg-elevated: #10241B;
+  --cp-bg-hover: #163226;
+  --cp-bg-input: #070F0B;
+  --cp-text-primary: #ECFDF5;
+  --cp-text-secondary: #A7F3D0;
+  --cp-text-muted: #5EA888;
+  --cp-border: #18382A;
+  --cp-border-subtle: #0F241B;
+  --cp-accent: #10B981;
+  --cp-accent-hover: #059669;
+  --cp-accent-bg: rgba(16, 185, 129, 0.14);
+  --cp-secondary: #34D399;
+  --cp-secondary-bg: rgba(52, 211, 153, 0.12);
+  --cp-chart-grid: #132D21;
+  --cp-chart-axis: #5EA888;
+  --cp-dot-color: rgba(16, 185, 129, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   5. RAYCAST CYBER (ELECTRIC VIOLET & ROSE) - Developer workstation
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-theme="cyber"] {
+  --cp-bg-app: #080612;
+  --cp-bg-sidebar: #0E0B1F;
+  --cp-bg-surface: #140F2B;
+  --cp-bg-elevated: #1C163B;
+  --cp-bg-hover: #261E4F;
+  --cp-bg-input: #0E0B1F;
+  --cp-text-primary: #FAF5FF;
+  --cp-text-secondary: #E9D5FF;
+  --cp-text-muted: #9A7FB8;
+  --cp-border: #2A1F52;
+  --cp-border-subtle: #1C1538;
+  --cp-accent: #B87CF8;
+  --cp-accent-hover: #A155F5;
+  --cp-accent-bg: rgba(184, 124, 248, 0.15);
+  --cp-secondary: #F43F5E;
+  --cp-secondary-bg: rgba(244, 63, 94, 0.12);
+  --cp-chart-grid: #1F173D;
+  --cp-chart-axis: #9A7FB8;
+  --cp-dot-color: rgba(184, 124, 248, 0.05);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BACKGROUND TEXTURE (DOT-MATRIX GRID)
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-grid="dots"] {
+  background-image: radial-gradient(var(--cp-dot-color, rgba(255, 255, 255, 0.04)) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DENSITY MODES
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-density="compact"] {
+  --cp-density-py: 0.375rem;
+  --cp-density-px: 0.625rem;
+  --cp-density-gap: 0.625rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HIGH-PRECISION CRAFT STYLES (ELIMINATES AI/TEMPLATE LOOK)
+   ───────────────────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--cp-bg-app);
+  color: var(--cp-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* All numbers and metrics use tabular numerals */
+.font-mono, [data-num], table td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Physical Software Card Treatment: crisp hairline border with top highlight */
+.cp-card {
+  background-color: var(--cp-bg-surface);
+  border: 1px solid var(--cp-border);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Micro badges */
+.cp-badge-sharp {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--cp-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cp-text-muted);
+}

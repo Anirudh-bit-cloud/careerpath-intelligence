@@ -1,0 +1,183 @@
+"""
+SQLAlchemy ORM Entities for CareerPath Intelligence.
+Supports Multi-Tenant Workspaces, Real RBAC Authentication, Scoring Policies,
+Committee Review Sessions, Audit Logs, Webhooks, and API Keys.
+"""
+
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey
+from backend.app.database.connection import Base
+
+
+class Workspace(Base):
+    __tablename__ = "workspaces"
+
+    id = Column(String(64), primary_key=True, index=True) # e.g. 'default', 'panw-cyber', 'fintech-apex'
+    name = Column(String(128), nullable=False)
+    slug = Column(String(64), unique=True, index=True, nullable=False)
+    organization_name = Column(String(128), default="Palo Alto Networks")
+    accent_color = Column(String(32), default="#4F75FF")
+    logo_svg = Column(Text, nullable=True)
+    fiscal_calendar_start = Column(String(16), default="January")
+    timezone = Column(String(64), default="America/Los_Angeles")
+    locale = Column(String(16), default="en-US")
+    is_white_labeled = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    email = Column(String(128), unique=True, index=True, nullable=False)
+    password_hash = Column(String(256), nullable=False)
+    full_name = Column(String(128), nullable=False)
+    role = Column(String(32), nullable=False, default="hrbp")  # admin, hr_analyst, hrbp, talent_committee
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_login = Column(DateTime, nullable=True)
+
+
+class ScoringPolicy(Base):
+    __tablename__ = "scoring_policies"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    version = Column(Integer, nullable=False, default=1)
+    name = Column(String(128), default="Standard Progression Policy")
+    weights_json = Column(Text, nullable=False)  # JSON string of weights (e.g. stagnation: 0.45, etc.)
+    thresholds_json = Column(Text, nullable=False)  # Expected dwell time per level
+    rules_json = Column(Text, nullable=False)  # Enabled recommendation templates
+    is_active = Column(Boolean, default=True)
+    created_by = Column(String(128), default="system")
+    change_summary = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    user_email = Column(String(128), nullable=False)
+    action = Column(String(64), nullable=False)  # login, create_plan, update_policy, export_csv, etc.
+    entity_type = Column(String(64), nullable=True)
+    entity_id = Column(String(64), nullable=True)
+    details_json = Column(Text, nullable=True)
+    ip_address = Column(String(64), default="127.0.0.1")
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+
+class InterventionRecord(Base):
+    __tablename__ = "interventions"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    employee_id = Column(String(64), index=True, nullable=False)
+    department = Column(String(128), nullable=True)
+    job_role = Column(String(128), nullable=True)
+    category = Column(String(64), nullable=False, default="Career Conversation")
+    status = Column(String(32), nullable=False, default="New")  # New, Under Review, Planned, Completed
+    priority = Column(String(32), nullable=False, default="Moderate")  # Urgent, Moderate, Standard
+    action_plan = Column(Text, nullable=False)
+    owner = Column(String(128), nullable=False, default="HR Talent Partner")
+    target_date = Column(String(32), nullable=True)
+    notes = Column(Text, nullable=True)
+    committee_review_status = Column(String(32), default="Not Requested")  # Not Requested, Requested, Approved, Declined
+    committee_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class PlanComment(Base):
+    __tablename__ = "plan_comments"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    intervention_id = Column(Integer, index=True, nullable=False)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    author_email = Column(String(128), nullable=False)
+    author_name = Column(String(128), nullable=False)
+    comment = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class CommitteeSession(Base):
+    __tablename__ = "committee_sessions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    title = Column(String(128), nullable=False)
+    session_date = Column(String(32), nullable=False)
+    attendees_json = Column(Text, default="[]")
+    department_scope = Column(String(128), default="All")
+    status = Column(String(32), default="Scheduled")  # Scheduled, In Progress, Completed
+    decisions_json = Column(Text, default="[]")
+    minutes_text = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class PilotLead(Base):
+    __tablename__ = "pilot_leads"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    full_name = Column(String(128), nullable=False)
+    work_email = Column(String(128), nullable=False)
+    company_name = Column(String(128), nullable=False)
+    role_title = Column(String(128), nullable=False)
+    company_size = Column(String(64), default="500-2000")
+    use_case = Column(Text, nullable=True)
+    status = Column(String(32), default="New Lead")  # New Lead, Contacted, Pilot Active
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class WebhookEndpoint(Base):
+    __tablename__ = "webhook_endpoints"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    url = Column(String(256), nullable=False)
+    secret = Column(String(128), nullable=False)
+    events_json = Column(Text, default='["plan.created", "plan.status_changed"]')
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class WebhookDelivery(Base):
+    __tablename__ = "webhook_deliveries"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    endpoint_id = Column(Integer, index=True, nullable=False)
+    event_type = Column(String(64), nullable=False)
+    payload_json = Column(Text, nullable=False)
+    status_code = Column(Integer, nullable=True)
+    response_body = Column(Text, nullable=True)
+    success = Column(Boolean, default=False)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+
+class ApiKey(Base):
+    __tablename__ = "api_keys"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    name = Column(String(128), nullable=False)
+    key_prefix = Column(String(16), nullable=False)
+    key_hash = Column(String(256), nullable=False)
+    scopes_json = Column(Text, default='["read:roster", "read:plans"]')
+    is_active = Column(Boolean, default=True)
+    last_used_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class DatasetMetadata(Base):
+    __tablename__ = "dataset_metadata"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True)
+    name = Column(String(128), nullable=False)
+    source = Column(String(256), nullable=False)
+    row_count = Column(Integer, nullable=False)
+    column_count = Column(Integer, nullable=False)
+    upload_timestamp = Column(DateTime, default=datetime.utcnow)
+    is_demo = Column(Integer, default=1)

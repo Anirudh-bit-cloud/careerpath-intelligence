@@ -1,0 +1,1201 @@
+Age,Attrition,BusinessTravel,DailyRate,Department,DistanceFromHome,Education,EducationField,EnvironmentSatisfaction,Gender,HourlyRate,JobInvolvement,JobLevel,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,MonthlyRate,NumCompaniesWorked,OverTime,PercentSalaryHike,PerformanceRating,RelationshipSatisfaction,StockOptionLevel,TotalWorkingYears,TrainingTimesLastYear,WorkLifeBalance,YearsAtCompany,YearsInCurrentRole,YearsSinceLastPromotion,YearsWithCurrManager
+32,0,Non-Travel,1169,Clinical Operations,24,4,Medical / Nursing,2,Male,77,3,1,Clinical Nurse Specialist,3,Married,7200,23920,3,No,20,4,4,0,10,0,3,0,0,0,0
+42,0,Travel_Rarely,1176,Clinical Operations,26,2,Healthcare Administration,2,Female,51,3,2,Clinical Director,4,Single,11060,11152,4,Yes,14,3,3,0,19,1,4,9,6,4,2
+35,0,Travel_Rarely,452,Patient Care,24,3,Healthcare Administration,3,Male,85,3,2,Patient Care Supervisor,2,Single,10080,10568,1,Yes,18,4,2,1,12,3,3,1,0,0,0
+31,0,Travel_Rarely,1083,Pharmacy & Therapeutics,8,3,Biochemistry,3,Male,91,3,1,Therapeutics Specialist,3,Married,6920,14910,6,No,19,3,2,0,8,1,4,7,4,1,2
+32,0,Travel_Rarely,1081,Biomedical R&D,13,3,Technical Degree,4,Female,88,2,2,Biomedical Scientist,4,Married,9940,17721,4,No,11,3,3,0,11,2,2,4,1,3,0
+36,0,Travel_Rarely,1091,Clinical Operations,17,2,Medical / Nursing,4,Female,83,3,2,Care Coordinator,2,Single,10500,19344,3,No,12,3,2,0,15,2,3,6,2,2,1
+50,0,Travel_Rarely,910,Biomedical R&D,16,4,Life Sciences,3,Female,60,2,5,Laboratory Technologist,3,Married,19980,14546,2,No,13,3,2,2,27,2,3,7,3,5,2
+23,0,Travel_Frequently,971,Patient Care,17,3,Healthcare Administration,3,Female,99,3,1,Triage Specialist,3,Married,6080,9154,4,No,18,3,4,2,2,3,3,0,0,0,0
+31,0,Non-Travel,903,Biomedical R&D,8,4,Life Sciences,3,Female,56,3,1,Principal Investigator,3,Single,7060,9693,6,No,13,3,3,1,9,2,3,2,1,0,0
+22,0,Travel_Rarely,917,Biomedical R&D,3,4,Technical Degree,4,Male,90,4,1,Biomedical Scientist,4,Divorced,5940,8190,5,No,17,3,3,0,1,2,4,1,0,0,0
+30,0,Travel_Rarely,937,Pharmacy & Therapeutics,3,3,Technical Degree,1,Male,80,4,1,Therapeutics Specialist,3,Married,6920,12495,6,No,17,4,3,0,8,2,2,1,0,0,0
+23,0,Travel_Rarely,663,Clinical Operations,21,3,Healthcare Administration,3,Female,50,2,1,Operations Manager,3,Married,5940,14966,4,Yes,12,3,3,1,1,1,3,1,0,0,0
+29,1,Non-Travel,636,Clinical Operations,21,3,Technical Degree,4,Male,49,3,1,Clinical Nurse Specialist,3,Single,6920,9679,3,No,19,3,2,0,8,1,4,0,0,0,0
+25,0,Travel_Rarely,1201,Clinical Operations,20,3,Medical / Nursing,4,Female,45,3,1,Clinical Director,3,Married,6360,16527,2,Yes,21,3,3,0,4,1,4,2,0,1,0
+35,0,Travel_Rarely,1225,Patient Care,21,3,Biochemistry,4,Female,69,4,2,Nurse Practitioner,2,Single,10360,10504,3,No,14,3,4,0,14,4,4,5,2,3,1
+34,0,Travel_Rarely,576,Biomedical R&D,4,2,Life Sciences,4,Male,51,4,3,Biomedical Scientist,3,Married,12540,19769,5,Yes,22,3,3,1,11,3,3,3,2,1,1
+47,1,Non-Travel,1052,Clinical Operations,8,2,Medical / Nursing,4,Female,49,3,5,Operations Manager,2,Married,19560,17580,1,No,11,3,4,1,24,2,1,6,2,4,1
+48,0,Non-Travel,875,Patient Care,8,2,Life Sciences,4,Male,57,2,3,Patient Care Supervisor,3,Married,14640,15576,1,Yes,16,3,4,0,26,1,1,12,4,6,1
+32,0,Travel_Rarely,870,Pharmacy & Therapeutics,25,5,Medical / Nursing,4,Female,82,3,1,Pharmacology Lead,3,Single,7200,21659,4,No,20,3,3,0,10,1,3,0,0,0,0
+30,0,Travel_Rarely,1214,Clinical Operations,25,3,Medical / Nursing,3,Male,99,3,1,Clinical Nurse Specialist,4,Married,7060,21550,1,No,20,3,4,1,9,3,3,4,1,3,0
+31,0,Travel_Rarely,544,Biomedical R&D,21,3,Life Sciences,4,Male,48,2,1,Biomedical Scientist,3,Married,7200,11419,2,No,16,3,3,1,10,2,3,10,9,6,7
+31,0,Non-Travel,1163,Pharmacy & Therapeutics,2,3,Medical / Nursing,3,Male,71,2,2,Clinical Pharmacist,3,Married,9520,15648,4,No,20,3,4,0,8,4,3,1,0,0,0
+22,1,Non-Travel,773,Clinical Operations,16,3,Healthcare Administration,3,Male,76,3,1,Clinical Director,3,Single,5940,14777,3,Yes,15,3,3,0,1,2,3,1,0,0,0
+41,0,Travel_Rarely,506,Clinical Operations,16,2,Medical / Nursing,4,Female,93,3,2,Operations Manager,4,Married,11060,8055,6,Yes,22,3,3,1,19,0,2,3,1,0,0
+35,0,Non-Travel,873,Patient Care,12,3,Technical Degree,3,Female,54,4,3,Triage Specialist,3,Single,12680,12206,6,No,18,3,3,0,12,1,4,4,1,1,0
+39,0,Travel_Rarely,749,Biomedical R&D,11,2,Life Sciences,1,Male,75,3,2,Clinical Research Associate,4,Single,10920,15489,4,No,14,4,4,0,18,3,4,3,2,0,1
+39,0,Travel_Rarely,1053,Patient Care,6,3,Biochemistry,4,Male,87,3,2,Triage Specialist,3,Married,10780,8260,2,No,23,3,2,0,17,0,2,15,11,5,9
+29,0,Travel_Frequently,1329,Biomedical R&D,12,3,Life Sciences,4,Female,73,2,2,Laboratory Technologist,4,Single,9380,14941,3,Yes,15,3,3,2,7,1,3,1,0,0,0
+29,0,Travel_Rarely,1220,Patient Care,8,3,Biochemistry,3,Male,51,3,2,Nurse Practitioner,3,Single,9380,13742,5,No,17,3,4,1,7,3,3,4,2,2,1
+22,0,Travel_Rarely,1347,Clinical Operations,24,3,Technical Degree,3,Female,56,4,2,Clinical Director,1,Married,8540,18147,4,No,21,3,2,2,1,2,3,1,0,0,0
+32,0,Non-Travel,1003,Biomedical R&D,26,2,Biochemistry,4,Female,85,4,2,Laboratory Technologist,3,Single,9660,11476,2,No,16,3,3,0,9,1,3,9,6,6,5
+27,0,Travel_Rarely,609,Clinical Operations,27,4,Life Sciences,3,Male,88,4,1,Clinical Nurse Specialist,2,Married,6640,13299,6,Yes,11,3,3,1,6,0,3,0,0,0,0
+40,0,Non-Travel,1122,Clinical Operations,29,3,Technical Degree,3,Female,63,2,2,Clinical Director,4,Married,10780,20481,6,No,12,3,4,0,17,1,1,17,11,10,4
+31,0,Travel_Rarely,712,Patient Care,23,3,Biochemistry,3,Female,98,3,1,Patient Care Supervisor,3,Divorced,7060,11675,2,No,18,3,4,1,9,2,3,2,1,1,0
+31,0,Travel_Rarely,1214,Clinical Operations,5,3,Medical / Nursing,4,Male,67,2,1,Care Coordinator,4,Married,7200,9279,6,No,15,3,4,1,10,1,4,0,0,0,0
+29,0,Non-Travel,677,Biomedical R&D,11,3,Medical / Nursing,3,Male,78,3,2,Laboratory Technologist,1,Divorced,9520,20116,2,No,16,4,3,0,8,3,2,4,2,3,1
+43,0,Travel_Rarely,975,Clinical Operations,2,2,Biochemistry,2,Male,80,4,4,Care Coordinator,1,Married,16680,18250,4,No,17,3,4,0,22,4,2,8,3,7,1
+35,0,Travel_Rarely,900,Biomedical R&D,9,2,Life Sciences,3,Male,87,3,1,Laboratory Technologist,3,Single,7480,19761,5,Yes,13,3,3,0,12,0,4,3,1,1,0
+32,0,Non-Travel,488,Clinical Operations,12,3,Medical / Nursing,1,Female,91,2,3,Operations Manager,3,Divorced,12260,13913,5,No,17,4,3,0,9,4,4,8,6,5,4
+38,0,Travel_Rarely,1212,Pharmacy & Therapeutics,2,4,Biochemistry,3,Male,67,2,3,Therapeutics Specialist,2,Married,13100,13468,6,No,12,3,3,1,15,2,3,5,3,3,2
+46,1,Travel_Rarely,671,Pharmacy & Therapeutics,24,3,Life Sciences,4,Male,83,3,4,Pharmacy Manager,3,Single,16820,19692,6,No,12,3,3,0,23,0,4,4,1,0,0
+34,0,Travel_Frequently,410,Biomedical R&D,13,5,Healthcare Administration,1,Female,64,4,2,Biomedical Scientist,2,Married,9940,9389,2,Yes,19,3,2,1,11,2,1,11,9,2,5
+37,0,Non-Travel,519,Pharmacy & Therapeutics,29,3,Life Sciences,4,Male,78,3,2,Clinical Pharmacist,3,Single,10360,23900,1,Yes,12,3,4,1,14,2,1,3,2,2,0
+44,0,Non-Travel,992,Biomedical R&D,18,3,Technical Degree,4,Male,84,3,1,Clinical Research Associate,3,Single,8740,17477,3,No,22,3,4,1,21,3,3,5,3,1,1
+39,0,Travel_Rarely,1326,Patient Care,18,4,Technical Degree,3,Male,46,3,3,Triage Specialist,3,Divorced,13520,10064,2,No,18,3,2,0,18,0,3,11,3,9,1
+33,0,Non-Travel,923,Patient Care,22,4,Life Sciences,1,Female,62,4,2,Nurse Practitioner,4,Divorced,9940,19939,3,Yes,23,3,2,1,11,2,4,7,5,2,4
+25,0,Non-Travel,858,Clinical Operations,27,4,Healthcare Administration,1,Male,65,4,2,Care Coordinator,4,Divorced,8680,9682,1,No,21,3,4,0,2,1,1,2,1,0,0
+22,0,Travel_Rarely,598,Patient Care,3,4,Healthcare Administration,1,Female,47,2,2,Nurse Practitioner,3,Single,8540,22790,1,No,14,3,3,0,1,0,3,1,0,0,0
+45,0,Travel_Rarely,791,Clinical Operations,11,3,Life Sciences,2,Male,90,2,2,Clinical Director,3,Married,11620,10720,2,No,12,3,3,0,23,2,1,4,2,1,1
+27,0,Non-Travel,1370,Clinical Operations,29,4,Life Sciences,4,Male,75,3,1,Operations Manager,3,Divorced,6500,17905,4,No,21,3,3,0,5,2,3,3,2,2,1
+31,0,Travel_Rarely,1084,Biomedical R&D,8,4,Technical Degree,3,Male,88,3,2,Clinical Research Associate,3,Single,9660,23711,1,No,22,3,3,0,9,0,2,5,3,2,2
+47,0,Non-Travel,1088,Biomedical R&D,19,3,Healthcare Administration,1,Female,80,4,5,Laboratory Technologist,4,Married,19700,20201,3,No,16,3,3,0,25,3,2,11,6,5,3
+38,1,Travel_Rarely,413,Patient Care,24,3,Healthcare Administration,3,Female,61,3,4,Nurse Practitioner,4,Single,15840,17444,5,No,18,3,3,0,16,1,4,7,4,1,2
+29,0,Travel_Rarely,1285,Biomedical R&D,20,3,Biochemistry,4,Male,56,3,2,Principal Investigator,4,Married,9380,10203,6,Yes,23,4,4,0,7,1,1,5,2,2,1
+32,0,Non-Travel,616,Biomedical R&D,18,5,Biochemistry,3,Female,82,2,2,Clinical Research Associate,1,Married,9940,21647,2,Yes,17,4,2,1,11,1,2,5,3,2,2
+40,0,Travel_Rarely,1280,Pharmacy & Therapeutics,12,2,Life Sciences,3,Male,45,2,3,Pharmacy Manager,3,Married,13380,21380,1,Yes,22,4,3,0,17,3,4,17,9,3,4
+37,0,Travel_Rarely,764,Patient Care,11,3,Life Sciences,3,Male,56,3,2,Registered Nurse,3,Married,10640,22940,1,No,11,3,2,0,16,1,3,7,6,3,5
+36,1,Non-Travel,703,Patient Care,5,3,Healthcare Administration,3,Female,67,4,2,Registered Nurse,3,Divorced,10360,17196,5,Yes,17,3,2,2,14,2,3,13,11,11,9
+33,0,Travel_Rarely,1057,Clinical Operations,2,3,Healthcare Administration,4,Female,55,2,2,Clinical Nurse Specialist,4,Married,10080,22494,1,No,20,3,3,0,12,3,3,2,1,1,0
+40,0,Non-Travel,1032,Biomedical R&D,29,5,Life Sciences,2,Male,48,3,5,Clinical Research Associate,4,Married,18580,11273,1,Yes,14,4,3,0,17,1,4,10,6,6,5
+30,0,Travel_Frequently,1202,Biomedical R&D,7,4,Biochemistry,3,Male,83,3,1,Biomedical Scientist,1,Married,6780,10349,3,No,16,3,3,0,7,0,4,3,1,1,0
+33,0,Non-Travel,548,Clinical Operations,8,4,Medical / Nursing,3,Female,47,2,2,Clinical Director,1,Married,9940,18853,1,No,17,3,2,0,11,4,2,3,1,1,0
+22,0,Non-Travel,747,Patient Care,19,2,Technical Degree,4,Female,88,2,1,Registered Nurse,3,Single,5940,14549,2,No,11,3,3,0,1,0,2,1,0,0,0
+23,0,Travel_Frequently,865,Clinical Operations,23,2,Biochemistry,3,Female,81,3,2,Clinical Nurse Specialist,3,Married,8680,18917,2,No,18,3,4,0,2,1,4,2,0,1,0
+23,0,Travel_Rarely,509,Clinical Operations,16,4,Technical Degree,3,Male,85,4,1,Care Coordinator,3,Single,5940,10964,2,No,14,4,4,0,1,2,4,1,0,0,0
+37,0,Travel_Rarely,1329,Pharmacy & Therapeutics,10,3,Biochemistry,4,Male,59,4,1,Clinical Pharmacist,2,Single,7900,13448,4,No,13,4,3,1,15,2,2,0,0,0,0
+32,0,Travel_Rarely,1381,Clinical Operations,14,2,Technical Degree,4,Female,99,3,1,Clinical Director,3,Single,7060,15758,5,No,20,3,3,0,9,3,3,5,4,2,3
+59,1,Travel_Rarely,1107,Clinical Operations,2,3,Healthcare Administration,3,Male,85,3,5,Clinical Nurse Specialist,4,Married,21520,22889,5,Yes,11,3,4,1,38,0,2,6,4,3,3
+54,0,Travel_Rarely,980,Pharmacy & Therapeutics,12,3,Technical Degree,1,Female,67,3,4,Pharmacology Lead,1,Single,18080,10711,1,No,15,3,3,2,32,4,4,6,3,2,2
+26,1,Travel_Rarely,736,Patient Care,8,4,Life Sciences,4,Male,94,2,1,Triage Specialist,2,Single,6500,17832,1,No,17,4,4,1,5,1,4,3,2,0,1
+56,0,Travel_Rarely,523,Biomedical R&D,26,3,Healthcare Administration,2,Male,88,2,4,Biomedical Scientist,4,Married,18360,20258,2,No,17,3,3,0,34,2,2,5,2,4,1
+40,0,Travel_Rarely,1180,Pharmacy & Therapeutics,18,2,Technical Degree,4,Male,94,2,3,Therapeutics Specialist,3,Married,13380,16652,6,No,23,3,3,0,17,1,1,3,1,1,0
+37,0,Travel_Rarely,872,Biomedical R&D,10,4,Biochemistry,2,Male,92,4,3,Biomedical Scientist,3,Single,13240,10649,2,Yes,11,4,4,1,16,2,3,8,7,3,3
+34,0,Non-Travel,1141,Patient Care,21,2,Technical Degree,1,Female,48,2,4,Patient Care Supervisor,3,Married,15420,18822,4,No,13,4,3,0,13,2,3,5,2,3,1
+28,0,Travel_Rarely,749,Patient Care,23,4,Life Sciences,1,Female,93,3,2,Patient Care Supervisor,3,Divorced,9380,9019,6,No,11,3,3,0,7,2,4,6,5,2,4
+36,1,Travel_Rarely,1109,Patient Care,17,5,Biochemistry,4,Female,79,3,2,Triage Specialist,4,Married,10500,14052,4,No,20,3,4,1,15,0,4,2,1,0,0
+34,1,Travel_Rarely,619,Pharmacy & Therapeutics,7,3,Healthcare Administration,4,Female,60,3,3,Pharmacology Lead,3,Married,12820,8581,4,Yes,14,4,2,2,13,1,3,8,6,7,2
+32,0,Non-Travel,891,Biomedical R&D,24,3,Life Sciences,3,Male,62,2,1,Clinical Research Associate,3,Single,7060,18544,3,No,15,3,3,0,9,1,2,0,0,0,0
+40,0,Non-Travel,597,Clinical Operations,2,3,Technical Degree,2,Female,92,2,3,Care Coordinator,1,Divorced,13660,20722,5,No,22,4,3,1,19,2,1,10,8,2,6
+30,0,Travel_Rarely,1125,Patient Care,20,4,Biochemistry,4,Female,72,4,1,Nurse Practitioner,1,Single,7060,21565,3,No,11,3,4,0,9,2,3,0,0,0,0
+46,0,Travel_Rarely,953,Clinical Operations,28,4,Healthcare Administration,2,Female,47,3,5,Clinical Nurse Specialist,4,Single,19700,14629,1,No,17,3,4,1,25,1,3,9,6,7,3
+33,0,Travel_Rarely,668,Biomedical R&D,2,2,Medical / Nursing,3,Male,71,3,4,Laboratory Technologist,1,Single,15280,18131,2,Yes,15,3,3,0,12,4,2,11,7,10,4
+33,0,Non-Travel,617,Patient Care,1,3,Healthcare Administration,4,Male,91,2,2,Registered Nurse,3,Married,10080,17087,6,No,22,3,4,1,12,1,3,2,1,1,0
+37,0,Travel_Rarely,915,Clinical Operations,26,3,Technical Degree,1,Male,97,3,1,Clinical Director,4,Divorced,7760,12646,1,No,23,3,3,1,14,0,2,0,0,0,0
+34,0,Non-Travel,1013,Clinical Operations,23,2,Life Sciences,2,Male,47,4,2,Operations Manager,4,Single,9940,23686,6,No,21,3,3,1,11,2,2,3,2,1,0
+36,1,Non-Travel,733,Clinical Operations,9,2,Healthcare Administration,4,Female,85,3,1,Clinical Director,3,Divorced,7760,13374,5,No,22,3,4,1,14,2,1,0,0,0,0
+35,0,Travel_Rarely,731,Patient Care,22,3,Life Sciences,3,Female,73,2,2,Triage Specialist,4,Married,10360,20792,5,No,17,3,2,0,14,2,3,5,4,4,2
+44,0,Travel_Rarely,1129,Pharmacy & Therapeutics,27,2,Healthcare Administration,3,Male,73,3,2,Therapeutics Specialist,3,Married,11620,9455,5,No,11,3,2,0,23,1,1,4,2,1,1
+25,0,Non-Travel,1218,Clinical Operations,27,3,Life Sciences,1,Female,55,2,2,Operations Manager,3,Divorced,8820,11628,1,No,13,3,4,1,3,2,2,2,1,0,0
+44,1,Travel_Rarely,1249,Patient Care,18,2,Life Sciences,3,Female,81,2,5,Triage Specialist,3,Married,19420,11808,4,Yes,19,3,3,1,23,2,3,6,4,1,2
+32,1,Travel_Rarely,818,Clinical Operations,11,3,Technical Degree,3,Male,65,4,1,Operations Manager,2,Married,7340,9431,1,Yes,15,3,3,1,11,1,2,9,3,5,1
+23,0,Non-Travel,1224,Patient Care,22,4,Life Sciences,3,Female,72,3,1,Nurse Practitioner,2,Divorced,5940,19456,4,No,20,3,3,0,1,0,3,1,0,0,0
+45,1,Travel_Rarely,474,Clinical Operations,13,3,Biochemistry,2,Male,71,2,3,Operations Manager,1,Married,14220,8910,5,No,15,3,3,0,23,2,3,5,3,1,2
+46,0,Travel_Frequently,888,Pharmacy & Therapeutics,17,3,Technical Degree,4,Male,67,3,5,Clinical Pharmacist,2,Single,19700,15730,2,Yes,22,3,4,0,25,1,3,9,3,2,2
+22,0,Travel_Rarely,919,Pharmacy & Therapeutics,28,4,Technical Degree,3,Male,71,4,2,Clinical Pharmacist,3,Married,8540,11211,6,Yes,21,3,2,1,1,2,1,1,0,0,0
+32,0,Travel_Rarely,1114,Pharmacy & Therapeutics,25,3,Life Sciences,4,Female,71,3,2,Pharmacy Manager,4,Married,9800,10819,5,No,19,4,2,1,10,1,2,5,2,2,1
+47,0,Travel_Rarely,719,Clinical Operations,21,3,Medical / Nursing,3,Male,74,4,2,Care Coordinator,1,Divorced,11760,18503,2,No,17,4,2,0,24,2,1,6,5,5,2
+39,0,Non-Travel,783,Clinical Operations,4,3,Biochemistry,3,Male,58,4,3,Clinical Director,4,Single,13520,19836,3,No,12,4,3,1,18,3,1,8,7,5,3
+40,0,Travel_Rarely,720,Clinical Operations,17,3,Technical Degree,1,Male,97,3,3,Clinical Nurse Specialist,3,Single,13380,8182,6,No,14,3,2,1,17,1,3,9,8,4,7
+27,0,Travel_Rarely,1249,Patient Care,24,3,Biochemistry,2,Male,59,2,1,Nurse Practitioner,2,Married,6500,9809,6,No,17,3,3,0,5,4,1,2,0,1,0
+38,0,Non-Travel,1097,Pharmacy & Therapeutics,23,3,Life Sciences,4,Male,99,2,2,Clinical Pharmacist,2,Married,10640,23372,5,No,22,4,3,2,16,1,3,10,6,8,3
+27,1,Travel_Rarely,626,Biomedical R&D,12,2,Life Sciences,2,Male,57,3,1,Biomedical Scientist,3,Married,6640,11237,3,No,16,3,3,1,6,1,2,2,1,1,0
+35,1,Travel_Rarely,443,Patient Care,15,4,Technical Degree,3,Female,46,2,3,Patient Care Supervisor,2,Married,12960,16088,3,No,11,3,3,1,14,3,1,11,5,5,2
+41,1,Travel_Rarely,1144,Clinical Operations,2,2,Technical Degree,3,Male,51,3,1,Clinical Nurse Specialist,3,Single,8320,22890,5,No,17,3,3,0,18,3,3,0,0,0,0
+31,0,Travel_Rarely,503,Clinical Operations,9,3,Healthcare Administration,3,Male,76,2,2,Clinical Nurse Specialist,3,Single,9800,15659,2,No,19,3,3,0,10,3,3,10,7,5,3
+32,0,Travel_Rarely,641,Clinical Operations,26,2,Technical Degree,3,Male,55,2,2,Clinical Director,3,Married,9940,20001,5,No,15,3,4,1,11,2,2,3,2,1,1
+22,0,Travel_Rarely,1080,Biomedical R&D,16,3,Healthcare Administration,4,Female,70,3,1,Clinical Research Associate,2,Married,5940,22609,3,Yes,16,3,4,0,1,3,4,1,0,0,0
+32,0,Non-Travel,826,Pharmacy & Therapeutics,7,4,Healthcare Administration,3,Female,73,3,2,Pharmacy Manager,1,Single,9800,9636,4,No,20,3,2,1,10,1,3,10,5,8,4
+33,0,Travel_Rarely,1000,Patient Care,29,3,Biochemistry,3,Male,74,4,2,Patient Care Supervisor,4,Married,10080,10765,1,No,14,3,3,0,12,3,4,1,0,0,0
+27,0,Travel_Rarely,1336,Pharmacy & Therapeutics,29,3,Biochemistry,3,Male,79,3,1,Pharmacology Lead,4,Single,6500,22534,2,No,15,3,4,1,5,2,2,5,4,1,3
+27,1,Travel_Rarely,1358,Clinical Operations,29,4,Technical Degree,4,Female,48,2,1,Clinical Director,4,Married,6640,15415,4,No,15,3,3,0,6,2,1,1,0,0,0
+48,1,Non-Travel,1243,Clinical Operations,6,4,Healthcare Administration,4,Male,57,3,5,Clinical Nurse Specialist,2,Married,19700,14680,3,Yes,19,3,4,1,25,4,3,6,1,3,0
+22,0,Non-Travel,904,Clinical Operations,17,3,Healthcare Administration,3,Male,65,3,1,Clinical Nurse Specialist,4,Married,5940,10610,4,No,18,4,2,0,1,3,2,1,0,0,0
+31,0,Non-Travel,736,Clinical Operations,17,4,Technical Degree,4,Male,61,3,4,Clinical Nurse Specialist,2,Married,15000,9151,4,No,13,3,2,1,10,2,4,4,1,1,0
+39,1,Travel_Frequently,1357,Clinical Operations,3,5,Biochemistry,4,Male,64,3,3,Clinical Director,3,Married,13520,11093,3,No,18,3,3,0,18,3,4,6,3,2,2
+37,0,Travel_Rarely,968,Clinical Operations,28,3,Biochemistry,3,Female,92,3,1,Clinical Director,3,Single,8040,20253,4,No,14,3,3,0,16,2,3,3,1,1,0
+29,0,Travel_Rarely,824,Clinical Operations,17,3,Healthcare Administration,1,Male,54,3,1,Clinical Nurse Specialist,3,Married,6780,18825,6,No,21,3,2,2,7,0,3,0,0,0,0
+32,0,Travel_Rarely,751,Patient Care,16,3,Biochemistry,2,Female,46,4,2,Triage Specialist,4,Single,9660,14409,5,No,16,3,2,1,9,2,3,4,2,2,1
+22,0,Travel_Frequently,1056,Clinical Operations,10,2,Medical / Nursing,1,Male,65,4,1,Clinical Nurse Specialist,3,Single,5940,11676,3,No,20,3,3,0,1,2,3,1,0,0,0
+33,1,Non-Travel,1201,Clinical Operations,8,3,Medical / Nursing,4,Female,77,3,1,Care Coordinator,1,Divorced,7200,17865,2,No,13,3,3,1,10,2,3,0,0,0,0
+32,0,Travel_Rarely,1249,Clinical Operations,24,4,Medical / Nursing,3,Male,82,3,2,Care Coordinator,3,Married,9940,13668,4,No,16,3,3,0,11,2,3,2,1,0,0
+38,0,Non-Travel,1324,Biomedical R&D,5,4,Healthcare Administration,3,Male,47,4,4,Principal Investigator,3,Single,15700,20356,1,No,22,3,3,0,15,3,1,5,3,1,1
+23,1,Travel_Rarely,438,Pharmacy & Therapeutics,22,3,Technical Degree,3,Male,56,4,1,Clinical Pharmacist,3,Married,5940,10773,1,Yes,15,3,4,0,1,2,3,1,0,0,0
+29,0,Travel_Rarely,898,Patient Care,14,2,Healthcare Administration,3,Female,53,2,3,Registered Nurse,2,Single,11980,11630,6,Yes,16,3,4,1,7,2,3,7,3,4,1
+46,0,Non-Travel,832,Biomedical R&D,21,2,Technical Degree,3,Female,70,3,3,Clinical Research Associate,1,Married,14500,23810,2,No,15,3,3,1,25,2,3,5,2,4,1
+34,0,Non-Travel,763,Pharmacy & Therapeutics,19,3,Technical Degree,2,Female,85,4,3,Pharmacy Manager,3,Single,12820,12637,1,No,13,3,3,0,13,2,2,8,6,6,4
+26,1,Travel_Rarely,402,Patient Care,22,4,Biochemistry,4,Female,96,2,1,Triage Specialist,3,Divorced,6360,23773,3,No,11,3,3,0,4,1,1,2,1,0,0
+35,1,Non-Travel,443,Biomedical R&D,29,3,Healthcare Administration,2,Female,50,3,2,Biomedical Scientist,4,Married,10360,19138,5,No,14,3,3,1,14,1,3,4,2,2,1
+23,0,Travel_Rarely,577,Patient Care,12,3,Medical / Nursing,4,Male,82,3,1,Nurse Practitioner,3,Married,5940,14204,1,No,22,3,3,1,1,3,1,1,0,0,0
+33,0,Non-Travel,1076,Patient Care,22,2,Technical Degree,4,Male,49,3,3,Triage Specialist,4,Married,12400,21528,6,No,18,3,3,1,10,0,3,10,8,7,6
+36,0,Non-Travel,858,Patient Care,27,4,Biochemistry,1,Female,92,3,1,Registered Nurse,1,Single,7900,8919,2,No,14,4,4,1,15,2,3,7,6,2,2
+29,0,Travel_Rarely,1254,Pharmacy & Therapeutics,24,3,Medical / Nursing,3,Male,49,4,2,Therapeutics Specialist,4,Married,9520,13232,2,No,19,3,4,1,8,2,4,5,4,3,1
+41,0,Travel_Rarely,1015,Clinical Operations,12,2,Medical / Nursing,3,Male,90,2,1,Care Coordinator,1,Married,8320,16566,3,No,22,3,3,2,18,2,4,14,4,8,3
+34,0,Travel_Rarely,428,Pharmacy & Therapeutics,8,3,Life Sciences,3,Female,99,4,2,Therapeutics Specialist,3,Single,10080,15212,3,No,21,3,3,1,12,4,1,5,1,3,0
+37,0,Travel_Rarely,749,Pharmacy & Therapeutics,29,2,Biochemistry,4,Male,88,2,2,Pharmacy Manager,3,Single,10640,10775,2,Yes,15,3,4,0,16,1,1,1,0,0,0
+30,0,Non-Travel,500,Clinical Operations,26,4,Medical / Nursing,3,Male,68,2,1,Care Coordinator,1,Married,7060,15542,3,No,15,3,4,0,9,1,1,1,0,0,0
+22,0,Travel_Rarely,1371,Clinical Operations,8,4,Medical / Nursing,3,Male,99,4,1,Care Coordinator,4,Divorced,5940,22995,2,Yes,12,3,3,0,1,2,3,1,0,0,0
+31,0,Travel_Rarely,789,Clinical Operations,19,4,Healthcare Administration,3,Male,98,2,2,Clinical Director,3,Married,9520,9695,3,Yes,16,3,2,1,8,2,3,6,3,3,2
+42,0,Travel_Rarely,748,Pharmacy & Therapeutics,5,2,Life Sciences,1,Male,65,4,4,Pharmacology Lead,2,Single,16540,12620,5,No,12,4,3,0,21,1,3,10,4,9,3
+36,0,Travel_Rarely,628,Clinical Operations,17,4,Technical Degree,2,Female,98,3,2,Clinical Director,3,Divorced,10360,14751,2,No,12,4,2,0,14,1,3,13,12,8,11
+31,1,Travel_Rarely,664,Biomedical R&D,15,3,Technical Degree,2,Male,52,3,2,Biomedical Scientist,2,Married,9660,11303,2,No,21,3,3,0,9,2,4,4,2,3,0
+35,0,Travel_Rarely,1255,Patient Care,17,3,Medical / Nursing,3,Male,83,3,2,Nurse Practitioner,3,Married,10220,20261,4,No,17,3,3,0,13,4,2,3,2,1,0
+43,0,Non-Travel,1215,Biomedical R&D,8,3,Healthcare Administration,2,Female,94,4,3,Laboratory Technologist,1,Single,13940,19151,4,Yes,17,3,3,0,21,1,3,9,4,2,2
+42,0,Travel_Rarely,504,Patient Care,21,3,Medical / Nursing,4,Female,64,4,2,Patient Care Supervisor,2,Single,11200,14511,1,No,12,3,3,0,20,3,2,2,1,0,0
+31,0,Travel_Frequently,511,Patient Care,12,4,Healthcare Administration,3,Male,72,4,1,Registered Nurse,3,Married,7060,19815,2,No,14,4,4,1,9,1,3,3,1,0,0
+30,1,Travel_Rarely,1387,Biomedical R&D,12,2,Medical / Nursing,4,Female,98,3,1,Principal Investigator,4,Single,6920,23033,5,Yes,12,4,2,1,8,2,2,0,0,0,0
+33,0,Travel_Rarely,1001,Biomedical R&D,13,2,Life Sciences,3,Male,50,3,1,Biomedical Scientist,2,Single,7200,20942,6,No,23,3,3,2,10,1,4,6,3,2,1
+35,0,Travel_Rarely,925,Patient Care,14,2,Healthcare Administration,2,Male,87,2,2,Registered Nurse,3,Married,10080,9939,4,No,20,3,4,1,12,2,2,4,2,1,1
+51,0,Non-Travel,828,Clinical Operations,26,2,Technical Degree,4,Male,98,3,3,Clinical Director,4,Single,15200,11558,5,No,17,3,4,1,30,2,3,3,1,1,0
+41,0,Travel_Rarely,1033,Patient Care,29,3,Healthcare Administration,4,Female,76,3,1,Patient Care Supervisor,2,Married,8600,12552,5,No,16,3,2,0,20,0,4,2,1,1,0
+32,0,Travel_Rarely,792,Pharmacy & Therapeutics,28,2,Life Sciences,3,Male,85,2,1,Pharmacology Lead,1,Divorced,7200,21380,4,No,19,4,2,0,10,3,4,2,0,0,0
+27,0,Non-Travel,804,Clinical Operations,22,5,Life Sciences,2,Female,46,4,1,Operations Manager,3,Single,6360,13450,1,Yes,13,4,3,0,4,3,2,0,0,0,0
+33,0,Travel_Rarely,1399,Clinical Operations,28,3,Biochemistry,4,Male,61,2,2,Clinical Director,4,Divorced,9940,12815,4,No,23,3,3,0,11,1,3,2,1,0,0
+34,0,Travel_Rarely,710,Pharmacy & Therapeutics,20,3,Life Sciences,2,Female,46,3,2,Clinical Pharmacist,3,Single,9940,11939,6,No,17,3,3,2,11,1,2,4,3,2,1
+22,1,Travel_Rarely,986,Clinical Operations,5,2,Healthcare Administration,2,Female,57,4,1,Clinical Nurse Specialist,2,Divorced,5940,9170,2,No,13,3,4,0,1,2,3,1,0,0,0
+30,0,Non-Travel,740,Biomedical R&D,4,3,Medical / Nursing,2,Male,77,3,2,Laboratory Technologist,2,Married,9660,13300,2,No,20,3,2,0,9,4,3,4,3,0,1
+34,1,Travel_Rarely,867,Patient Care,18,2,Life Sciences,4,Female,70,3,1,Nurse Practitioner,3,Single,7620,9881,1,No,19,3,2,1,13,2,3,3,2,1,0
+33,0,Travel_Rarely,1305,Clinical Operations,14,2,Medical / Nursing,2,Female,56,2,2,Care Coordinator,4,Divorced,10080,15189,6,No,23,3,4,1,12,2,4,12,4,10,2
+33,0,Travel_Rarely,1199,Clinical Operations,15,2,Life Sciences,3,Female,78,3,3,Clinical Director,4,Married,12400,14911,3,No,21,4,4,0,10,1,1,3,2,1,1
+39,0,Travel_Frequently,1130,Biomedical R&D,25,3,Life Sciences,3,Male,76,2,4,Principal Investigator,4,Married,15840,22389,2,Yes,14,3,4,0,16,1,3,13,8,10,5
+28,0,Travel_Rarely,1186,Patient Care,6,2,Biochemistry,2,Female,66,3,2,Patient Care Supervisor,3,Married,9100,13162,3,Yes,18,3,2,0,5,2,3,5,1,3,0
+46,0,Non-Travel,826,Clinical Operations,19,4,Healthcare Administration,3,Female,72,4,3,Care Coordinator,4,Married,14220,11957,3,No,14,3,4,0,23,2,4,6,4,2,3
+45,1,Travel_Rarely,766,Clinical Operations,25,3,Technical Degree,3,Female,58,2,4,Clinical Director,3,Divorced,16680,21007,6,No,23,3,3,2,22,0,3,6,3,5,1
+35,0,Non-Travel,840,Biomedical R&D,7,3,Medical / Nursing,3,Female,77,2,2,Laboratory Technologist,3,Single,10220,17104,4,Yes,20,3,2,0,13,0,2,3,1,2,0
+34,0,Travel_Rarely,820,Clinical Operations,17,3,Medical / Nursing,3,Male,48,2,2,Clinical Director,2,Married,10080,14411,6,No,20,3,4,0,12,3,4,2,0,1,0
+29,0,Non-Travel,923,Clinical Operations,22,3,Life Sciences,4,Female,99,2,2,Operations Manager,3,Married,9380,21057,4,Yes,22,4,3,2,7,2,2,4,2,3,0
+22,0,Travel_Rarely,484,Biomedical R&D,23,3,Healthcare Administration,3,Male,99,3,1,Clinical Research Associate,1,Married,5940,15620,5,No,21,3,3,0,1,2,2,1,0,0,0
+28,0,Travel_Rarely,739,Clinical Operations,15,3,Technical Degree,1,Female,67,3,1,Clinical Director,4,Single,6500,14477,5,Yes,17,4,2,0,5,2,3,0,0,0,0
+22,0,Travel_Rarely,570,Clinical Operations,6,4,Biochemistry,1,Female,57,2,2,Care Coordinator,2,Married,8540,9342,1,Yes,18,3,3,0,1,0,2,1,0,0,0
+22,0,Non-Travel,517,Clinical Operations,18,4,Medical / Nursing,3,Male,94,3,1,Operations Manager,4,Married,5940,19374,1,No,13,3,3,1,1,3,2,1,0,0,0
+36,0,Travel_Rarely,652,Clinical Operations,17,5,Biochemistry,2,Male,84,3,3,Care Coordinator,3,Married,12820,14453,6,Yes,13,3,2,0,13,4,4,4,3,2,2
+34,0,Travel_Rarely,1254,Pharmacy & Therapeutics,15,2,Life Sciences,2,Male,89,2,2,Clinical Pharmacist,1,Married,10080,12530,2,No,14,3,3,1,12,2,2,3,2,1,1
+31,0,Travel_Frequently,949,Biomedical R&D,6,2,Medical / Nursing,4,Male,97,3,2,Biomedical Scientist,1,Married,9800,17456,4,No,23,3,3,0,10,2,2,1,0,0,0
+30,0,Non-Travel,1247,Biomedical R&D,12,4,Medical / Nursing,3,Male,89,3,2,Principal Investigator,3,Married,9380,14191,3,Yes,20,3,4,0,7,0,3,7,5,2,2
+40,0,Travel_Rarely,1169,Biomedical R&D,29,5,Medical / Nursing,4,Male,75,2,2,Principal Investigator,3,Married,11060,23103,1,Yes,21,3,2,1,19,2,3,1,0,0,0
+33,0,Travel_Frequently,605,Clinical Operations,26,4,Life Sciences,2,Female,88,2,1,Clinical Director,2,Divorced,7200,21945,4,Yes,16,3,2,0,10,1,3,1,0,0,0
+33,0,Travel_Frequently,918,Clinical Operations,19,4,Biochemistry,2,Female,60,4,1,Clinical Director,4,Married,7480,17164,3,No,14,4,3,2,12,2,2,1,0,0,0
+26,1,Travel_Frequently,420,Biomedical R&D,22,4,Biochemistry,4,Female,92,3,1,Principal Investigator,4,Single,6220,11968,5,No,18,3,3,1,3,1,4,0,0,0,0
+31,0,Travel_Rarely,831,Pharmacy & Therapeutics,5,5,Biochemistry,4,Female,79,4,3,Pharmacology Lead,3,Married,12120,20702,1,No,14,4,3,1,8,0,4,7,5,3,3
+27,0,Non-Travel,621,Patient Care,20,3,Life Sciences,1,Male,88,3,1,Nurse Practitioner,2,Single,6360,9990,5,Yes,23,3,2,0,4,2,3,1,0,0,0
+42,0,Non-Travel,531,Pharmacy & Therapeutics,21,4,Life Sciences,4,Male,49,4,2,Therapeutics Specialist,3,Single,11060,21799,1,No,19,4,3,0,19,1,4,10,8,7,3
+27,0,Non-Travel,458,Patient Care,1,4,Life Sciences,4,Female,50,2,1,Triage Specialist,2,Married,6500,12567,1,No,12,3,4,1,5,3,4,5,2,3,1
+28,0,Travel_Rarely,1216,Patient Care,20,4,Technical Degree,4,Female,53,2,1,Patient Care Supervisor,3,Single,6500,18930,6,No,18,4,4,2,5,1,3,5,2,3,1
+43,0,Travel_Rarely,953,Clinical Operations,2,4,Medical / Nursing,2,Male,82,3,2,Operations Manager,2,Married,11200,9301,3,No,13,3,2,1,20,0,4,2,1,1,0
+49,0,Travel_Frequently,1288,Clinical Operations,27,4,Healthcare Administration,3,Female,59,4,5,Clinical Nurse Specialist,4,Married,19840,21327,3,No,12,3,3,1,26,3,3,13,4,7,3
+31,0,Travel_Frequently,1193,Clinical Operations,1,2,Technical Degree,4,Male,49,2,2,Clinical Nurse Specialist,3,Single,9520,20886,6,No,23,3,3,0,8,1,4,3,1,0,0
+40,0,Travel_Rarely,1139,Pharmacy & Therapeutics,21,3,Life Sciences,3,Male,91,3,3,Pharmacy Manager,3,Married,13660,10600,6,No,11,3,3,0,19,2,3,4,2,2,1
+39,0,Non-Travel,440,Biomedical R&D,13,3,Life Sciences,1,Male,46,3,3,Biomedical Scientist,2,Married,13380,10883,1,Yes,12,3,3,1,17,2,4,3,2,2,1
+36,0,Travel_Rarely,1287,Biomedical R&D,15,4,Life Sciences,3,Male,59,2,4,Biomedical Scientist,4,Single,15700,22873,1,No,22,3,4,0,15,4,3,6,3,4,1
+44,0,Travel_Rarely,445,Clinical Operations,14,3,Technical Degree,4,Male,93,2,3,Clinical Director,1,Married,13940,15367,5,No,16,3,2,1,21,2,2,8,6,6,5
+24,0,Travel_Rarely,989,Clinical Operations,24,4,Healthcare Administration,2,Female,92,2,1,Operations Manager,1,Divorced,6220,17294,5,No,22,3,4,2,3,2,3,2,1,1,0
+32,1,Travel_Rarely,645,Pharmacy & Therapeutics,21,3,Biochemistry,3,Male,97,2,2,Therapeutics Specialist,4,Married,9800,14666,3,Yes,17,3,2,0,10,1,3,10,6,5,3
+36,1,Travel_Rarely,921,Patient Care,26,2,Biochemistry,3,Male,45,3,2,Registered Nurse,3,Single,10220,22441,5,No,14,3,2,0,13,3,2,2,0,1,0
+39,0,Travel_Rarely,511,Clinical Operations,8,4,Medical / Nursing,3,Female,92,3,2,Care Coordinator,2,Married,10640,17521,6,No,18,3,3,1,16,3,4,2,1,0,0
+42,0,Travel_Rarely,438,Clinical Operations,24,3,Medical / Nursing,1,Male,96,4,4,Operations Manager,2,Single,16400,16301,1,No,20,3,2,0,20,0,4,4,2,2,1
+32,0,Travel_Rarely,1157,Clinical Operations,18,3,Technical Degree,4,Male,54,3,2,Clinical Director,4,Divorced,9940,23577,4,No,23,3,3,1,11,2,3,8,3,4,1
+28,0,Travel_Rarely,489,Patient Care,8,3,Medical / Nursing,4,Female,55,3,1,Patient Care Supervisor,3,Divorced,6780,19211,2,Yes,17,3,3,0,7,2,3,2,1,1,0
+28,0,Travel_Frequently,439,Biomedical R&D,28,4,Healthcare Administration,4,Male,48,2,2,Biomedical Scientist,3,Single,9100,17436,5,No,23,3,4,0,5,4,2,5,3,1,1
+41,0,Non-Travel,1277,Pharmacy & Therapeutics,2,4,Medical / Nursing,3,Female,58,2,2,Pharmacology Lead,3,Married,11200,20358,1,No,13,3,4,1,20,0,3,1,0,0,0
+44,0,Travel_Rarely,972,Clinical Operations,21,2,Biochemistry,3,Male,99,3,5,Clinical Director,3,Married,19140,15422,5,Yes,22,3,2,0,21,2,2,10,8,9,5
+47,0,Travel_Rarely,598,Clinical Operations,23,2,Biochemistry,3,Male,68,3,5,Clinical Director,3,Married,19700,13580,3,No,22,3,4,1,25,3,4,6,4,4,2
+40,0,Travel_Rarely,1316,Biomedical R&D,15,3,Technical Degree,4,Female,89,2,2,Principal Investigator,2,Single,10780,23155,3,No,17,4,2,0,17,3,1,9,4,2,1
+29,0,Travel_Rarely,429,Biomedical R&D,21,2,Life Sciences,4,Male,75,3,1,Biomedical Scientist,4,Married,6780,18386,4,No,23,3,4,0,7,2,3,1,0,0,0
+47,0,Travel_Rarely,1093,Clinical Operations,25,5,Technical Degree,3,Female,73,4,4,Operations Manager,3,Married,16960,11497,5,No,18,4,3,0,24,1,2,6,4,5,3
+29,0,Non-Travel,1102,Clinical Operations,10,5,Healthcare Administration,4,Male,91,3,2,Clinical Nurse Specialist,3,Married,9520,23172,2,No,21,3,4,0,8,0,2,4,3,0,2
+43,0,Non-Travel,1197,Clinical Operations,24,4,Life Sciences,4,Female,53,4,2,Clinical Director,3,Married,11480,9749,3,No,22,3,2,1,22,1,2,2,0,0,0
+36,0,Travel_Frequently,561,Clinical Operations,7,3,Healthcare Administration,3,Male,53,4,2,Care Coordinator,2,Divorced,10220,10594,2,Yes,22,3,4,0,13,3,2,6,4,5,2
+29,0,Travel_Rarely,532,Clinical Operations,12,2,Healthcare Administration,4,Female,46,3,1,Care Coordinator,3,Divorced,6920,13315,6,Yes,13,3,2,1,8,0,3,0,0,0,0
+39,1,Non-Travel,1087,Patient Care,17,3,Medical / Nursing,2,Male,68,2,2,Patient Care Supervisor,2,Married,10920,18185,1,Yes,13,4,4,1,18,2,3,3,1,0,0
+33,1,Travel_Rarely,819,Clinical Operations,8,3,Life Sciences,4,Male,57,3,1,Clinical Director,3,Married,7200,18713,6,No,17,3,4,2,10,4,4,1,0,0,0
+42,0,Travel_Rarely,1293,Clinical Operations,7,2,Medical / Nursing,3,Female,47,2,3,Clinical Nurse Specialist,2,Married,13940,13185,6,Yes,14,3,3,0,21,1,4,5,3,3,1
+31,0,Travel_Rarely,1076,Pharmacy & Therapeutics,17,3,Medical / Nursing,3,Male,62,3,1,Clinical Pharmacist,1,Married,7060,20766,2,Yes,21,3,4,0,9,1,2,5,4,3,1
+40,0,Non-Travel,918,Pharmacy & Therapeutics,10,4,Biochemistry,3,Male,72,3,3,Therapeutics Specialist,4,Married,13660,8350,3,No,23,3,2,0,19,2,3,3,2,2,1
+28,1,Non-Travel,510,Biomedical R&D,18,4,Biochemistry,3,Female,83,4,1,Clinical Research Associate,3,Married,6640,18942,3,Yes,22,3,4,1,6,2,3,0,0,0,0
+25,0,Travel_Rarely,654,Pharmacy & Therapeutics,12,2,Technical Degree,2,Male,60,2,1,Therapeutics Specialist,3,Divorced,6220,12958,5,No,17,3,4,1,3,2,3,3,2,2,1
+42,0,Travel_Rarely,1187,Clinical Operations,8,4,Medical / Nursing,3,Female,53,2,4,Clinical Nurse Specialist,3,Married,16540,15759,4,Yes,16,3,4,0,21,1,3,7,3,1,2
+31,0,Travel_Rarely,620,Clinical Operations,5,4,Medical / Nursing,3,Male,90,3,3,Care Coordinator,3,Married,12120,23958,2,No,19,4,4,0,8,2,3,8,7,4,3
+30,0,Travel_Frequently,1027,Patient Care,13,3,Biochemistry,4,Male,68,2,3,Triage Specialist,3,Divorced,12120,18688,2,No,22,3,3,1,8,1,4,8,7,3,5
+29,0,Non-Travel,1366,Biomedical R&D,27,3,Healthcare Administration,2,Female,77,2,2,Laboratory Technologist,3,Divorced,9240,18694,4,No,15,3,3,0,6,1,2,6,2,1,1
+40,0,Travel_Rarely,755,Clinical Operations,4,2,Healthcare Administration,4,Female,60,3,2,Clinical Nurse Specialist,3,Married,10920,10431,4,No,17,4,2,0,18,2,2,4,1,2,0
+36,0,Non-Travel,522,Biomedical R&D,5,4,Healthcare Administration,3,Male,58,3,1,Biomedical Scientist,2,Married,7620,9129,2,No,15,3,4,0,13,0,2,4,1,1,0
+37,0,Non-Travel,571,Pharmacy & Therapeutics,7,3,Biochemistry,3,Female,86,2,1,Clinical Pharmacist,1,Divorced,8040,22590,4,No,19,3,2,0,16,2,2,1,0,0,0
+34,0,Travel_Rarely,936,Clinical Operations,19,2,Healthcare Administration,2,Male,53,2,3,Operations Manager,2,Married,12820,20318,4,No,12,3,3,0,13,2,4,9,5,2,3
+32,0,Travel_Rarely,597,Clinical Operations,11,3,Life Sciences,4,Male,80,3,2,Operations Manager,3,Married,9660,16788,4,Yes,22,3,3,0,9,3,2,2,1,0,0
+49,1,Travel_Rarely,1101,Biomedical R&D,19,3,Medical / Nursing,4,Female,85,2,5,Biomedical Scientist,4,Single,19840,16719,2,Yes,18,3,3,1,26,2,2,8,6,2,2
+28,0,Travel_Rarely,1360,Pharmacy & Therapeutics,17,3,Life Sciences,4,Female,82,2,2,Clinical Pharmacist,3,Married,9380,21275,2,Yes,23,3,4,0,7,2,4,4,1,2,0
+25,0,Travel_Rarely,625,Biomedical R&D,19,5,Biochemistry,3,Male,86,4,1,Clinical Research Associate,3,Single,6360,10544,3,Yes,17,3,4,2,4,1,3,2,0,0,0
+32,0,Travel_Rarely,538,Pharmacy & Therapeutics,23,4,Technical Degree,2,Female,59,3,2,Pharmacology Lead,2,Single,9800,18057,1,No,13,3,2,1,10,3,2,1,0,0,0
+42,0,Travel_Rarely,755,Clinical Operations,28,4,Biochemistry,1,Female,47,4,3,Operations Manager,4,Single,13800,10773,6,Yes,15,3,2,0,20,2,3,8,6,4,5
+47,1,Travel_Rarely,457,Biomedical R&D,5,5,Technical Degree,3,Male,82,3,5,Biomedical Scientist,2,Married,19560,17241,6,No,13,3,2,1,24,2,2,8,3,5,1
+28,0,Travel_Rarely,599,Pharmacy & Therapeutics,24,3,Healthcare Administration,4,Female,56,3,3,Pharmacology Lead,1,Divorced,11980,22591,6,Yes,22,4,4,0,7,2,3,7,6,6,4
+33,0,Travel_Rarely,459,Patient Care,23,3,Medical / Nursing,4,Male,97,2,1,Nurse Practitioner,3,Married,7480,16592,1,No,20,3,3,1,12,2,3,1,0,0,0
+42,0,Travel_Rarely,1241,Biomedical R&D,10,4,Biochemistry,3,Female,74,3,1,Laboratory Technologist,1,Married,8740,21305,6,No,11,3,3,0,21,1,3,5,4,4,3
+37,0,Non-Travel,625,Clinical Operations,15,2,Medical / Nursing,4,Female,98,2,1,Clinical Nurse Specialist,4,Married,8040,15482,5,Yes,11,3,3,0,16,1,3,0,0,0,0
+31,0,Non-Travel,1259,Patient Care,3,3,Biochemistry,4,Female,83,3,4,Triage Specialist,2,Single,14860,20702,3,No,23,3,2,0,9,1,3,7,4,1,3
+39,0,Non-Travel,961,Pharmacy & Therapeutics,14,3,Biochemistry,4,Male,88,3,3,Pharmacy Manager,1,Single,13240,21723,3,Yes,15,3,4,1,16,2,4,5,2,1,1
+33,0,Travel_Rarely,1248,Clinical Operations,11,2,Biochemistry,4,Female,89,3,2,Care Coordinator,3,Married,10080,13599,6,No,22,3,2,0,12,0,2,2,1,1,0
+23,0,Non-Travel,762,Clinical Operations,28,3,Technical Degree,4,Female,86,2,2,Clinical Director,4,Single,8540,11793,6,No,18,3,4,1,1,1,4,1,0,0,0
+22,0,Non-Travel,452,Clinical Operations,18,5,Medical / Nursing,4,Female,69,3,1,Operations Manager,4,Married,5940,19998,2,No,13,3,3,1,1,3,4,1,0,0,0
+29,0,Non-Travel,802,Clinical Operations,7,2,Biochemistry,1,Male,48,3,3,Operations Manager,3,Married,12120,20270,6,Yes,20,3,3,0,8,2,4,8,5,2,4
+35,0,Travel_Rarely,1157,Clinical Operations,28,3,Healthcare Administration,3,Male,63,3,1,Operations Manager,1,Married,7620,16701,5,Yes,18,3,3,0,13,2,4,4,3,2,2
+29,0,Travel_Rarely,634,Clinical Operations,3,4,Technical Degree,3,Female,78,3,3,Clinical Director,4,Married,11840,11758,6,No,23,3,4,1,6,2,3,4,1,2,0
+34,0,Non-Travel,576,Clinical Operations,25,4,Healthcare Administration,3,Female,58,3,3,Clinical Director,2,Single,12540,23235,5,No,18,4,3,1,11,3,4,3,1,2,0
+44,0,Travel_Rarely,973,Pharmacy & Therapeutics,16,3,Life Sciences,3,Male,57,3,5,Clinical Pharmacist,1,Married,19420,20944,2,No,23,3,4,1,23,2,1,7,6,2,2
+34,0,Travel_Rarely,821,Pharmacy & Therapeutics,3,5,Technical Degree,4,Female,52,3,1,Clinical Pharmacist,3,Married,7480,8809,4,Yes,21,3,3,1,12,2,4,8,5,4,2
+49,0,Non-Travel,843,Clinical Operations,12,2,Life Sciences,3,Female,56,4,5,Clinical Director,3,Married,19840,12613,2,No,14,4,3,0,26,1,4,8,2,4,1
+37,0,Non-Travel,1098,Patient Care,29,3,Biochemistry,3,Female,83,2,2,Nurse Practitioner,4,Married,10500,22496,3,No,12,4,2,0,15,2,3,10,6,7,4
+29,0,Travel_Rarely,911,Clinical Operations,18,4,Biochemistry,1,Male,93,4,2,Clinical Nurse Specialist,3,Married,9380,15013,6,No,12,3,3,0,7,3,3,6,5,4,4
+37,0,Non-Travel,1075,Biomedical R&D,21,2,Life Sciences,2,Female,61,4,2,Biomedical Scientist,3,Divorced,10360,11863,3,Yes,13,3,4,2,14,3,3,3,2,1,1
+41,0,Travel_Frequently,474,Clinical Operations,2,3,Biochemistry,3,Male,60,3,4,Clinical Director,4,Married,16260,13755,3,Yes,18,3,3,2,19,4,1,10,6,3,5
+37,0,Travel_Rarely,552,Clinical Operations,1,3,Biochemistry,2,Female,72,4,4,Care Coordinator,2,Married,15700,16128,4,Yes,19,3,3,0,15,3,4,8,3,6,2
+33,0,Travel_Rarely,1000,Clinical Operations,26,3,Healthcare Administration,3,Female,80,3,2,Operations Manager,4,Married,9940,20919,4,No,18,3,4,2,11,3,1,4,1,1,0
+24,0,Travel_Rarely,959,Patient Care,14,2,Healthcare Administration,4,Male,84,3,1,Patient Care Supervisor,3,Married,6220,12298,1,No,20,3,4,1,3,3,2,3,1,1,0
+36,0,Non-Travel,1127,Clinical Operations,16,3,Biochemistry,3,Female,90,2,1,Clinical Nurse Specialist,4,Married,7760,11241,2,No,21,3,3,2,14,4,1,4,2,2,1
+33,0,Travel_Rarely,1003,Biomedical R&D,10,2,Life Sciences,4,Male,59,4,2,Clinical Research Associate,3,Single,9940,13991,4,No,20,4,2,1,11,2,3,2,1,1,0
+32,0,Travel_Rarely,1191,Patient Care,14,4,Biochemistry,1,Male,99,4,3,Registered Nurse,3,Single,12260,15705,2,No,11,3,4,0,9,2,1,4,1,3,0
+41,0,Travel_Rarely,455,Clinical Operations,29,4,Medical / Nursing,3,Female,83,2,3,Clinical Director,2,Married,13660,8109,1,No,14,3,3,2,19,0,2,3,2,2,1
+26,0,Travel_Rarely,948,Patient Care,7,4,Technical Degree,1,Female,70,4,1,Nurse Practitioner,1,Married,6220,19841,6,No,22,3,4,0,3,1,3,2,0,1,0
+35,0,Travel_Rarely,1099,Pharmacy & Therapeutics,15,5,Life Sciences,4,Female,66,3,4,Therapeutics Specialist,3,Single,15420,12331,1,Yes,16,3,4,0,13,1,2,4,2,3,1
+44,0,Non-Travel,427,Clinical Operations,4,3,Healthcare Administration,3,Female,82,3,5,Care Coordinator,3,Divorced,19280,9129,2,No,15,3,3,1,22,3,4,15,14,5,13
+23,0,Non-Travel,1056,Patient Care,17,2,Biochemistry,3,Female,79,3,2,Nurse Practitioner,4,Married,8680,22792,2,No,23,3,4,0,2,0,3,1,0,0,0
+24,0,Travel_Rarely,677,Biomedical R&D,6,3,Medical / Nursing,3,Female,56,4,1,Biomedical Scientist,2,Divorced,6080,15694,5,No,20,3,2,0,2,2,2,2,1,1,0
+39,0,Non-Travel,1001,Pharmacy & Therapeutics,15,5,Life Sciences,3,Male,93,2,2,Clinical Pharmacist,3,Married,10780,15320,3,No,20,3,4,1,17,1,2,11,4,5,2
+35,0,Travel_Rarely,696,Patient Care,16,2,Medical / Nursing,2,Male,45,2,1,Registered Nurse,3,Married,7760,10185,3,No,22,3,2,0,14,2,4,12,7,3,5
+31,0,Travel_Rarely,402,Pharmacy & Therapeutics,3,4,Life Sciences,2,Female,95,3,3,Pharmacy Manager,4,Single,12260,14111,3,No,15,3,2,0,9,4,3,9,6,5,4
+41,0,Travel_Rarely,476,Biomedical R&D,16,3,Medical / Nursing,1,Female,63,2,4,Principal Investigator,3,Single,16120,18779,5,No,16,3,3,0,18,0,1,5,3,3,1
+32,0,Travel_Rarely,458,Clinical Operations,21,3,Biochemistry,3,Female,77,4,1,Clinical Director,4,Divorced,7200,10651,6,No,11,3,3,0,10,0,3,1,0,0,0
+32,0,Travel_Rarely,432,Biomedical R&D,8,3,Life Sciences,4,Male,49,3,2,Biomedical Scientist,3,Single,9660,13295,5,No,11,3,2,2,9,2,3,2,1,0,0
+42,0,Non-Travel,475,Pharmacy & Therapeutics,20,3,Life Sciences,4,Male,70,2,3,Clinical Pharmacist,3,Divorced,13660,14152,5,Yes,13,3,3,1,19,1,4,10,8,4,5
+26,0,Travel_Rarely,764,Patient Care,12,4,Medical / Nursing,4,Female,81,4,2,Triage Specialist,2,Married,8820,13130,1,Yes,19,3,4,1,3,1,3,3,2,0,0
+30,0,Non-Travel,1342,Patient Care,12,3,Technical Degree,2,Male,59,2,4,Registered Nurse,3,Single,14720,10402,1,Yes,17,3,2,0,8,1,3,8,4,4,2
+22,0,Non-Travel,999,Biomedical R&D,11,3,Medical / Nursing,1,Female,53,4,2,Biomedical Scientist,3,Single,8540,21739,2,No,23,4,3,1,1,0,2,1,0,0,0
+29,0,Travel_Rarely,862,Pharmacy & Therapeutics,21,3,Healthcare Administration,4,Male,83,3,1,Therapeutics Specialist,3,Divorced,6920,20604,4,No,13,3,3,0,8,1,2,1,0,0,0
+30,0,Travel_Frequently,1304,Pharmacy & Therapeutics,13,4,Biochemistry,2,Female,75,3,4,Pharmacy Manager,4,Married,14720,20151,6,No,15,3,4,0,8,4,4,7,5,1,4
+40,0,Travel_Rarely,1034,Clinical Operations,21,4,Healthcare Administration,2,Male,57,4,2,Operations Manager,3,Married,11060,18361,3,Yes,23,3,4,0,19,2,2,4,3,2,2
+24,0,Travel_Frequently,938,Biomedical R&D,25,4,Life Sciences,2,Male,47,3,1,Biomedical Scientist,2,Married,6080,17735,6,No,18,3,4,0,2,4,2,2,1,0,0
+41,0,Travel_Rarely,1224,Biomedical R&D,17,5,Biochemistry,3,Male,90,3,2,Clinical Research Associate,3,Divorced,11060,16027,5,No,14,3,3,0,19,0,3,2,0,1,0
+27,0,Travel_Frequently,1110,Clinical Operations,4,3,Biochemistry,4,Female,71,3,1,Care Coordinator,3,Single,6640,12611,5,No,21,3,4,0,6,2,1,3,2,2,1
+38,0,Travel_Rarely,1373,Clinical Operations,15,4,Medical / Nursing,4,Female,51,2,4,Clinical Director,1,Married,15980,11988,4,No,11,3,3,0,17,1,3,8,2,6,0
+48,1,Travel_Rarely,1071,Clinical Operations,10,5,Life Sciences,3,Male,73,4,4,Operations Manager,4,Married,17380,17581,4,No,11,4,4,1,27,1,3,16,14,11,6
+29,0,Travel_Rarely,603,Clinical Operations,17,3,Healthcare Administration,4,Female,95,2,2,Operations Manager,2,Married,9380,17434,4,No,19,3,2,0,7,4,3,5,4,3,1
+43,0,Non-Travel,1138,Pharmacy & Therapeutics,9,3,Technical Degree,4,Male,71,3,3,Pharmacology Lead,1,Married,13800,12431,5,Yes,14,3,2,1,20,3,2,3,1,2,0
+33,0,Travel_Rarely,471,Clinical Operations,11,3,Technical Degree,2,Male,68,3,2,Clinical Director,3,Married,9940,8904,3,No,18,3,4,0,11,2,2,2,1,1,0
+37,0,Non-Travel,1186,Pharmacy & Therapeutics,17,4,Biochemistry,2,Female,61,3,1,Pharmacy Manager,3,Married,7760,17156,3,Yes,14,3,3,0,14,0,3,4,1,3,0
+55,0,Travel_Rarely,1348,Clinical Operations,20,3,Healthcare Administration,3,Female,47,2,3,Clinical Nurse Specialist,4,Married,15480,10176,3,Yes,20,3,2,1,32,1,2,3,1,2,0
+36,0,Travel_Rarely,1062,Clinical Operations,4,4,Biochemistry,2,Female,85,3,4,Clinical Nurse Specialist,3,Married,15560,10588,4,No,14,3,3,0,14,2,4,4,1,2,0
+34,0,Travel_Rarely,957,Clinical Operations,1,3,Medical / Nursing,2,Male,75,2,2,Clinical Director,1,Single,9940,19696,4,Yes,23,3,3,0,11,4,3,5,2,4,0
+42,1,Travel_Rarely,1387,Patient Care,29,4,Healthcare Administration,3,Male,77,3,4,Nurse Practitioner,4,Single,16540,19136,4,Yes,20,3,2,0,21,2,4,6,4,5,1
+32,0,Travel_Frequently,1292,Patient Care,3,4,Medical / Nursing,3,Male,46,3,3,Patient Care Supervisor,1,Single,12400,23150,6,No,15,3,3,0,10,2,2,9,4,6,3
+29,0,Travel_Rarely,706,Clinical Operations,18,3,Healthcare Administration,4,Male,75,3,2,Operations Manager,3,Married,9520,12099,6,No,18,4,3,0,8,1,3,2,0,1,0
+34,0,Travel_Rarely,458,Clinical Operations,20,4,Biochemistry,3,Male,53,2,1,Clinical Director,3,Married,7480,17223,2,No,11,4,2,1,12,3,4,4,2,2,1
+25,0,Travel_Rarely,1022,Clinical Operations,18,4,Life Sciences,2,Male,97,2,3,Care Coordinator,4,Married,11280,16186,4,No,22,3,4,0,2,3,3,2,1,0,0
+23,0,Travel_Rarely,466,Clinical Operations,5,4,Medical / Nursing,3,Male,71,2,1,Care Coordinator,3,Married,6080,13729,5,Yes,11,3,3,0,2,2,1,2,1,1,0
+42,0,Travel_Rarely,870,Clinical Operations,24,4,Technical Degree,3,Male,50,3,2,Operations Manager,3,Married,11060,23247,5,No,23,4,3,2,19,4,3,8,3,2,2
+46,0,Travel_Rarely,1207,Pharmacy & Therapeutics,1,3,Healthcare Administration,4,Male,47,3,5,Clinical Pharmacist,4,Married,19420,12722,5,No,14,3,4,0,23,0,3,9,7,5,3
+34,0,Travel_Rarely,1213,Patient Care,22,3,Technical Degree,2,Female,70,2,1,Triage Specialist,3,Single,7340,21435,3,Yes,16,3,4,0,11,2,3,0,0,0,0
+38,1,Travel_Rarely,578,Biomedical R&D,18,3,Life Sciences,1,Male,46,4,2,Principal Investigator,2,Married,10500,13283,1,No,16,3,4,0,15,3,4,6,4,1,3
+31,0,Travel_Rarely,840,Clinical Operations,13,4,Technical Degree,4,Male,92,4,1,Care Coordinator,2,Married,7200,13220,6,No,23,3,3,0,10,2,2,1,0,0,0
+37,0,Non-Travel,763,Clinical Operations,23,3,Technical Degree,4,Male,91,2,1,Care Coordinator,1,Married,8040,8797,2,Yes,13,3,3,1,16,2,3,2,1,1,0
+43,0,Travel_Rarely,965,Clinical Operations,21,4,Healthcare Administration,4,Male,88,3,1,Care Coordinator,1,Single,8880,17329,4,Yes,15,4,3,1,22,2,3,4,1,2,0
+26,0,Non-Travel,697,Pharmacy & Therapeutics,9,3,Healthcare Administration,2,Male,81,3,1,Therapeutics Specialist,3,Single,6220,22184,3,Yes,20,3,2,0,3,2,3,3,1,2,0
+32,0,Travel_Rarely,1374,Clinical Operations,14,2,Healthcare Administration,2,Male,96,3,1,Operations Manager,3,Single,7060,21015,4,No,23,3,3,0,9,1,3,1,0,0,0
+31,0,Travel_Rarely,706,Clinical Operations,19,3,Technical Degree,3,Male,95,3,1,Clinical Nurse Specialist,2,Married,6920,14747,3,No,21,3,2,0,8,1,3,7,5,3,2
+31,0,Travel_Rarely,1040,Clinical Operations,18,4,Life Sciences,1,Female,49,3,2,Care Coordinator,4,Single,9660,8672,3,No,23,3,4,0,9,2,3,5,3,1,1
+36,1,Travel_Rarely,949,Clinical Operations,3,4,Medical / Nursing,4,Male,74,2,2,Clinical Nurse Specialist,3,Married,10360,21847,4,No,23,4,2,1,14,2,4,7,5,3,2
+28,0,Non-Travel,988,Clinical Operations,15,4,Technical Degree,2,Male,71,2,2,Operations Manager,3,Married,9240,15358,5,No,16,3,2,1,6,4,3,1,0,0,0
+28,0,Non-Travel,678,Biomedical R&D,24,2,Healthcare Administration,2,Female,75,2,1,Laboratory Technologist,4,Married,6780,11724,4,Yes,16,3,3,1,7,1,3,4,3,1,1
+29,0,Travel_Rarely,1237,Clinical Operations,11,3,Medical / Nursing,3,Male,73,4,3,Care Coordinator,4,Married,11980,14999,6,No,22,4,3,2,7,3,2,5,2,2,1
+43,0,Non-Travel,915,Patient Care,15,2,Technical Degree,2,Female,51,3,3,Registered Nurse,3,Married,14080,9377,3,No,20,4,3,0,22,2,3,4,1,2,0
+37,0,Travel_Rarely,1286,Biomedical R&D,6,2,Healthcare Administration,2,Male,60,2,2,Laboratory Technologist,3,Single,10360,22679,5,No,20,3,3,0,14,3,4,3,2,2,1
+37,0,Travel_Rarely,418,Clinical Operations,2,4,Healthcare Administration,4,Female,69,4,5,Clinical Director,4,Married,18300,21350,1,Yes,23,3,4,0,15,2,3,11,7,4,6
+32,0,Non-Travel,1145,Biomedical R&D,29,3,Life Sciences,4,Female,91,3,2,Laboratory Technologist,3,Married,9800,12967,3,No,18,3,3,1,10,1,3,1,0,0,0
+26,0,Travel_Rarely,939,Biomedical R&D,18,2,Biochemistry,2,Female,50,4,1,Clinical Research Associate,2,Single,6220,12567,1,No,19,4,3,0,3,4,3,0,0,0,0
+22,0,Travel_Rarely,1111,Clinical Operations,24,3,Biochemistry,3,Male,79,4,2,Clinical Nurse Specialist,1,Married,8540,9369,6,No,11,4,3,0,1,1,3,1,0,0,0
+33,0,Non-Travel,946,Clinical Operations,15,3,Biochemistry,3,Male,59,3,3,Clinical Director,3,Single,12400,20436,1,No,15,3,4,1,10,1,3,4,2,3,1
+36,0,Travel_Rarely,1291,Patient Care,28,5,Medical / Nursing,2,Female,77,4,3,Nurse Practitioner,1,Single,12960,17862,1,No,15,4,2,1,14,0,4,4,3,1,2
+42,0,Non-Travel,583,Clinical Operations,17,3,Life Sciences,2,Female,53,2,2,Care Coordinator,3,Married,11200,23858,3,Yes,23,4,2,0,20,4,3,8,5,2,4
+33,0,Travel_Rarely,1039,Clinical Operations,22,3,Healthcare Administration,3,Female,82,4,2,Clinical Nurse Specialist,3,Married,9940,16534,2,No,20,4,3,0,11,1,4,5,3,1,2
+33,0,Travel_Rarely,973,Patient Care,6,3,Technical Degree,3,Female,48,4,1,Nurse Practitioner,3,Married,7480,22392,2,No,22,4,2,0,12,3,1,0,0,0,0
+22,0,Travel_Rarely,634,Patient Care,9,3,Biochemistry,2,Female,68,2,2,Nurse Practitioner,2,Married,8540,10260,4,No,16,3,4,0,1,0,3,1,0,0,0
+26,0,Travel_Rarely,1254,Patient Care,12,4,Healthcare Administration,3,Female,57,3,3,Registered Nurse,1,Married,11560,15045,3,No,13,3,4,0,4,2,4,4,2,1,1
+37,1,Non-Travel,1382,Pharmacy & Therapeutics,12,3,Life Sciences,3,Female,91,4,1,Clinical Pharmacist,3,Divorced,7760,18238,4,No,21,3,2,0,14,1,2,3,2,1,1
+43,1,Travel_Rarely,1383,Clinical Operations,28,3,Biochemistry,3,Male,71,3,3,Care Coordinator,1,Married,14080,18796,1,No,20,4,3,0,22,3,2,4,1,1,0
+35,0,Travel_Rarely,1008,Patient Care,16,3,Technical Degree,4,Male,98,4,4,Triage Specialist,4,Single,15560,16422,3,No,13,4,3,0,14,2,2,9,5,8,2
+47,0,Travel_Rarely,571,Pharmacy & Therapeutics,5,2,Technical Degree,1,Female,56,2,3,Clinical Pharmacist,4,Divorced,14360,8756,5,No,11,3,4,0,24,1,2,15,4,5,3
+34,0,Travel_Frequently,736,Biomedical R&D,21,4,Biochemistry,4,Female,83,3,2,Clinical Research Associate,2,Divorced,10080,14993,3,No,15,4,3,1,12,2,2,5,3,3,1
+38,0,Travel_Rarely,716,Biomedical R&D,14,4,Healthcare Administration,4,Male,68,4,2,Principal Investigator,2,Divorced,10780,21543,4,No,14,3,4,0,17,4,4,11,3,6,2
+40,0,Travel_Rarely,451,Clinical Operations,9,4,Healthcare Administration,3,Male,97,4,2,Clinical Nurse Specialist,4,Married,10920,18216,4,No,16,4,2,0,18,4,2,18,12,8,6
+29,1,Travel_Rarely,1016,Clinical Operations,5,3,Biochemistry,4,Male,82,3,1,Clinical Director,4,Married,6640,17978,3,No,19,3,3,0,6,2,3,1,0,0,0
+32,0,Travel_Frequently,1040,Patient Care,2,2,Healthcare Administration,4,Male,59,3,2,Nurse Practitioner,1,Married,9800,16411,1,No,12,4,3,0,10,3,2,6,2,4,1
+30,0,Travel_Rarely,1162,Patient Care,24,3,Technical Degree,3,Male,93,3,1,Triage Specialist,3,Single,7060,18811,2,Yes,21,3,4,0,9,1,3,1,0,0,0
+35,0,Travel_Rarely,921,Biomedical R&D,3,4,Medical / Nursing,4,Female,70,2,1,Principal Investigator,3,Single,7620,21446,2,No,11,3,2,0,13,3,2,8,4,4,1
+48,0,Non-Travel,473,Biomedical R&D,22,3,Biochemistry,1,Female,64,3,3,Laboratory Technologist,3,Married,14500,23957,6,Yes,16,3,4,1,25,2,2,4,1,2,0
+23,1,Travel_Rarely,767,Biomedical R&D,25,4,Technical Degree,4,Female,77,4,1,Principal Investigator,4,Married,5940,13040,4,Yes,20,3,2,1,1,1,3,1,0,0,0
+27,1,Travel_Rarely,1231,Clinical Operations,25,2,Biochemistry,3,Male,91,3,2,Care Coordinator,3,Single,9240,14096,6,No,16,3,3,0,6,1,3,5,3,2,1
+37,1,Travel_Rarely,1312,Clinical Operations,15,3,Biochemistry,3,Female,99,3,3,Clinical Nurse Specialist,3,Single,12960,23021,6,No,20,3,3,0,14,2,3,12,4,9,3
+39,0,Non-Travel,867,Clinical Operations,15,3,Medical / Nursing,3,Male,88,3,3,Operations Manager,3,Divorced,13520,12717,4,No,15,3,2,1,18,2,1,16,10,10,6
+34,0,Travel_Rarely,615,Clinical Operations,8,4,Medical / Nursing,3,Female,89,3,3,Clinical Director,4,Married,12820,19698,4,No,16,3,4,0,13,2,3,8,4,4,2
+37,0,Travel_Rarely,1060,Pharmacy & Therapeutics,10,5,Technical Degree,1,Male,68,3,2,Clinical Pharmacist,2,Single,10640,21842,4,Yes,17,3,4,1,16,3,3,9,2,6,1
+23,1,Travel_Frequently,649,Patient Care,27,2,Medical / Nursing,4,Male,57,4,2,Nurse Practitioner,4,Divorced,8680,18336,6,No,22,3,4,1,2,1,1,2,1,1,0
+27,0,Non-Travel,1037,Clinical Operations,27,2,Medical / Nursing,3,Male,58,3,1,Operations Manager,3,Married,6640,16473,2,No,18,4,4,0,6,3,2,2,0,1,0
+38,0,Travel_Rarely,1161,Pharmacy & Therapeutics,23,3,Life Sciences,2,Female,87,3,2,Pharmacology Lead,2,Single,10500,20862,6,No,14,4,4,0,15,1,3,1,0,0,0
+26,0,Travel_Rarely,679,Clinical Operations,2,3,Technical Degree,4,Female,86,3,1,Care Coordinator,2,Married,6220,14645,4,Yes,21,3,2,0,3,2,3,3,2,1,1
+38,0,Travel_Rarely,1011,Patient Care,28,4,Healthcare Administration,2,Male,69,4,2,Patient Care Supervisor,3,Married,10500,23371,4,No,13,3,4,0,15,1,2,1,0,0,0
+30,0,Travel_Rarely,895,Clinical Operations,17,3,Life Sciences,3,Male,77,3,2,Care Coordinator,3,Single,9520,23328,1,Yes,21,3,3,0,8,1,3,1,0,0,0
+41,0,Travel_Rarely,577,Patient Care,20,4,Biochemistry,4,Female,86,3,2,Nurse Practitioner,1,Married,10920,8908,4,Yes,18,3,3,0,18,2,3,4,2,2,0
+54,0,Travel_Frequently,806,Biomedical R&D,14,3,Technical Degree,4,Male,72,3,5,Principal Investigator,2,Married,20540,21813,5,No,21,4,4,1,31,2,3,6,5,5,2
+38,0,Travel_Rarely,702,Clinical Operations,26,4,Life Sciences,3,Male,76,2,3,Care Coordinator,3,Single,13100,13396,6,No,18,3,4,0,15,0,4,3,2,2,1
+30,0,Travel_Rarely,1342,Clinical Operations,3,2,Biochemistry,3,Female,88,4,2,Clinical Director,4,Divorced,9660,11841,5,No,11,3,4,1,9,3,3,7,4,3,2
+39,0,Travel_Rarely,1094,Patient Care,18,4,Biochemistry,3,Female,54,2,5,Triage Specialist,4,Married,18720,21463,6,No,19,4,4,1,18,1,3,9,7,6,3
+39,0,Travel_Rarely,441,Patient Care,17,3,Life Sciences,2,Female,51,3,1,Nurse Practitioner,1,Married,8320,17488,5,No,15,3,4,0,18,0,3,3,1,2,0
+36,0,Travel_Rarely,1171,Biomedical R&D,4,3,Medical / Nursing,4,Female,50,2,1,Laboratory Technologist,3,Divorced,7760,9858,6,No,17,4,4,0,14,2,2,2,1,0,0
+43,0,Travel_Rarely,1237,Patient Care,8,4,Healthcare Administration,1,Male,48,3,3,Patient Care Supervisor,2,Divorced,14080,16850,3,No,16,3,3,0,22,0,3,9,2,6,1
+39,0,Non-Travel,741,Clinical Operations,3,3,Healthcare Administration,3,Female,75,3,3,Care Coordinator,3,Single,13240,23320,3,Yes,22,3,4,0,16,3,3,3,2,1,0
+37,0,Travel_Rarely,724,Clinical Operations,26,3,Medical / Nursing,3,Male,60,3,3,Care Coordinator,3,Married,12960,10019,1,Yes,16,3,3,1,14,3,4,5,2,1,1
+27,0,Travel_Rarely,901,Patient Care,25,3,Biochemistry,4,Female,77,3,2,Registered Nurse,3,Married,9100,10631,5,Yes,20,3,4,0,5,1,2,5,4,4,2
+28,0,Travel_Rarely,993,Patient Care,3,2,Life Sciences,4,Male,51,2,2,Registered Nurse,4,Married,9100,18542,1,No,23,4,3,1,5,1,3,3,2,2,1
+38,0,Travel_Rarely,456,Patient Care,21,3,Biochemistry,2,Female,84,4,3,Triage Specialist,2,Single,13380,18681,1,No,22,4,4,0,17,1,3,11,6,5,3
+49,0,Non-Travel,603,Patient Care,8,3,Healthcare Administration,3,Female,71,4,1,Nurse Practitioner,2,Single,9580,9178,1,No,11,3,2,1,27,3,3,1,0,0,0
+45,0,Travel_Rarely,915,Clinical Operations,24,3,Biochemistry,3,Male,47,3,4,Clinical Nurse Specialist,2,Single,16960,10517,6,Yes,15,4,3,0,24,3,1,9,3,6,1
+34,0,Travel_Rarely,813,Clinical Operations,25,4,Biochemistry,3,Female,64,4,2,Care Coordinator,4,Single,10080,23416,1,No,11,3,3,1,12,1,2,4,2,3,1
+25,0,Non-Travel,925,Biomedical R&D,20,4,Biochemistry,3,Male,54,3,1,Laboratory Technologist,4,Married,6220,19806,2,No,15,3,3,0,3,1,3,0,0,0,0
+30,0,Non-Travel,737,Patient Care,13,4,Biochemistry,2,Female,53,4,2,Registered Nurse,4,Married,9520,11536,6,Yes,15,3,3,0,8,1,2,2,1,1,0
+22,0,Travel_Rarely,411,Biomedical R&D,17,3,Medical / Nursing,1,Male,81,2,2,Biomedical Scientist,4,Single,8540,12177,1,No,21,3,3,0,1,1,2,1,0,0,0
+38,1,Travel_Frequently,892,Biomedical R&D,29,4,Life Sciences,3,Male,58,4,4,Clinical Research Associate,1,Married,15980,23314,4,No,17,3,2,0,17,2,3,13,4,12,3
+47,0,Travel_Rarely,867,Biomedical R&D,10,4,Technical Degree,4,Female,52,3,5,Principal Investigator,2,Married,19560,13722,4,Yes,20,3,3,1,24,2,2,10,5,4,4
+45,0,Non-Travel,612,Clinical Operations,13,5,Healthcare Administration,2,Female,48,3,3,Care Coordinator,4,Married,14080,8679,6,No,11,3,2,2,22,0,1,8,2,2,1
+24,0,Non-Travel,963,Clinical Operations,26,2,Life Sciences,3,Male,72,3,1,Clinical Director,4,Divorced,5940,13476,6,No,20,3,2,0,1,0,3,1,0,0,0
+32,1,Travel_Rarely,998,Patient Care,10,2,Biochemistry,4,Female,63,4,2,Triage Specialist,4,Single,9940,14439,2,Yes,17,3,3,1,11,2,3,1,0,0,0
+42,0,Travel_Frequently,850,Clinical Operations,2,3,Life Sciences,2,Male,47,2,2,Care Coordinator,2,Married,11200,16108,4,Yes,22,3,3,0,20,2,3,4,3,3,1
+22,0,Travel_Rarely,623,Biomedical R&D,14,3,Life Sciences,4,Male,79,3,2,Principal Investigator,3,Married,8540,18964,2,No,18,3,2,0,1,1,2,1,0,0,0
+38,0,Non-Travel,997,Biomedical R&D,9,3,Medical / Nursing,3,Male,50,2,3,Principal Investigator,2,Single,13380,8394,4,No,23,3,4,0,17,1,2,5,4,4,3
+28,0,Travel_Rarely,1166,Biomedical R&D,8,3,Healthcare Administration,4,Male,97,3,1,Laboratory Technologist,3,Married,6640,12606,5,No,22,3,2,0,6,3,2,6,3,4,2
+39,0,Travel_Frequently,1233,Clinical Operations,11,3,Technical Degree,4,Male,52,4,1,Operations Manager,3,Single,8320,15162,3,No,12,3,4,0,18,2,3,0,0,0,0
+41,0,Travel_Rarely,565,Clinical Operations,28,5,Life Sciences,3,Male,80,2,2,Operations Manager,4,Divorced,11200,12721,6,No,19,3,4,1,20,4,3,1,0,0,0
+38,0,Travel_Rarely,478,Clinical Operations,29,4,Biochemistry,4,Male,62,3,1,Operations Manager,3,Married,7900,15041,4,Yes,20,3,2,0,15,3,3,1,0,0,0
+38,1,Travel_Frequently,1065,Clinical Operations,21,4,Technical Degree,1,Female,89,2,4,Clinical Director,3,Married,15980,11071,1,No,20,3,2,0,17,1,4,11,3,7,1
+32,1,Travel_Rarely,1200,Clinical Operations,24,3,Life Sciences,4,Female,66,4,1,Clinical Director,1,Married,7340,14617,4,Yes,17,3,3,2,11,3,3,1,0,0,0
+43,0,Travel_Rarely,1362,Patient Care,26,5,Healthcare Administration,2,Female,76,3,3,Registered Nurse,4,Single,14080,19218,6,No,12,3,4,0,22,4,2,8,4,4,2
+37,0,Travel_Rarely,819,Biomedical R&D,12,3,Medical / Nursing,1,Male,67,2,2,Biomedical Scientist,3,Married,10640,13158,5,No,22,4,2,1,16,1,2,5,2,3,1
+57,0,Travel_Rarely,844,Clinical Operations,23,4,Healthcare Administration,4,Female,93,4,4,Operations Manager,4,Single,18500,11611,4,No,12,4,4,0,35,0,4,8,4,3,1
+31,0,Travel_Rarely,1251,Pharmacy & Therapeutics,7,3,Life Sciences,4,Female,79,3,3,Pharmacy Manager,2,Single,12120,16877,1,No,11,3,4,0,8,3,4,3,1,2,0
+36,1,Travel_Rarely,955,Pharmacy & Therapeutics,4,4,Biochemistry,4,Male,52,3,1,Clinical Pharmacist,1,Married,7760,19383,6,No,15,4,3,0,14,0,4,0,0,0,0
+35,0,Travel_Frequently,1169,Clinical Operations,13,5,Medical / Nursing,3,Male,49,3,1,Operations Manager,3,Single,7760,10236,1,Yes,13,3,3,0,14,1,3,1,0,0,0
+44,0,Travel_Rarely,1378,Clinical Operations,17,3,Medical / Nursing,1,Male,94,2,5,Care Coordinator,2,Married,19420,23061,4,No,12,3,4,2,23,1,1,8,5,2,3
+38,0,Travel_Rarely,670,Clinical Operations,14,3,Life Sciences,3,Male,61,3,1,Care Coordinator,2,Married,8040,17067,1,No,14,3,3,1,16,1,2,2,0,1,0
+25,0,Travel_Rarely,621,Pharmacy & Therapeutics,23,2,Life Sciences,1,Male,93,2,2,Therapeutics Specialist,3,Single,8820,17639,4,Yes,11,3,3,0,3,3,2,3,2,2,1
+31,0,Travel_Rarely,1255,Patient Care,20,4,Medical / Nursing,2,Female,99,4,2,Nurse Practitioner,3,Single,9520,22239,4,No,18,3,3,1,8,1,2,2,0,1,0
+29,0,Travel_Rarely,778,Clinical Operations,24,2,Healthcare Administration,3,Female,52,3,2,Clinical Director,3,Single,9240,23816,5,Yes,13,4,4,0,6,2,3,6,5,3,3
+25,0,Non-Travel,760,Patient Care,13,3,Life Sciences,1,Female,96,2,2,Triage Specialist,4,Married,8960,8596,3,Yes,13,3,3,0,4,3,3,3,2,1,1
+39,0,Travel_Rarely,1251,Pharmacy & Therapeutics,1,4,Medical / Nursing,4,Female,73,3,3,Pharmacology Lead,1,Married,13380,22568,1,No,23,3,3,0,17,2,3,7,6,6,5
+34,0,Travel_Rarely,506,Biomedical R&D,4,4,Life Sciences,4,Female,54,4,2,Principal Investigator,4,Single,9940,21809,5,Yes,15,3,4,1,11,1,4,3,1,0,0
+36,0,Non-Travel,795,Clinical Operations,28,3,Biochemistry,4,Male,85,4,1,Care Coordinator,3,Married,7900,15913,5,No,22,3,4,0,15,3,3,4,3,1,2
+40,0,Travel_Rarely,849,Pharmacy & Therapeutics,21,5,Healthcare Administration,3,Female,66,3,2,Pharmacology Lead,3,Married,10780,19774,3,No,20,3,4,2,17,1,4,13,9,3,7
+33,0,Travel_Rarely,735,Clinical Operations,17,4,Healthcare Administration,2,Female,45,2,1,Clinical Director,3,Divorced,7340,10525,4,No,18,3,2,0,11,4,4,3,1,2,0
+41,0,Travel_Rarely,477,Patient Care,26,2,Medical / Nursing,3,Male,99,3,4,Triage Specialist,3,Married,16260,15704,3,No,16,3,2,1,19,3,4,9,8,4,7
+30,0,Non-Travel,1019,Pharmacy & Therapeutics,3,3,Biochemistry,2,Male,48,4,2,Pharmacology Lead,4,Married,9520,11071,2,Yes,19,3,2,1,8,1,2,3,2,0,1
+30,0,Travel_Rarely,1399,Biomedical R&D,24,3,Life Sciences,4,Male,95,2,4,Clinical Research Associate,4,Single,14860,18262,4,No,12,4,4,0,9,4,1,9,5,8,4
+34,0,Non-Travel,1165,Clinical Operations,6,3,Biochemistry,4,Female,48,4,3,Clinical Director,2,Single,12540,17368,6,No,12,3,4,0,11,2,2,7,4,2,2
+39,0,Travel_Rarely,936,Patient Care,22,4,Biochemistry,4,Male,54,4,3,Patient Care Supervisor,3,Single,13380,11484,6,Yes,19,3,3,0,17,0,3,17,8,12,5
+41,0,Travel_Rarely,745,Patient Care,17,3,Biochemistry,3,Female,63,3,2,Nurse Practitioner,2,Married,11060,16260,6,No,18,4,4,1,19,1,2,3,2,2,1
+30,0,Non-Travel,512,Clinical Operations,4,2,Life Sciences,3,Male,53,3,2,Clinical Director,3,Married,9380,23055,1,No,23,3,3,0,7,2,3,5,2,2,1
+43,0,Travel_Frequently,579,Patient Care,29,3,Healthcare Administration,3,Male,95,4,4,Patient Care Supervisor,3,Married,16540,21963,3,Yes,11,3,4,0,21,4,4,4,3,0,2
+35,0,Non-Travel,1201,Clinical Operations,1,3,Medical / Nursing,2,Male,75,2,2,Clinical Nurse Specialist,2,Single,10220,10952,4,No,23,3,3,1,13,3,2,3,2,1,1
+42,0,Travel_Rarely,1337,Clinical Operations,12,2,Biochemistry,4,Male,74,4,1,Clinical Nurse Specialist,3,Married,8600,9976,1,No,21,3,2,1,20,0,3,6,3,5,2
+33,1,Travel_Rarely,1222,Clinical Operations,29,4,Biochemistry,2,Male,81,3,3,Clinical Nurse Specialist,3,Divorced,12680,17763,4,Yes,19,3,2,0,12,2,1,4,3,2,2
+29,0,Travel_Rarely,648,Clinical Operations,9,5,Life Sciences,4,Male,45,3,3,Clinical Nurse Specialist,3,Single,11980,17081,4,No,16,3,4,2,7,2,4,6,4,3,2
+42,0,Travel_Rarely,777,Patient Care,10,4,Medical / Nursing,4,Male,53,3,4,Triage Specialist,2,Single,16540,16789,1,Yes,23,4,3,1,21,2,3,8,3,4,1
+33,0,Travel_Rarely,1127,Biomedical R&D,28,4,Medical / Nursing,2,Male,58,4,1,Principal Investigator,4,Single,7200,11807,4,No,19,4,2,0,10,1,1,0,0,0,0
+33,0,Non-Travel,1256,Clinical Operations,26,3,Life Sciences,2,Male,59,2,2,Care Coordinator,3,Single,9940,11260,4,No,21,3,2,1,11,2,4,6,2,4,1
+45,0,Travel_Rarely,1386,Biomedical R&D,20,2,Technical Degree,3,Female,88,4,4,Principal Investigator,2,Married,16960,21055,6,No,20,3,3,0,24,2,2,12,7,9,3
+38,0,Travel_Rarely,1104,Patient Care,5,3,Medical / Nursing,2,Female,92,3,1,Registered Nurse,3,Single,8040,15517,6,No,23,3,4,0,16,4,3,0,0,0,0
+40,0,Travel_Rarely,602,Pharmacy & Therapeutics,1,2,Life Sciences,3,Female,83,2,2,Pharmacy Manager,3,Married,11060,10996,6,No,21,3,4,0,19,1,3,1,0,0,0
+46,0,Travel_Rarely,1148,Patient Care,21,3,Healthcare Administration,3,Female,62,3,3,Patient Care Supervisor,1,Married,14220,15321,6,No,19,3,4,0,23,1,2,8,3,6,2
+22,0,Non-Travel,1315,Clinical Operations,16,3,Medical / Nursing,3,Male,58,3,2,Clinical Nurse Specialist,3,Divorced,8540,23818,5,No,21,4,4,0,1,2,3,1,0,0,0
+37,0,Travel_Rarely,705,Biomedical R&D,26,4,Life Sciences,4,Female,54,3,1,Principal Investigator,2,Married,8040,9506,6,No,23,3,2,0,16,2,3,2,1,0,0
+38,0,Non-Travel,1152,Patient Care,10,3,Biochemistry,4,Male,68,3,2,Triage Specialist,3,Married,10640,18499,6,No,19,3,3,1,16,1,1,9,3,7,1
+24,0,Travel_Rarely,927,Patient Care,2,3,Medical / Nursing,1,Female,57,3,1,Nurse Practitioner,1,Divorced,6080,22432,6,Yes,14,3,3,0,2,3,3,2,0,0,0
+33,0,Travel_Rarely,1217,Clinical Operations,27,5,Biochemistry,4,Female,72,3,2,Clinical Nurse Specialist,2,Single,10080,23826,4,No,15,3,3,1,12,1,3,5,3,2,1
+48,0,Travel_Rarely,933,Biomedical R&D,11,3,Healthcare Administration,4,Female,90,4,4,Clinical Research Associate,2,Married,17240,13539,6,No,15,3,3,0,26,1,1,5,2,3,1
+24,0,Travel_Rarely,610,Clinical Operations,25,2,Medical / Nursing,3,Male,75,3,1,Clinical Nurse Specialist,2,Divorced,6220,8061,3,No,21,3,3,2,3,1,4,3,1,2,0
+33,1,Travel_Rarely,452,Pharmacy & Therapeutics,2,4,Life Sciences,1,Male,63,3,1,Pharmacology Lead,2,Single,7340,20057,4,Yes,23,3,3,0,11,4,3,0,0,0,0
+22,1,Travel_Rarely,609,Biomedical R&D,16,5,Medical / Nursing,3,Male,67,3,1,Principal Investigator,3,Single,5940,10630,1,Yes,23,3,2,0,1,0,2,1,0,0,0
+31,0,Travel_Rarely,1176,Biomedical R&D,7,2,Biochemistry,1,Male,57,3,2,Clinical Research Associate,3,Married,9800,15925,4,No,13,3,3,1,10,4,3,10,5,2,2
+33,0,Travel_Rarely,1224,Clinical Operations,6,3,Technical Degree,4,Male,72,3,1,Operations Manager,3,Married,7340,17097,1,Yes,15,3,2,1,11,2,4,7,5,6,2
+38,0,Travel_Rarely,475,Pharmacy & Therapeutics,26,3,Life Sciences,4,Female,55,3,3,Pharmacology Lead,3,Married,13100,16339,5,No,20,3,4,1,15,4,2,4,3,0,2
+32,0,Travel_Rarely,1215,Patient Care,15,2,Technical Degree,1,Female,93,2,2,Registered Nurse,3,Divorced,9660,19202,2,No,16,3,3,0,9,2,3,9,8,1,6
+40,0,Non-Travel,733,Biomedical R&D,19,2,Healthcare Administration,4,Female,70,3,4,Clinical Research Associate,4,Single,16120,11741,2,No,19,3,4,0,18,0,3,7,5,3,2
+37,0,Non-Travel,1109,Clinical Operations,27,3,Technical Degree,1,Female,98,2,3,Care Coordinator,3,Married,12960,22772,5,Yes,11,4,3,2,14,1,3,5,3,4,2
+29,0,Travel_Rarely,576,Clinical Operations,1,2,Biochemistry,3,Male,91,3,4,Care Coordinator,3,Married,14440,21951,3,Yes,15,3,3,1,6,1,2,6,4,5,2
+35,0,Travel_Rarely,906,Pharmacy & Therapeutics,25,3,Biochemistry,4,Male,88,3,2,Pharmacy Manager,2,Married,10080,23403,3,No,15,3,3,0,12,0,3,12,8,2,7
+48,0,Non-Travel,675,Clinical Operations,6,3,Medical / Nursing,1,Female,62,2,4,Care Coordinator,3,Single,17380,10612,5,No,15,3,2,0,27,2,2,5,3,4,2
+35,1,Non-Travel,1134,Patient Care,5,3,Medical / Nursing,2,Male,62,3,1,Registered Nurse,3,Single,7620,13200,2,No,23,3,2,1,13,2,2,0,0,0,0
+37,0,Travel_Rarely,1329,Patient Care,27,3,Biochemistry,3,Female,54,2,1,Patient Care Supervisor,3,Divorced,7760,8211,3,No,13,3,4,0,14,3,2,1,0,0,0
+31,0,Non-Travel,634,Pharmacy & Therapeutics,22,4,Biochemistry,4,Male,58,4,2,Pharmacy Manager,3,Divorced,9520,16753,6,Yes,15,3,4,0,8,3,3,7,6,3,2
+35,0,Non-Travel,883,Clinical Operations,2,2,Healthcare Administration,3,Male,66,3,2,Clinical Director,2,Married,10080,21142,4,No,18,4,3,1,12,2,4,7,5,5,2
+39,0,Travel_Rarely,777,Biomedical R&D,12,3,Technical Degree,2,Female,96,3,2,Biomedical Scientist,1,Married,10780,15868,4,No,23,3,2,1,17,4,3,1,0,0,0
+37,0,Non-Travel,978,Patient Care,17,3,Biochemistry,4,Male,47,3,4,Patient Care Supervisor,4,Single,15560,11158,1,No,18,3,3,0,14,2,3,14,12,11,6
+22,0,Travel_Rarely,515,Clinical Operations,3,2,Life Sciences,3,Male,86,2,1,Care Coordinator,3,Married,5940,10661,5,No,14,3,3,0,1,1,3,1,0,0,0
+40,1,Travel_Rarely,941,Clinical Operations,29,3,Medical / Nursing,2,Female,65,3,2,Operations Manager,4,Married,11060,11107,6,No,20,3,2,0,19,1,1,6,4,5,3
+26,0,Non-Travel,895,Biomedical R&D,2,4,Medical / Nursing,4,Female,87,4,2,Laboratory Technologist,3,Married,8820,10731,2,Yes,18,3,3,0,3,2,3,3,1,2,0
+35,0,Travel_Rarely,532,Biomedical R&D,19,2,Medical / Nursing,4,Female,99,3,3,Principal Investigator,4,Married,12820,8566,1,No,12,3,3,0,13,1,2,5,1,1,0
+30,0,Travel_Rarely,610,Clinical Operations,7,2,Biochemistry,2,Male,94,3,2,Care Coordinator,2,Married,9380,12025,6,Yes,17,3,3,1,7,2,1,5,2,4,1
+38,0,Travel_Rarely,640,Patient Care,15,3,Technical Degree,3,Female,53,4,2,Nurse Practitioner,4,Married,10780,14810,1,No,16,4,2,1,17,3,4,10,5,4,4
+26,1,Travel_Rarely,841,Patient Care,7,3,Medical / Nursing,4,Female,77,3,1,Nurse Practitioner,3,Divorced,6360,10025,3,No,23,3,3,1,4,3,2,2,1,0,0
+40,0,Travel_Rarely,712,Patient Care,10,3,Technical Degree,1,Female,73,4,2,Nurse Practitioner,3,Divorced,10780,13385,3,No,22,3,4,1,17,3,3,10,3,4,2
+29,0,Non-Travel,408,Clinical Operations,20,3,Biochemistry,3,Female,88,3,3,Care Coordinator,3,Married,11980,10596,5,No,20,3,2,0,7,1,2,4,2,2,1
+22,0,Travel_Rarely,1223,Pharmacy & Therapeutics,23,3,Medical / Nursing,4,Male,72,3,1,Clinical Pharmacist,3,Single,5940,15264,1,Yes,12,3,4,0,1,3,3,1,0,0,0
+26,0,Travel_Rarely,1185,Clinical Operations,21,4,Technical Degree,3,Male,69,3,2,Clinical Director,2,Married,8820,15890,1,No,13,3,2,0,3,3,1,3,1,0,0
+31,0,Travel_Rarely,574,Pharmacy & Therapeutics,6,5,Healthcare Administration,3,Female,87,3,2,Clinical Pharmacist,2,Married,9800,16783,3,Yes,22,3,4,0,10,3,4,3,2,1,1
+41,0,Travel_Rarely,1352,Clinical Operations,5,4,Life Sciences,4,Female,74,3,5,Care Coordinator,4,Single,19000,9037,3,Yes,13,3,4,0,20,2,4,13,10,5,7
+31,0,Travel_Rarely,1330,Patient Care,20,5,Healthcare Administration,2,Female,99,3,2,Nurse Practitioner,3,Single,9520,10035,4,Yes,14,3,3,1,8,3,2,5,4,3,2
+28,1,Travel_Rarely,1232,Clinical Operations,14,2,Life Sciences,1,Female,76,3,1,Care Coordinator,3,Married,6640,12670,3,No,13,3,4,2,6,2,3,6,5,5,3
+35,0,Travel_Rarely,849,Pharmacy & Therapeutics,13,3,Biochemistry,1,Male,73,3,2,Pharmacology Lead,3,Divorced,10360,18306,1,No,18,4,3,0,14,3,2,3,2,2,1
+30,0,Travel_Rarely,874,Clinical Operations,21,3,Biochemistry,2,Male,53,3,2,Clinical Director,2,Single,9380,14659,3,No,20,3,3,0,7,0,3,2,1,1,0
+35,0,Travel_Rarely,461,Pharmacy & Therapeutics,26,2,Biochemistry,4,Female,56,2,3,Pharmacy Manager,3,Married,12820,21492,1,Yes,23,3,2,0,13,2,2,4,1,2,0
+34,0,Non-Travel,687,Patient Care,27,3,Technical Degree,4,Female,83,2,3,Registered Nurse,1,Married,12540,13735,5,Yes,23,4,2,1,11,3,2,3,2,1,0
+45,0,Travel_Rarely,827,Clinical Operations,12,2,Life Sciences,3,Male,93,3,2,Clinical Nurse Specialist,4,Married,11620,12274,3,No,12,3,4,0,23,1,2,1,0,0,0
+25,1,Non-Travel,1359,Clinical Operations,2,2,Medical / Nursing,4,Male,72,3,2,Clinical Director,1,Single,8680,14542,2,No,19,4,4,0,2,3,2,2,0,1,0
+30,0,Travel_Frequently,693,Pharmacy & Therapeutics,8,4,Technical Degree,4,Male,50,2,4,Therapeutics Specialist,3,Married,14720,8458,6,No,11,3,4,0,8,3,3,8,3,2,1
+34,0,Travel_Frequently,1170,Clinical Operations,25,3,Medical / Nursing,3,Female,54,3,3,Care Coordinator,3,Married,12820,14587,1,Yes,21,3,4,1,13,2,3,5,4,1,3
+34,0,Non-Travel,834,Pharmacy & Therapeutics,9,3,Healthcare Administration,4,Female,94,3,3,Therapeutics Specialist,3,Single,12540,23568,1,Yes,12,3,4,0,11,0,3,11,9,4,6
+26,0,Non-Travel,1263,Clinical Operations,21,2,Medical / Nursing,4,Female,46,3,1,Clinical Nurse Specialist,4,Married,6220,22464,3,No,11,3,4,2,3,3,4,3,2,1,1
+31,0,Non-Travel,1014,Clinical Operations,24,3,Healthcare Administration,2,Male,63,3,2,Operations Manager,3,Married,9520,14723,1,Yes,18,3,4,0,8,0,4,3,2,2,1
+34,0,Travel_Rarely,981,Biomedical R&D,17,3,Biochemistry,2,Female,59,3,2,Biomedical Scientist,4,Married,10220,22857,6,No,17,3,3,0,13,2,4,2,1,0,0
+31,0,Travel_Rarely,898,Patient Care,26,3,Life Sciences,2,Female,65,4,1,Registered Nurse,3,Married,7060,11120,3,No,23,3,4,0,9,4,2,1,0,0,0
+31,0,Non-Travel,1067,Clinical Operations,21,2,Technical Degree,4,Male,76,4,2,Operations Manager,3,Single,9800,17145,3,No,18,3,3,0,10,2,2,2,1,1,0
+22,0,Non-Travel,1120,Clinical Operations,25,3,Healthcare Administration,2,Male,80,3,1,Operations Manager,1,Single,5940,14467,6,No,23,3,4,0,1,0,4,0,0,0,0
+36,0,Travel_Rarely,623,Pharmacy & Therapeutics,1,3,Healthcare Administration,3,Female,69,4,4,Pharmacology Lead,3,Married,15420,12470,4,No,22,4,2,1,13,2,3,5,4,3,3
+42,0,Travel_Rarely,450,Clinical Operations,2,5,Healthcare Administration,3,Female,83,2,4,Clinical Nurse Specialist,3,Married,16260,14301,6,No,11,3,3,2,19,2,2,6,3,4,2
+37,0,Travel_Rarely,483,Pharmacy & Therapeutics,9,3,Technical Degree,4,Female,66,3,2,Clinical Pharmacist,3,Married,10640,15524,5,No,23,3,4,1,16,4,4,13,9,5,6
+29,1,Non-Travel,1093,Clinical Operations,12,2,Biochemistry,2,Male,83,3,1,Care Coordinator,2,Divorced,6780,20311,5,No,11,3,3,1,7,1,3,3,2,2,0
+41,0,Non-Travel,1303,Clinical Operations,26,4,Life Sciences,2,Female,53,3,4,Clinical Nurse Specialist,2,Married,16400,23464,1,No,18,3,4,2,20,2,2,6,4,2,3
+31,1,Travel_Rarely,1361,Pharmacy & Therapeutics,24,3,Healthcare Administration,4,Female,80,4,1,Therapeutics Specialist,2,Married,6920,13546,1,No,22,4,3,0,8,3,1,4,2,0,1
+23,0,Non-Travel,579,Clinical Operations,12,3,Healthcare Administration,2,Male,56,2,3,Clinical Director,1,Single,11140,8751,1,No,23,3,4,2,1,2,2,1,0,0,0
+38,1,Travel_Rarely,1128,Biomedical R&D,15,3,Healthcare Administration,3,Female,50,3,2,Laboratory Technologist,2,Married,10780,21068,1,No,19,4,3,2,17,2,2,4,3,2,1
+42,0,Non-Travel,1044,Pharmacy & Therapeutics,27,5,Biochemistry,2,Female,70,2,2,Pharmacy Manager,2,Married,11060,9235,1,Yes,23,3,3,1,19,1,2,2,0,1,0
+35,0,Non-Travel,454,Clinical Operations,2,2,Life Sciences,3,Female,95,3,2,Clinical Director,3,Single,10080,21879,4,No,14,3,4,0,12,3,2,8,7,2,3
+38,0,Travel_Rarely,1290,Clinical Operations,21,3,Biochemistry,3,Male,60,4,3,Clinical Nurse Specialist,3,Married,13100,12021,5,No,13,3,3,2,15,3,4,5,2,1,1
+29,0,Travel_Rarely,1084,Clinical Operations,15,2,Technical Degree,1,Male,98,4,1,Operations Manager,2,Single,6920,14436,5,No,19,3,2,1,8,2,3,4,1,1,0
+45,0,Travel_Rarely,1362,Clinical Operations,28,4,Medical / Nursing,2,Male,59,2,2,Clinical Director,3,Married,11760,21831,3,No,23,3,2,0,24,2,2,7,3,5,1
+35,0,Travel_Rarely,983,Patient Care,19,3,Technical Degree,1,Female,62,2,2,Registered Nurse,3,Married,10220,22198,4,No,13,3,3,0,13,3,3,2,0,0,0
+38,0,Non-Travel,420,Biomedical R&D,7,4,Healthcare Administration,4,Female,53,4,4,Biomedical Scientist,2,Married,15700,11317,1,No,15,3,4,0,15,0,1,4,1,1,0
+32,0,Travel_Rarely,1303,Biomedical R&D,29,2,Technical Degree,3,Female,94,2,1,Principal Investigator,3,Divorced,7200,13279,4,Yes,18,4,4,1,10,3,4,5,4,2,3
+41,0,Travel_Rarely,1248,Biomedical R&D,21,3,Life Sciences,1,Female,46,4,3,Clinical Research Associate,2,Married,13800,19668,5,Yes,23,4,3,1,20,1,3,7,4,3,3
+22,0,Travel_Rarely,627,Patient Care,9,3,Technical Degree,4,Female,72,2,1,Triage Specialist,3,Single,5940,20423,1,No,12,3,4,0,1,0,3,0,0,0,0
+33,1,Travel_Rarely,1356,Biomedical R&D,9,2,Healthcare Administration,4,Male,75,4,1,Clinical Research Associate,4,Married,7340,16123,2,No,21,3,3,1,11,4,4,9,7,2,5
+45,0,Travel_Rarely,1277,Biomedical R&D,10,3,Healthcare Administration,3,Male,69,2,2,Clinical Research Associate,2,Single,11480,19140,4,No,14,3,3,0,22,2,3,1,0,0,0
+35,0,Travel_Rarely,709,Clinical Operations,11,2,Medical / Nursing,2,Male,74,4,2,Clinical Nurse Specialist,3,Married,10360,12398,5,Yes,14,4,3,1,14,2,3,2,0,1,0
+39,0,Travel_Rarely,426,Patient Care,7,3,Medical / Nursing,3,Female,61,3,1,Patient Care Supervisor,1,Married,8320,22550,3,Yes,16,4,3,1,18,2,2,0,0,0,0
+30,0,Travel_Rarely,1211,Clinical Operations,9,5,Medical / Nursing,2,Female,50,3,1,Clinical Nurse Specialist,1,Divorced,6780,11538,6,No,22,3,3,1,7,4,3,1,0,0,0
+32,0,Travel_Rarely,1179,Biomedical R&D,16,3,Biochemistry,3,Female,93,3,2,Biomedical Scientist,3,Single,9940,13902,3,Yes,11,3,3,2,11,2,3,11,9,6,8
+35,1,Travel_Frequently,686,Biomedical R&D,21,3,Healthcare Administration,3,Female,94,3,2,Principal Investigator,3,Divorced,10080,16654,4,No,11,4,3,0,12,4,3,5,3,4,1
+44,0,Travel_Rarely,420,Patient Care,5,2,Medical / Nursing,4,Female,83,3,2,Patient Care Supervisor,3,Married,11480,13439,6,No,22,3,3,1,22,1,4,4,2,2,1
+36,0,Non-Travel,446,Clinical Operations,27,3,Life Sciences,3,Female,99,3,1,Care Coordinator,3,Married,7760,17557,3,No,22,4,3,0,14,2,1,4,3,1,2
+30,0,Travel_Rarely,932,Patient Care,12,3,Biochemistry,2,Male,93,4,1,Triage Specialist,3,Divorced,6780,19887,5,Yes,15,3,2,0,7,2,3,3,1,2,0
+43,0,Non-Travel,614,Biomedical R&D,22,3,Life Sciences,1,Male,96,4,4,Clinical Research Associate,1,Married,16540,12770,2,No,16,4,2,0,21,4,3,5,3,1,1
+28,1,Travel_Rarely,511,Pharmacy & Therapeutics,3,5,Medical / Nursing,4,Male,59,2,2,Clinical Pharmacist,4,Married,9380,11307,5,No,13,3,3,0,7,2,4,7,2,6,1
+37,0,Travel_Rarely,896,Patient Care,9,2,Life Sciences,4,Male,96,3,3,Triage Specialist,3,Married,13100,17034,4,No,18,3,4,0,15,3,2,3,1,1,0
+42,0,Travel_Rarely,1034,Patient Care,4,3,Medical / Nursing,2,Female,68,4,4,Registered Nurse,3,Married,16260,17349,3,No,18,3,3,1,19,1,3,7,3,2,1
+51,0,Non-Travel,530,Pharmacy & Therapeutics,18,5,Life Sciences,2,Female,58,4,5,Pharmacy Manager,4,Married,20120,9212,2,Yes,18,3,2,0,28,2,4,7,2,3,1
+31,1,Non-Travel,905,Patient Care,3,2,Life Sciences,3,Male,80,3,3,Registered Nurse,3,Divorced,12260,11682,2,No,19,3,3,0,9,3,3,9,2,7,1
+40,0,Non-Travel,1239,Pharmacy & Therapeutics,7,3,Biochemistry,2,Female,78,4,3,Clinical Pharmacist,3,Married,13520,21040,3,Yes,15,3,2,0,18,2,3,4,3,2,1
+22,1,Travel_Rarely,686,Clinical Operations,2,3,Technical Degree,3,Male,55,4,1,Care Coordinator,3,Married,5940,17372,6,No,13,3,4,0,1,2,3,1,0,0,0
+31,0,Travel_Rarely,524,Pharmacy & Therapeutics,6,2,Healthcare Administration,4,Male,47,3,2,Clinical Pharmacist,3,Married,9520,23091,6,No,17,3,4,1,8,3,2,3,2,1,1
+33,0,Travel_Rarely,1297,Pharmacy & Therapeutics,15,3,Healthcare Administration,2,Female,54,4,1,Therapeutics Specialist,1,Married,7480,15392,4,No,20,4,3,0,12,2,4,0,0,0,0
+26,0,Travel_Rarely,660,Clinical Operations,27,3,Technical Degree,2,Male,98,3,2,Operations Manager,3,Married,8960,13983,3,No,16,3,4,0,4,4,2,4,3,2,1
+35,0,Travel_Frequently,1197,Clinical Operations,28,3,Life Sciences,2,Male,70,4,1,Operations Manager,4,Married,7620,21947,5,No,16,3,2,1,13,1,3,5,3,4,1
+39,0,Non-Travel,1280,Pharmacy & Therapeutics,23,4,Medical / Nursing,1,Male,69,2,1,Pharmacology Lead,3,Married,8180,13294,6,No,14,4,3,0,17,1,3,3,1,1,0
+36,0,Travel_Rarely,953,Patient Care,9,4,Medical / Nursing,3,Female,86,2,2,Registered Nurse,3,Single,10360,15473,6,No,23,3,3,1,14,2,3,1,0,0,0
+35,0,Travel_Rarely,1263,Pharmacy & Therapeutics,17,3,Medical / Nursing,3,Female,57,4,4,Clinical Pharmacist,4,Single,15560,16974,1,No,15,3,4,0,14,1,3,4,2,2,1
+25,0,Travel_Rarely,913,Clinical Operations,9,3,Medical / Nursing,3,Male,67,4,1,Operations Manager,3,Married,6360,22399,2,Yes,20,4,3,0,4,3,4,4,3,0,2
+28,0,Travel_Rarely,824,Patient Care,10,3,Healthcare Administration,3,Male,45,3,1,Nurse Practitioner,3,Married,6640,21350,6,Yes,11,3,3,1,6,2,2,3,2,2,1
+27,0,Travel_Rarely,458,Clinical Operations,27,3,Medical / Nursing,3,Female,70,3,1,Clinical Nurse Specialist,3,Single,6360,19864,5,Yes,15,3,4,0,4,3,4,4,2,1,1
+34,0,Non-Travel,431,Biomedical R&D,7,3,Biochemistry,2,Male,62,4,3,Clinical Research Associate,1,Single,12680,19923,1,No,13,4,2,1,12,1,2,4,3,1,2
+30,0,Travel_Rarely,464,Clinical Operations,29,2,Healthcare Administration,3,Female,46,4,3,Clinical Director,3,Single,12260,15153,6,Yes,11,3,3,1,9,1,3,4,2,2,1
+42,0,Non-Travel,1272,Pharmacy & Therapeutics,8,2,Medical / Nursing,3,Female,78,4,3,Clinical Pharmacist,3,Married,13940,18213,2,No,21,3,4,0,21,2,3,5,4,4,3
+48,0,Non-Travel,1139,Pharmacy & Therapeutics,19,2,Biochemistry,1,Male,69,3,5,Therapeutics Specialist,3,Married,19700,11878,6,Yes,12,3,3,0,25,0,2,17,16,15,12
+46,1,Travel_Rarely,1136,Clinical Operations,15,4,Biochemistry,3,Female,89,3,4,Care Coordinator,1,Married,17100,16088,5,No,15,3,3,0,25,1,3,5,4,4,2
+27,0,Non-Travel,529,Pharmacy & Therapeutics,28,3,Healthcare Administration,2,Male,90,2,2,Pharmacy Manager,3,Single,8960,23680,4,No,19,4,2,2,4,3,4,4,1,2,0
+41,0,Travel_Rarely,1102,Clinical Operations,1,2,Technical Degree,3,Female,79,3,2,Clinical Nurse Specialist,3,Divorced,11200,14970,2,Yes,22,3,4,2,20,2,2,1,0,0,0
+22,1,Travel_Rarely,1047,Clinical Operations,22,3,Technical Degree,4,Male,68,3,1,Clinical Nurse Specialist,3,Married,5940,10922,2,Yes,21,3,3,1,1,2,3,1,0,0,0
+42,0,Travel_Rarely,1215,Biomedical R&D,23,2,Biochemistry,2,Female,89,2,1,Laboratory Technologist,2,Married,8740,22251,2,Yes,19,3,4,0,21,0,1,0,0,0,0
+33,0,Travel_Rarely,1058,Clinical Operations,7,3,Technical Degree,2,Female,68,4,2,Clinical Director,2,Married,9940,23928,1,Yes,20,3,3,1,11,1,3,3,2,1,1
+37,0,Travel_Frequently,1226,Patient Care,14,4,Technical Degree,3,Male,82,3,3,Triage Specialist,2,Divorced,12960,19098,2,Yes,11,3,3,0,14,4,4,8,3,6,2
+48,0,Travel_Rarely,700,Pharmacy & Therapeutics,22,5,Medical / Nursing,3,Male,75,3,3,Pharmacology Lead,3,Single,14640,9449,6,No,23,3,3,0,26,1,2,3,1,1,0
+29,0,Travel_Rarely,1108,Clinical Operations,8,3,Technical Degree,4,Male,57,3,1,Operations Manager,4,Single,6640,23424,3,Yes,23,3,3,1,6,2,4,0,0,0,0
+24,0,Travel_Rarely,1177,Clinical Operations,12,5,Life Sciences,4,Female,59,4,1,Operations Manager,4,Married,6080,17869,2,No,13,3,2,0,2,2,3,1,0,0,0
+25,0,Non-Travel,1090,Pharmacy & Therapeutics,13,5,Healthcare Administration,2,Male,60,3,1,Clinical Pharmacist,3,Single,6080,8379,3,Yes,16,3,2,1,2,2,3,2,1,1,0
+31,0,Travel_Rarely,943,Patient Care,7,3,Technical Degree,3,Male,92,3,2,Registered Nurse,2,Single,9520,22038,3,No,15,3,2,0,8,1,3,8,4,6,1
+23,0,Travel_Rarely,485,Biomedical R&D,8,3,Life Sciences,3,Male,87,2,1,Clinical Research Associate,2,Divorced,5940,12842,6,No,13,3,3,0,1,1,4,1,0,0,0
+23,0,Travel_Rarely,914,Patient Care,23,3,Medical / Nursing,4,Male,85,3,1,Patient Care Supervisor,4,Married,5940,20700,5,No,18,3,3,1,1,0,3,1,0,0,0
+33,0,Non-Travel,817,Biomedical R&D,17,4,Technical Degree,3,Female,97,2,2,Biomedical Scientist,1,Married,10080,8837,6,No,19,4,4,1,12,1,3,7,3,3,2
+47,0,Travel_Frequently,1199,Patient Care,7,3,Healthcare Administration,4,Male,75,4,4,Nurse Practitioner,4,Married,17240,21020,1,No,13,3,3,0,26,1,3,5,2,1,1
+25,0,Travel_Rarely,1363,Pharmacy & Therapeutics,18,4,Medical / Nursing,3,Male,77,2,2,Pharmacology Lead,3,Single,8680,22322,5,Yes,12,3,3,1,2,1,3,2,1,1,0
+32,0,Non-Travel,663,Biomedical R&D,12,5,Medical / Nursing,1,Male,94,3,2,Biomedical Scientist,4,Divorced,9660,8757,5,No,13,3,4,1,9,2,2,2,0,0,0
+43,0,Non-Travel,941,Clinical Operations,3,3,Medical / Nursing,3,Male,63,4,4,Care Coordinator,2,Married,16680,12453,1,No,21,4,2,0,22,2,3,5,3,3,2
+27,0,Travel_Rarely,1159,Patient Care,13,3,Technical Degree,3,Male,69,3,1,Registered Nurse,4,Married,6360,8817,4,No,14,3,4,0,4,1,3,4,1,2,0
+30,0,Travel_Rarely,429,Clinical Operations,8,3,Biochemistry,2,Female,88,3,2,Clinical Director,3,Single,9660,14544,6,No,22,3,3,0,9,1,3,1,0,0,0
+39,0,Travel_Rarely,1363,Biomedical R&D,6,2,Medical / Nursing,2,Male,63,2,5,Biomedical Scientist,4,Married,18720,11491,6,No,16,3,3,0,18,4,1,8,4,3,3
+27,1,Travel_Rarely,989,Patient Care,17,3,Medical / Nursing,2,Female,60,2,2,Nurse Practitioner,2,Single,8960,9506,6,No,16,3,3,0,4,2,3,4,1,2,0
+34,0,Travel_Rarely,670,Clinical Operations,19,4,Biochemistry,4,Female,65,3,2,Operations Manager,1,Married,9940,12530,1,No,20,3,2,0,11,3,4,1,0,0,0
+39,0,Travel_Rarely,537,Patient Care,7,3,Biochemistry,2,Female,89,4,4,Registered Nurse,1,Single,15980,22425,2,No,13,4,3,1,17,1,3,11,3,10,2
+46,0,Travel_Rarely,796,Clinical Operations,25,2,Medical / Nursing,4,Female,85,4,4,Care Coordinator,3,Single,16960,19501,3,Yes,19,3,3,0,24,3,4,19,8,8,4
+32,0,Travel_Rarely,1048,Biomedical R&D,19,3,Healthcare Administration,2,Female,98,2,2,Clinical Research Associate,4,Divorced,9940,12271,6,No,13,4,3,1,11,1,3,6,3,3,2
+42,0,Travel_Rarely,775,Biomedical R&D,13,2,Biochemistry,3,Male,92,2,4,Clinical Research Associate,2,Married,16540,23948,3,No,20,3,3,0,21,2,2,7,6,2,3
+28,0,Travel_Rarely,909,Clinical Operations,15,4,Life Sciences,2,Male,67,2,2,Care Coordinator,2,Single,9380,21197,3,Yes,11,4,3,1,7,1,3,7,5,5,4
+38,0,Non-Travel,884,Clinical Operations,9,4,Biochemistry,3,Male,80,3,2,Clinical Director,1,Married,10780,22451,6,No,23,3,4,1,17,2,3,5,2,1,1
+41,0,Travel_Rarely,617,Clinical Operations,15,3,Healthcare Administration,4,Male,63,3,2,Care Coordinator,3,Married,10920,14577,2,No,23,3,2,0,18,1,3,2,1,1,0
+34,0,Travel_Rarely,947,Clinical Operations,10,2,Life Sciences,2,Male,79,4,1,Clinical Nurse Specialist,3,Divorced,7480,21220,3,No,17,3,3,0,12,3,3,1,0,0,0
+31,0,Travel_Rarely,1207,Biomedical R&D,19,4,Healthcare Administration,3,Male,89,3,4,Laboratory Technologist,4,Single,14720,10159,4,No,11,3,2,1,8,2,1,6,4,5,3
+34,0,Travel_Rarely,450,Clinical Operations,16,4,Medical / Nursing,4,Male,54,3,1,Clinical Nurse Specialist,2,Single,7480,15529,6,No,17,3,4,0,12,2,1,2,1,1,0
+41,0,Travel_Rarely,1180,Pharmacy & Therapeutics,4,2,Medical / Nursing,3,Male,47,4,2,Therapeutics Specialist,3,Married,11200,12013,1,Yes,16,4,4,0,20,2,3,3,2,1,1
+29,0,Travel_Rarely,556,Biomedical R&D,15,5,Life Sciences,3,Female,86,3,3,Laboratory Technologist,3,Married,11980,14444,2,No,15,3,3,0,7,2,1,4,1,3,0
+47,0,Non-Travel,792,Biomedical R&D,5,3,Medical / Nursing,4,Female,92,4,5,Clinical Research Associate,3,Married,19840,10452,1,No,19,3,4,2,26,0,4,6,3,5,2
+40,0,Travel_Frequently,911,Clinical Operations,20,2,Technical Degree,3,Female,66,3,3,Clinical Nurse Specialist,3,Married,13660,18306,5,No,21,3,3,2,19,0,3,3,1,2,0
+37,0,Travel_Rarely,1119,Patient Care,19,3,Biochemistry,3,Female,47,3,2,Registered Nurse,2,Married,10500,23934,4,Yes,12,3,3,0,15,2,3,3,1,1,0
+26,0,Travel_Rarely,1360,Patient Care,14,4,Healthcare Administration,3,Male,72,3,2,Triage Specialist,2,Single,9100,13088,5,Yes,12,3,2,0,5,2,3,3,1,1,0
+35,1,Travel_Rarely,807,Clinical Operations,8,2,Healthcare Administration,4,Male,75,3,2,Clinical Director,3,Married,10220,15446,6,No,17,3,3,1,13,2,3,9,6,6,3
+36,0,Travel_Rarely,475,Biomedical R&D,19,3,Life Sciences,1,Male,84,3,1,Biomedical Scientist,2,Single,7760,17934,5,No,22,3,3,0,14,2,3,1,0,0,0
+35,0,Non-Travel,1112,Biomedical R&D,22,3,Healthcare Administration,3,Male,58,3,1,Laboratory Technologist,3,Single,7620,10807,4,No,11,3,3,0,13,2,2,1,0,0,0
+32,1,Travel_Rarely,1340,Clinical Operations,26,3,Healthcare Administration,3,Male,67,3,2,Clinical Director,1,Married,9660,22679,2,No,17,3,2,1,9,3,4,2,1,0,0
+31,0,Non-Travel,541,Clinical Operations,9,3,Technical Degree,3,Male,64,3,3,Operations Manager,2,Single,12260,10621,3,Yes,21,3,3,2,9,2,1,3,1,1,0
+33,0,Travel_Rarely,1064,Pharmacy & Therapeutics,10,2,Biochemistry,4,Male,78,2,1,Pharmacology Lead,2,Married,7200,21094,6,No,17,3,2,0,10,1,3,10,5,4,3
+22,0,Travel_Rarely,842,Pharmacy & Therapeutics,15,2,Technical Degree,3,Male,81,2,1,Pharmacology Lead,3,Divorced,5940,13813,3,No,15,3,3,0,1,3,3,1,0,0,0
+28,0,Travel_Rarely,835,Clinical Operations,4,5,Biochemistry,4,Male,85,3,4,Clinical Nurse Specialist,3,Married,14440,21141,5,No,21,3,3,0,6,2,3,6,4,5,3
+29,0,Non-Travel,732,Clinical Operations,1,3,Technical Degree,2,Female,60,3,1,Clinical Director,1,Single,6780,14998,2,No,23,3,3,0,7,0,3,5,4,4,3
+39,0,Travel_Rarely,980,Clinical Operations,17,3,Medical / Nursing,3,Male,80,3,3,Clinical Director,3,Married,13520,13625,3,Yes,13,3,3,0,18,2,3,4,2,1,1
+32,0,Travel_Rarely,1268,Patient Care,14,3,Healthcare Administration,4,Male,84,3,1,Registered Nurse,2,Married,7060,22050,4,No,11,3,2,0,9,1,3,5,3,2,2
+33,0,Travel_Rarely,644,Clinical Operations,4,2,Medical / Nursing,4,Female,51,2,4,Care Coordinator,4,Divorced,15000,23112,6,No,22,3,4,0,10,1,3,10,5,2,4
+33,0,Non-Travel,899,Biomedical R&D,14,3,Medical / Nursing,3,Female,64,2,2,Principal Investigator,4,Married,10080,10364,1,No,18,3,3,0,12,1,3,2,1,1,0
+33,0,Travel_Frequently,1106,Clinical Operations,18,4,Technical Degree,3,Female,72,2,2,Operations Manager,2,Divorced,9940,14255,6,No,11,4,3,0,11,1,3,2,1,1,0
+44,0,Travel_Rarely,1182,Clinical Operations,19,2,Life Sciences,2,Female,67,4,3,Care Coordinator,3,Married,13940,19091,1,No,11,3,2,0,21,2,3,11,9,7,5
+28,0,Travel_Rarely,815,Clinical Operations,11,4,Life Sciences,3,Male,84,3,1,Operations Manager,2,Married,6640,23604,3,No,20,4,3,0,6,2,3,1,0,0,0
+35,0,Travel_Frequently,779,Biomedical R&D,15,4,Life Sciences,4,Male,55,3,2,Principal Investigator,4,Married,10080,16759,5,Yes,12,3,2,1,12,1,3,4,2,1,0
+51,0,Travel_Rarely,1319,Biomedical R&D,7,4,Biochemistry,4,Male,55,3,4,Clinical Research Associate,1,Single,17800,10338,5,Yes,12,3,3,0,30,3,3,16,5,14,3
+44,0,Non-Travel,559,Clinical Operations,13,4,Life Sciences,2,Male,51,4,3,Operations Manager,2,Married,14080,14991,6,No,17,4,3,0,22,2,3,5,1,1,0
+33,0,Travel_Rarely,455,Biomedical R&D,23,3,Medical / Nursing,3,Male,68,3,2,Principal Investigator,2,Married,9940,8575,6,No,17,3,2,1,11,1,3,2,0,1,0
+36,0,Travel_Rarely,857,Clinical Operations,21,3,Technical Degree,3,Female,55,3,2,Care Coordinator,3,Single,10360,19632,4,No,13,3,4,1,14,2,4,4,2,1,1
+34,0,Non-Travel,638,Pharmacy & Therapeutics,17,5,Biochemistry,3,Male,49,2,3,Pharmacy Manager,1,Married,12820,13668,6,No,20,3,3,0,13,2,2,7,4,3,3
+39,1,Non-Travel,961,Biomedical R&D,25,4,Life Sciences,4,Female,83,3,5,Biomedical Scientist,4,Married,18580,10255,3,No,17,4,2,0,17,3,3,8,5,3,2
+36,1,Travel_Rarely,1189,Clinical Operations,15,3,Life Sciences,4,Female,89,2,1,Operations Manager,3,Married,7620,23427,2,No,23,3,3,1,13,3,2,2,0,1,0
+46,0,Travel_Rarely,780,Clinical Operations,12,5,Life Sciences,4,Female,56,2,4,Clinical Nurse Specialist,2,Married,16960,8540,3,No,21,3,4,0,24,1,3,7,4,5,1
+35,0,Travel_Rarely,660,Clinical Operations,20,4,Life Sciences,3,Female,60,3,3,Clinical Nurse Specialist,3,Married,12960,8604,5,No,12,3,2,1,14,2,3,11,6,8,5
+36,1,Travel_Rarely,478,Patient Care,11,4,Life Sciences,4,Male,72,2,3,Nurse Practitioner,3,Single,13100,14292,2,No,23,3,3,0,15,3,3,3,2,1,0
+48,0,Travel_Rarely,579,Pharmacy & Therapeutics,14,5,Biochemistry,4,Female,80,2,5,Pharmacy Manager,3,Married,19980,14084,4,No,12,3,3,0,27,2,2,10,5,8,4
+34,0,Travel_Frequently,1131,Biomedical R&D,7,3,Healthcare Administration,4,Male,78,3,1,Laboratory Technologist,2,Divorced,7620,10053,6,No,19,4,3,0,13,0,3,2,1,0,0
+25,0,Travel_Rarely,592,Clinical Operations,10,3,Technical Degree,2,Female,76,4,1,Care Coordinator,3,Single,6220,14294,2,No,22,3,3,0,3,4,4,3,2,1,1
+36,0,Travel_Rarely,1299,Clinical Operations,11,4,Healthcare Administration,4,Male,60,3,2,Care Coordinator,4,Married,10360,18620,4,Yes,15,3,3,0,14,1,3,4,1,2,0
+26,0,Non-Travel,1158,Clinical Operations,28,3,Medical / Nursing,2,Female,71,3,2,Care Coordinator,2,Single,9100,13710,6,Yes,18,3,2,0,5,2,3,4,3,2,1
+28,0,Non-Travel,629,Clinical Operations,23,2,Technical Degree,3,Male,60,4,2,Care Coordinator,1,Married,9240,20344,6,No,22,3,4,0,6,1,4,2,0,1,0
+33,0,Non-Travel,1134,Pharmacy & Therapeutics,10,5,Healthcare Administration,2,Male,84,3,2,Pharmacology Lead,2,Married,9940,16335,2,No,12,3,4,1,11,2,1,4,2,1,1
+35,1,Non-Travel,1175,Patient Care,10,2,Healthcare Administration,1,Male,52,3,2,Patient Care Supervisor,3,Single,10080,16152,4,No,17,3,2,0,12,2,3,5,3,1,1
+35,0,Travel_Rarely,666,Pharmacy & Therapeutics,9,4,Life Sciences,3,Male,53,2,3,Pharmacy Manager,3,Married,12680,23049,1,No,23,3,2,2,12,2,4,6,5,2,3
+22,0,Non-Travel,1203,Biomedical R&D,5,4,Medical / Nursing,3,Male,90,2,1,Principal Investigator,3,Married,5940,19932,1,No,12,3,2,0,1,3,4,1,0,0,0
+33,0,Travel_Rarely,662,Biomedical R&D,14,5,Healthcare Administration,2,Female,47,3,3,Principal Investigator,2,Married,12680,16863,5,No,23,4,3,0,12,2,3,4,3,3,1
+51,1,Non-Travel,1162,Patient Care,2,3,Life Sciences,1,Male,46,3,4,Patient Care Supervisor,2,Single,17800,10177,3,Yes,13,3,3,1,30,1,2,4,2,1,1
+26,0,Travel_Rarely,960,Patient Care,12,3,Technical Degree,3,Female,95,3,2,Triage Specialist,2,Divorced,8820,22306,5,No,14,3,3,1,3,2,3,3,2,2,1
+40,0,Non-Travel,1358,Pharmacy & Therapeutics,29,3,Biochemistry,4,Female,50,2,5,Therapeutics Specialist,2,Single,18720,8132,1,No,21,3,3,0,18,4,2,6,3,5,1
+40,0,Non-Travel,921,Clinical Operations,7,2,Biochemistry,3,Male,98,3,1,Clinical Nurse Specialist,3,Married,8320,14950,3,No,12,3,2,0,18,2,2,2,1,1,0
+39,0,Travel_Rarely,673,Pharmacy & Therapeutics,27,3,Life Sciences,3,Male,78,2,3,Pharmacy Manager,4,Married,13520,11217,3,Yes,16,4,3,0,18,0,4,9,4,6,2
+32,0,Non-Travel,782,Clinical Operations,25,3,Biochemistry,1,Male,64,3,2,Operations Manager,3,Single,9940,10329,2,No,18,3,3,1,11,2,1,5,2,4,1
+43,1,Non-Travel,615,Patient Care,17,3,Healthcare Administration,3,Female,47,4,2,Patient Care Supervisor,2,Divorced,11200,13819,4,No,17,4,3,0,20,0,2,5,3,3,2
+33,0,Travel_Rarely,423,Clinical Operations,23,3,Medical / Nursing,2,Male,66,4,3,Care Coordinator,3,Single,12680,17697,2,No,21,3,3,0,12,1,2,6,2,2,0
+35,1,Non-Travel,684,Pharmacy & Therapeutics,17,3,Biochemistry,3,Female,99,2,2,Pharmacology Lead,4,Divorced,10360,22426,4,No,23,3,4,0,14,2,3,2,0,0,0
+29,0,Travel_Rarely,615,Pharmacy & Therapeutics,4,4,Technical Degree,2,Female,54,3,1,Pharmacy Manager,2,Married,6780,19842,3,No,17,3,4,0,7,4,2,1,0,0,0
+31,0,Travel_Rarely,1204,Clinical Operations,9,3,Healthcare Administration,3,Male,54,3,1,Care Coordinator,3,Married,7200,19888,4,Yes,22,3,4,1,10,1,2,0,0,0,0
+22,1,Non-Travel,1120,Clinical Operations,19,3,Healthcare Administration,2,Female,73,3,1,Clinical Director,3,Married,5940,11390,6,Yes,15,4,3,1,1,2,2,1,0,0,0
+22,0,Non-Travel,960,Clinical Operations,16,2,Life Sciences,2,Female,48,3,1,Operations Manager,1,Married,5940,23582,6,No,16,3,3,1,1,3,4,1,0,0,0
+37,0,Travel_Rarely,1007,Pharmacy & Therapeutics,27,3,Medical / Nursing,2,Male,53,3,2,Pharmacology Lead,4,Married,10640,10488,1,No,22,3,3,0,16,1,2,1,0,0,0
+27,0,Travel_Frequently,1148,Biomedical R&D,15,3,Medical / Nursing,2,Male,88,3,1,Laboratory Technologist,3,Married,6640,20122,3,Yes,14,3,2,0,6,4,2,6,2,2,0
+25,0,Travel_Rarely,1102,Clinical Operations,7,3,Technical Degree,3,Male,53,3,1,Operations Manager,4,Married,6360,14569,2,Yes,13,3,4,1,4,4,4,4,3,3,2
+25,0,Travel_Rarely,656,Clinical Operations,25,5,Life Sciences,3,Male,82,3,1,Operations Manager,3,Single,6220,16503,6,No,12,3,3,0,3,1,2,1,0,0,0
+41,1,Non-Travel,748,Pharmacy & Therapeutics,4,4,Life Sciences,1,Male,63,2,4,Pharmacology Lead,3,Married,16400,8909,2,No,12,3,4,1,20,2,4,11,10,5,5
+44,0,Non-Travel,1093,Biomedical R&D,19,3,Biochemistry,1,Female,46,4,3,Principal Investigator,3,Married,14080,16567,6,No,15,4,3,0,22,1,4,4,1,2,0
+27,0,Travel_Rarely,922,Patient Care,26,4,Biochemistry,3,Male,64,3,1,Registered Nurse,3,Married,6500,15453,1,Yes,15,3,3,1,5,0,2,5,3,4,1
+27,0,Travel_Rarely,1134,Clinical Operations,6,5,Healthcare Administration,3,Female,84,4,1,Care Coordinator,3,Divorced,6640,22049,2,No,11,3,2,0,6,2,3,1,0,0,0
+46,0,Non-Travel,975,Biomedical R&D,9,2,Biochemistry,4,Male,62,3,2,Principal Investigator,3,Single,11620,20291,3,No,15,4,3,0,23,2,3,3,1,2,0
+32,0,Travel_Rarely,1097,Biomedical R&D,13,5,Healthcare Administration,4,Male,53,2,1,Clinical Research Associate,3,Single,7340,9525,6,No,14,3,3,2,11,2,3,11,6,7,2
+36,1,Travel_Rarely,1354,Biomedical R&D,11,4,Medical / Nursing,2,Female,96,4,1,Biomedical Scientist,1,Divorced,7620,14066,3,No,19,3,3,0,13,3,2,3,2,1,1
+32,0,Non-Travel,425,Clinical Operations,28,5,Healthcare Administration,2,Male,48,3,1,Care Coordinator,2,Married,7200,12403,4,Yes,20,3,4,2,10,3,1,3,1,1,0
+35,0,Travel_Rarely,1060,Patient Care,10,4,Medical / Nursing,1,Female,51,3,2,Registered Nurse,1,Single,10220,12274,1,No,14,3,3,0,13,2,3,3,1,2,0
+38,0,Travel_Rarely,861,Clinical Operations,13,3,Healthcare Administration,4,Male,49,3,1,Clinical Nurse Specialist,3,Married,8180,9273,2,No,21,4,3,0,17,3,4,10,4,7,1
+25,0,Travel_Rarely,1062,Clinical Operations,9,3,Biochemistry,2,Female,92,3,1,Clinical Nurse Specialist,3,Married,6360,18150,4,No,13,3,2,0,4,2,3,4,2,2,1
+42,0,Travel_Rarely,1176,Clinical Operations,2,3,Medical / Nursing,4,Female,49,3,5,Care Coordinator,4,Married,19140,18895,5,No,18,4,4,1,21,3,2,21,11,16,7
+41,0,Travel_Rarely,749,Biomedical R&D,12,5,Medical / Nursing,3,Female,98,4,3,Laboratory Technologist,4,Single,13800,20976,2,Yes,12,3,4,0,20,1,1,3,1,2,0
+29,0,Non-Travel,1083,Clinical Operations,14,2,Medical / Nursing,4,Female,56,2,2,Care Coordinator,3,Married,9380,21829,2,No,15,3,2,0,7,4,2,1,0,0,0
+45,0,Travel_Rarely,476,Pharmacy & Therapeutics,18,3,Life Sciences,4,Female,59,3,5,Pharmacy Manager,3,Married,19420,14752,2,No,11,3,4,0,23,3,4,10,3,4,1
+49,0,Travel_Rarely,1084,Biomedical R&D,28,3,Technical Degree,3,Female,66,3,3,Principal Investigator,3,Married,14640,16563,4,No,20,3,2,2,26,3,4,3,2,2,1
+39,0,Travel_Rarely,551,Pharmacy & Therapeutics,10,3,Biochemistry,2,Male,47,3,3,Pharmacology Lead,3,Married,13520,21542,3,No,18,4,4,0,18,1,3,3,0,2,0
+35,0,Travel_Rarely,447,Clinical Operations,27,5,Healthcare Administration,3,Female,67,2,1,Clinical Director,2,Married,7480,8606,1,Yes,23,3,3,0,12,2,3,3,1,2,0
+35,0,Non-Travel,699,Biomedical R&D,1,3,Healthcare Administration,3,Male,79,3,2,Laboratory Technologist,2,Married,10220,10151,6,No,23,4,4,1,13,2,3,1,0,0,0
+40,0,Travel_Rarely,741,Biomedical R&D,29,3,Life Sciences,3,Female,74,3,2,Principal Investigator,3,Married,10920,8598,5,No,17,3,2,2,18,4,2,3,2,2,1
+33,0,Non-Travel,641,Biomedical R&D,24,5,Biochemistry,3,Male,76,3,1,Biomedical Scientist,4,Single,7340,15208,1,No,15,3,2,0,11,2,3,0,0,0,0
+33,0,Travel_Rarely,568,Patient Care,28,4,Healthcare Administration,3,Male,63,3,2,Patient Care Supervisor,2,Single,9800,17590,6,No,13,3,3,1,10,1,2,2,0,0,0
+24,0,Travel_Rarely,879,Biomedical R&D,26,4,Life Sciences,3,Male,99,3,1,Principal Investigator,4,Married,6220,13301,1,No,11,3,3,0,3,1,3,2,1,0,0
+41,0,Travel_Rarely,1320,Clinical Operations,17,3,Healthcare Administration,2,Female,81,3,2,Clinical Nurse Specialist,4,Divorced,11060,9870,5,No,15,3,3,0,19,0,2,8,7,5,6
+38,0,Travel_Frequently,550,Clinical Operations,15,3,Biochemistry,3,Female,61,3,3,Care Coordinator,3,Married,13240,22949,2,No,12,4,4,0,16,4,3,11,8,4,3
+33,0,Travel_Rarely,1258,Clinical Operations,22,2,Medical / Nursing,4,Female,45,3,1,Clinical Nurse Specialist,2,Married,7200,15298,5,Yes,13,4,4,2,10,2,3,1,0,0,0
+27,0,Travel_Rarely,1375,Patient Care,11,3,Medical / Nursing,2,Female,75,2,3,Nurse Practitioner,4,Married,11700,14651,2,No,19,3,2,0,5,2,4,5,4,4,2
+41,0,Travel_Rarely,639,Pharmacy & Therapeutics,10,2,Life Sciences,4,Male,82,2,3,Clinical Pharmacist,3,Married,13660,13710,5,No,15,3,2,1,19,2,3,5,4,3,3
+30,0,Travel_Rarely,970,Patient Care,4,4,Life Sciences,4,Female,83,3,2,Registered Nurse,3,Divorced,9380,12275,6,No,21,3,4,0,7,2,2,7,3,5,2
+30,0,Non-Travel,1313,Biomedical R&D,9,3,Life Sciences,3,Male,80,4,2,Biomedical Scientist,4,Divorced,9660,19931,1,Yes,18,4,3,1,9,4,3,3,1,1,0
+34,0,Non-Travel,525,Biomedical R&D,2,3,Technical Degree,1,Female,60,4,2,Biomedical Scientist,1,Divorced,10080,22542,4,No,21,3,4,0,12,2,3,1,0,0,0
+36,0,Travel_Rarely,640,Clinical Operations,26,4,Life Sciences,4,Male,58,4,3,Operations Manager,1,Married,12960,12510,2,Yes,19,3,3,0,14,2,3,7,6,4,3
+26,0,Travel_Rarely,1251,Patient Care,28,2,Medical / Nursing,3,Male,91,4,1,Triage Specialist,4,Married,6500,10972,3,No,15,3,3,1,5,4,2,4,3,3,1
+33,0,Travel_Rarely,794,Patient Care,15,3,Medical / Nursing,3,Female,89,3,1,Nurse Practitioner,1,Divorced,7200,12806,5,No,18,3,2,0,10,0,1,3,2,1,1
+51,0,Travel_Rarely,1047,Pharmacy & Therapeutics,27,5,Biochemistry,1,Male,82,3,5,Clinical Pharmacist,2,Single,20260,16158,2,No,19,3,3,1,29,2,3,9,7,7,4
+44,0,Non-Travel,996,Clinical Operations,18,5,Life Sciences,4,Male,83,3,4,Operations Manager,1,Married,16540,21699,3,No,17,3,4,0,21,2,3,12,11,3,6
+34,0,Non-Travel,477,Pharmacy & Therapeutics,16,4,Healthcare Administration,4,Male,60,3,3,Pharmacy Manager,1,Single,12680,21958,5,No,11,3,4,0,12,0,1,12,4,8,2
+41,1,Non-Travel,1395,Patient Care,10,3,Life Sciences,3,Male,58,4,2,Nurse Practitioner,3,Single,10920,22895,6,No,16,4,4,1,18,1,2,4,2,2,1
+36,0,Travel_Rarely,539,Biomedical R&D,25,4,Technical Degree,3,Female,98,2,1,Principal Investigator,2,Divorced,7900,23993,1,No,17,3,4,0,15,2,2,1,0,0,0
+35,0,Travel_Frequently,567,Clinical Operations,7,2,Healthcare Administration,3,Male,88,2,2,Operations Manager,4,Married,10220,17226,1,No,16,3,3,0,13,2,2,2,0,1,0
+27,0,Travel_Rarely,703,Biomedical R&D,20,4,Life Sciences,1,Male,72,4,2,Principal Investigator,1,Divorced,9240,22994,4,No,12,3,4,1,6,1,2,4,2,2,0
+27,0,Travel_Rarely,1218,Clinical Operations,24,3,Biochemistry,3,Female,86,2,1,Clinical Nurse Specialist,2,Single,6360,19074,5,Yes,14,3,3,0,4,1,2,4,3,3,2
+37,0,Travel_Rarely,1272,Biomedical R&D,26,4,Technical Degree,4,Female,79,2,4,Clinical Research Associate,3,Divorced,15840,14107,3,No,11,4,2,2,16,2,2,5,3,1,2
+43,1,Travel_Frequently,813,Clinical Operations,25,2,Medical / Nursing,3,Male,95,4,3,Clinical Director,3,Married,13800,16106,6,No,23,3,3,1,20,2,3,8,3,2,1
+31,0,Travel_Rarely,871,Clinical Operations,21,2,Healthcare Administration,3,Female,73,3,2,Operations Manager,2,Single,9660,14360,2,No,22,4,3,1,9,4,3,1,0,0,0
+41,1,Travel_Rarely,717,Biomedical R&D,26,3,Healthcare Administration,2,Female,91,4,3,Biomedical Scientist,2,Married,13520,8617,6,No,12,4,3,1,18,3,3,3,0,2,0
+34,0,Travel_Rarely,941,Patient Care,7,3,Medical / Nursing,2,Male,81,3,1,Triage Specialist,4,Single,7480,14137,6,Yes,17,3,4,0,12,1,3,2,1,1,0
+46,0,Travel_Frequently,1311,Clinical Operations,16,3,Healthcare Administration,3,Female,46,2,3,Care Coordinator,3,Married,14220,16718,5,No,19,3,3,0,23,3,2,7,6,4,2
+30,0,Travel_Rarely,1364,Biomedical R&D,20,3,Healthcare Administration,1,Female,61,2,2,Clinical Research Associate,3,Married,9380,8635,2,Yes,20,3,2,1,7,2,4,6,4,3,3
+34,0,Travel_Rarely,970,Clinical Operations,27,3,Medical / Nursing,3,Female,99,3,2,Clinical Nurse Specialist,2,Married,10220,19377,2,Yes,17,4,4,0,13,4,1,6,3,3,2
+39,0,Travel_Rarely,1211,Clinical Operations,20,4,Life Sciences,3,Female,90,2,1,Operations Manager,3,Married,8180,20386,1,No,16,3,3,1,17,2,3,5,3,3,1
+25,0,Travel_Rarely,1317,Clinical Operations,18,3,Healthcare Administration,2,Female,50,3,1,Operations Manager,2,Married,6080,12258,4,No,17,3,3,1,2,3,4,0,0,0,0
+25,0,Travel_Rarely,906,Patient Care,2,4,Medical / Nursing,3,Male,47,4,2,Registered Nurse,3,Married,8960,10823,5,No,13,3,2,2,4,2,3,3,2,0,1
+36,0,Travel_Frequently,1209,Biomedical R&D,17,3,Biochemistry,1,Female,50,3,2,Laboratory Technologist,3,Married,10360,18519,1,No,12,3,3,0,14,3,3,1,0,0,0
+37,0,Travel_Frequently,552,Biomedical R&D,21,2,Medical / Nursing,2,Male,92,2,2,Clinical Research Associate,2,Married,10640,14918,3,No,13,3,3,0,16,1,4,1,0,0,0
+34,0,Travel_Rarely,658,Biomedical R&D,2,3,Life Sciences,4,Female,82,4,1,Clinical Research Associate,1,Divorced,7620,11581,4,Yes,16,3,3,1,13,2,4,0,0,0,0
+40,0,Non-Travel,1073,Pharmacy & Therapeutics,14,5,Technical Degree,1,Male,96,3,4,Therapeutics Specialist,4,Married,16120,22476,3,No,12,3,3,0,18,1,3,5,3,3,2
+51,0,Travel_Rarely,674,Patient Care,25,3,Technical Degree,3,Male,92,3,3,Triage Specialist,4,Married,14920,21081,4,No,23,3,3,0,28,2,3,4,2,2,1
+42,0,Travel_Rarely,404,Clinical Operations,14,2,Healthcare Administration,2,Female,91,2,4,Clinical Nurse Specialist,4,Married,16260,22947,3,No,19,3,2,0,19,3,1,6,2,4,1
+36,0,Travel_Rarely,810,Clinical Operations,25,3,Technical Degree,2,Female,57,3,5,Clinical Director,3,Married,18160,23835,2,No,15,3,4,0,14,2,2,6,4,2,2
+32,1,Travel_Rarely,640,Biomedical R&D,25,3,Life Sciences,3,Male,66,2,1,Laboratory Technologist,2,Married,7340,13905,5,No,20,3,3,0,11,3,4,0,0,0,0
+41,0,Travel_Rarely,1121,Patient Care,19,3,Biochemistry,2,Female,89,3,4,Patient Care Supervisor,2,Single,16400,10939,4,Yes,17,3,3,1,20,1,2,8,4,4,1
+40,1,Travel_Rarely,1249,Biomedical R&D,15,4,Technical Degree,3,Male,55,3,1,Biomedical Scientist,3,Single,8320,23788,1,No,11,3,3,0,18,3,2,2,0,0,0
+38,0,Travel_Rarely,1385,Biomedical R&D,16,3,Technical Degree,4,Female,64,3,2,Clinical Research Associate,4,Divorced,10500,22512,5,No,18,3,2,0,15,3,3,5,4,1,3
+39,0,Travel_Rarely,861,Pharmacy & Therapeutics,20,3,Biochemistry,4,Male,55,3,2,Pharmacology Lead,1,Single,10920,19323,2,No,15,3,4,0,18,1,3,9,3,2,2
+34,0,Travel_Rarely,533,Biomedical R&D,1,2,Biochemistry,3,Female,98,4,2,Biomedical Scientist,2,Single,10220,14575,4,No,22,3,3,0,13,2,3,5,3,3,2
+29,0,Travel_Rarely,787,Clinical Operations,7,3,Biochemistry,2,Male,53,3,1,Clinical Nurse Specialist,3,Single,6780,18640,6,Yes,12,3,3,1,7,2,4,5,4,4,2
+31,0,Travel_Frequently,424,Biomedical R&D,3,3,Technical Degree,4,Male,92,3,1,Principal Investigator,2,Married,7200,12734,6,No,11,3,3,1,10,1,2,1,0,0,0
+32,0,Travel_Rarely,1389,Pharmacy & Therapeutics,9,4,Technical Degree,3,Female,62,3,3,Pharmacology Lead,4,Single,12400,8547,1,No,22,3,3,0,10,0,3,4,2,1,1
+22,0,Non-Travel,410,Biomedical R&D,12,3,Life Sciences,3,Female,60,3,1,Laboratory Technologist,4,Married,5940,23369,5,Yes,18,3,4,0,1,2,4,1,0,0,0
+47,0,Travel_Rarely,406,Clinical Operations,9,3,Medical / Nursing,2,Female,71,3,5,Care Coordinator,2,Single,19560,22052,3,No,18,3,4,2,24,1,2,10,9,6,7
+38,0,Travel_Rarely,441,Clinical Operations,20,4,Biochemistry,1,Female,89,4,2,Clinical Director,1,Married,10500,16314,5,No,16,3,2,0,15,4,2,2,1,1,0
+34,1,Travel_Rarely,1192,Clinical Operations,17,3,Life Sciences,4,Male,94,2,1,Clinical Nurse Specialist,3,Divorced,7620,16841,2,No,12,4,4,1,13,2,3,2,1,1,0
+24,0,Travel_Rarely,913,Pharmacy & Therapeutics,18,4,Life Sciences,4,Female,60,3,1,Clinical Pharmacist,3,Married,5940,11827,4,Yes,13,3,3,0,1,2,3,1,0,0,0
+33,0,Non-Travel,1014,Biomedical R&D,3,3,Life Sciences,2,Male,84,4,1,Laboratory Technologist,3,Single,7480,13670,5,Yes,21,3,3,1,12,3,1,2,1,0,0
+40,0,Travel_Rarely,932,Clinical Operations,29,3,Healthcare Administration,4,Female,86,3,2,Clinical Director,4,Married,11060,20557,6,No,13,3,2,0,19,1,4,5,4,3,3
+35,0,Travel_Frequently,1380,Clinical Operations,26,3,Biochemistry,4,Female,80,3,1,Care Coordinator,3,Single,7480,13691,4,No,17,3,4,1,12,2,4,0,0,0,0
+48,0,Travel_Rarely,780,Biomedical R&D,6,3,Technical Degree,3,Male,55,2,5,Principal Investigator,2,Single,19840,14909,4,No,15,3,3,2,26,3,4,15,10,8,4
+41,0,Travel_Rarely,1006,Pharmacy & Therapeutics,9,5,Healthcare Administration,3,Female,47,3,4,Therapeutics Specialist,3,Married,16260,19428,5,No,18,3,4,2,19,2,3,5,4,4,2
+30,0,Travel_Rarely,486,Clinical Operations,26,2,Biochemistry,1,Male,92,4,1,Care Coordinator,3,Married,6780,14630,6,No,19,4,3,1,7,0,4,3,2,2,1
+33,0,Non-Travel,974,Biomedical R&D,21,2,Life Sciences,4,Female,84,2,3,Principal Investigator,4,Married,12540,10439,6,No,15,3,3,0,11,3,2,6,5,3,4
+37,0,Travel_Rarely,549,Clinical Operations,21,4,Technical Degree,3,Female,77,4,3,Operations Manager,4,Married,13100,16482,4,No,11,3,3,0,15,2,4,4,2,2,0
+43,0,Travel_Rarely,1188,Patient Care,1,2,Healthcare Administration,2,Male,81,3,3,Triage Specialist,3,Single,13940,10815,3,No,19,3,2,2,21,1,2,9,8,2,5
+37,0,Travel_Rarely,1121,Biomedical R&D,8,4,Technical Degree,1,Female,98,2,3,Laboratory Technologist,3,Single,13240,10482,4,No,22,3,2,0,16,3,3,4,1,1,0
+28,1,Non-Travel,795,Patient Care,13,3,Biochemistry,3,Male,75,2,1,Registered Nurse,1,Single,6640,17350,2,Yes,17,4,3,0,6,4,3,6,1,4,0
+44,0,Non-Travel,559,Patient Care,8,3,Medical / Nursing,3,Male,59,3,3,Patient Care Supervisor,3,Married,14220,15914,3,No,19,3,3,1,23,4,2,6,5,3,2
+29,0,Non-Travel,660,Biomedical R&D,21,2,Technical Degree,4,Female,51,3,2,Laboratory Technologist,1,Married,9380,23272,2,Yes,13,3,3,0,7,2,4,1,0,0,0
+35,0,Travel_Rarely,1290,Biomedical R&D,26,4,Biochemistry,3,Female,89,2,1,Principal Investigator,2,Married,7760,23173,4,Yes,14,3,4,0,14,2,3,0,0,0,0
+27,0,Travel_Rarely,664,Clinical Operations,27,2,Technical Degree,4,Male,87,4,1,Care Coordinator,2,Single,6360,16217,3,No,23,3,3,1,4,4,2,0,0,0,0
+22,0,Non-Travel,1238,Clinical Operations,24,3,Medical / Nursing,3,Female,88,2,1,Clinical Nurse Specialist,4,Married,5940,18329,1,No,15,4,3,0,1,2,3,1,0,0,0
+41,0,Travel_Rarely,575,Clinical Operations,28,2,Life Sciences,3,Female,86,3,2,Operations Manager,3,Married,11200,20766,1,No,13,3,3,0,20,2,1,2,1,0,0
+49,0,Non-Travel,527,Pharmacy & Therapeutics,19,3,Medical / Nursing,1,Male,53,3,5,Therapeutics Specialist,4,Single,19980,18643,1,No,17,3,2,0,27,3,2,6,5,4,3
+43,0,Non-Travel,981,Patient Care,12,3,Technical Degree,2,Male,52,3,5,Registered Nurse,3,Married,19280,8987,4,No,22,3,3,0,22,4,4,7,6,4,3
+37,0,Travel_Rarely,451,Clinical Operations,17,3,Biochemistry,4,Female,65,4,1,Operations Manager,1,Married,7900,22372,5,Yes,18,3,4,0,15,2,3,4,3,1,2
+30,0,Travel_Rarely,851,Biomedical R&D,9,3,Life Sciences,3,Female,90,2,1,Clinical Research Associate,3,Married,6920,16208,6,No,14,3,3,1,8,2,2,4,3,2,1
+51,0,Travel_Rarely,1328,Clinical Operations,10,3,Biochemistry,4,Female,99,4,3,Clinical Nurse Specialist,4,Divorced,15200,11319,6,No,17,3,3,1,30,1,3,4,3,1,1
+24,0,Travel_Rarely,496,Biomedical R&D,19,2,Medical / Nursing,4,Male,68,4,1,Laboratory Technologist,3,Married,6220,12147,5,No,21,3,3,0,3,3,3,0,0,0,0
+25,0,Travel_Rarely,864,Pharmacy & Therapeutics,23,3,Healthcare Administration,4,Female,96,3,1,Therapeutics Specialist,3,Single,6360,14500,4,No,23,3,4,2,4,0,1,2,1,1,0
+32,0,Travel_Rarely,1366,Patient Care,23,5,Healthcare Administration,3,Male,78,3,1,Registered Nurse,2,Single,7200,14452,5,No,21,3,3,0,10,2,1,3,1,2,0
+42,0,Travel_Rarely,809,Biomedical R&D,19,3,Biochemistry,4,Male,58,3,5,Biomedical Scientist,3,Single,18860,11117,3,No,14,3,2,0,19,1,4,19,15,16,8
+31,1,Travel_Rarely,1346,Patient Care,16,3,Biochemistry,4,Female,46,3,1,Nurse Practitioner,2,Married,7200,10991,2,No,13,3,4,1,10,1,3,5,2,2,1
+40,0,Travel_Frequently,755,Clinical Operations,29,3,Biochemistry,4,Female,91,3,2,Care Coordinator,3,Married,11060,16556,4,No,21,3,3,1,19,1,3,3,2,1,1
+41,1,Travel_Rarely,1204,Clinical Operations,17,4,Technical Degree,2,Female,54,3,3,Care Coordinator,3,Married,13800,21127,5,No,21,3,2,0,20,3,2,11,3,9,1
+46,0,Travel_Rarely,1203,Clinical Operations,20,4,Healthcare Administration,3,Male,63,4,4,Operations Manager,3,Married,16960,22594,1,Yes,22,3,3,0,24,3,2,6,5,1,3
+31,0,Travel_Rarely,1300,Clinical Operations,29,3,Technical Degree,1,Male,77,3,1,Care Coordinator,4,Married,7200,16259,3,No,23,3,3,1,10,0,4,4,1,1,0
+33,0,Travel_Rarely,1056,Clinical Operations,20,5,Medical / Nursing,3,Female,62,4,1,Clinical Nurse Specialist,4,Divorced,7200,12807,3,No,20,3,3,1,10,4,2,0,0,0,0
+31,0,Non-Travel,748,Clinical Operations,28,5,Healthcare Administration,4,Female,77,3,1,Clinical Nurse Specialist,4,Married,7200,21404,6,No,20,3,2,0,10,1,3,3,2,2,1
+37,0,Non-Travel,460,Patient Care,19,3,Technical Degree,4,Female,75,4,2,Registered Nurse,1,Single,10360,11726,4,No,21,4,4,0,14,4,3,2,1,0,0
+29,1,Non-Travel,631,Clinical Operations,6,3,Life Sciences,4,Male,80,3,1,Operations Manager,2,Married,6780,14609,2,No,21,4,3,1,7,1,4,5,2,3,1
+28,0,Travel_Rarely,939,Patient Care,2,3,Healthcare Administration,3,Female,59,3,1,Patient Care Supervisor,1,Single,6640,14200,4,No,16,3,3,0,6,4,3,1,0,0,0
+31,1,Travel_Rarely,829,Patient Care,6,3,Biochemistry,4,Male,94,2,2,Patient Care Supervisor,3,Married,9660,14327,5,No,22,3,4,1,9,3,4,8,5,7,3
+36,0,Travel_Rarely,537,Pharmacy & Therapeutics,6,2,Technical Degree,3,Female,66,3,3,Pharmacy Manager,2,Married,12960,14745,2,No,15,3,2,1,14,1,3,5,4,1,3
+24,0,Travel_Rarely,495,Clinical Operations,22,3,Biochemistry,3,Female,62,3,1,Clinical Nurse Specialist,3,Married,6220,19009,3,Yes,14,3,4,0,3,2,1,1,0,0,0
+34,0,Non-Travel,960,Clinical Operations,27,4,Healthcare Administration,4,Female,89,3,1,Operations Manager,1,Divorced,7340,22011,1,No,17,3,4,0,11,2,3,1,0,0,0
+32,1,Travel_Rarely,612,Clinical Operations,3,3,Medical / Nursing,4,Female,80,3,1,Care Coordinator,3,Married,7340,14659,5,No,22,3,4,1,11,4,2,9,3,3,2
+27,0,Travel_Frequently,652,Patient Care,20,3,Technical Degree,1,Female,51,4,1,Nurse Practitioner,3,Married,6500,23284,6,No,21,3,3,1,5,2,3,5,1,3,0
+26,0,Travel_Rarely,1199,Patient Care,19,3,Medical / Nursing,3,Male,49,3,2,Triage Specialist,3,Married,9100,15259,1,Yes,13,3,3,0,5,1,2,4,2,3,1
+33,0,Travel_Rarely,1077,Patient Care,12,2,Healthcare Administration,3,Male,87,3,1,Triage Specialist,3,Married,7340,21137,2,Yes,23,3,4,0,11,0,2,2,1,1,0
+39,0,Travel_Rarely,1132,Pharmacy & Therapeutics,18,3,Biochemistry,3,Female,71,3,3,Therapeutics Specialist,2,Married,13520,22383,2,No,21,3,3,0,18,1,2,13,7,12,4
+28,0,Non-Travel,602,Pharmacy & Therapeutics,13,3,Life Sciences,3,Male,77,2,2,Pharmacy Manager,4,Married,9240,18883,4,No,19,3,2,1,6,2,2,1,0,0,0
+41,0,Travel_Rarely,1341,Patient Care,2,3,Biochemistry,4,Male,49,2,2,Triage Specialist,3,Married,10920,21138,6,No,23,3,3,0,18,1,4,6,3,2,2
+35,1,Travel_Rarely,1122,Biomedical R&D,6,4,Technical Degree,3,Female,71,3,1,Clinical Research Associate,3,Married,7480,19573,1,Yes,21,4,3,1,12,3,2,6,5,1,3
+31,0,Non-Travel,1062,Biomedical R&D,7,4,Healthcare Administration,2,Female,60,4,2,Biomedical Scientist,3,Single,9660,20857,3,No,19,3,3,0,9,3,2,5,4,3,3
+31,0,Travel_Rarely,910,Biomedical R&D,25,4,Healthcare Administration,1,Male,98,2,2,Principal Investigator,1,Single,9660,23234,3,No,16,4,3,0,9,2,4,3,2,1,0
+22,0,Travel_Rarely,1083,Biomedical R&D,15,5,Technical Degree,4,Female,46,2,1,Principal Investigator,3,Married,5940,23756,1,No,20,3,3,0,1,2,2,1,0,0,0
+28,0,Travel_Rarely,746,Biomedical R&D,24,2,Healthcare Administration,2,Female,76,3,2,Laboratory Technologist,4,Married,9100,23238,5,Yes,11,3,4,0,5,2,1,2,0,1,0
+31,1,Travel_Rarely,621,Clinical Operations,3,3,Technical Degree,3,Female,71,3,2,Clinical Director,4,Single,9660,18563,5,Yes,17,3,4,1,9,3,2,2,1,1,0
+35,0,Non-Travel,978,Clinical Operations,28,2,Life Sciences,4,Male,52,3,1,Care Coordinator,4,Married,7620,10160,5,No,18,3,4,0,13,3,1,2,0,0,0
+35,0,Travel_Rarely,1120,Pharmacy & Therapeutics,12,2,Healthcare Administration,4,Female,56,3,2,Therapeutics Specialist,3,Married,10220,19276,5,No,11,3,2,1,13,2,4,3,2,2,1
+22,0,Travel_Rarely,875,Clinical Operations,18,2,Healthcare Administration,2,Female,92,3,1,Clinical Nurse Specialist,1,Married,5940,23337,4,No,18,3,4,0,1,1,2,0,0,0,0
+31,0,Travel_Rarely,435,Clinical Operations,24,3,Healthcare Administration,3,Male,72,3,1,Clinical Nurse Specialist,3,Married,7060,8832,3,No,15,3,3,2,9,3,1,0,0,0,0
+42,0,Non-Travel,1105,Patient Care,11,2,Life Sciences,3,Male,52,3,3,Nurse Practitioner,4,Married,13800,18698,1,Yes,12,3,2,0,20,1,3,4,3,1,1
+39,0,Travel_Rarely,766,Clinical Operations,14,2,Biochemistry,4,Male,76,3,1,Clinical Director,3,Divorced,8040,11991,1,No,23,3,4,1,16,2,2,2,1,1,0
+22,0,Non-Travel,1083,Pharmacy & Therapeutics,21,3,Biochemistry,4,Female,71,4,1,Pharmacy Manager,2,Married,5940,20668,3,Yes,19,3,3,0,1,4,3,1,0,0,0
+32,0,Travel_Rarely,973,Clinical Operations,7,4,Technical Degree,3,Female,57,3,1,Care Coordinator,3,Divorced,7200,22051,2,No,12,3,4,0,10,1,2,0,0,0,0
+26,0,Non-Travel,993,Biomedical R&D,9,3,Technical Degree,1,Female,69,4,1,Clinical Research Associate,3,Single,6500,17487,4,No,15,3,2,0,5,0,2,5,2,3,1
+49,0,Travel_Rarely,895,Biomedical R&D,21,3,Technical Degree,4,Female,80,2,2,Clinical Research Associate,1,Single,12320,21268,2,No,16,3,2,1,28,1,3,6,4,2,1
+30,0,Travel_Rarely,1302,Patient Care,6,2,Biochemistry,3,Female,97,3,2,Nurse Practitioner,3,Single,9380,12961,1,No,18,3,4,0,7,2,3,2,1,0,0
+39,0,Travel_Rarely,1381,Pharmacy & Therapeutics,23,3,Biochemistry,4,Female,92,4,2,Pharmacology Lead,3,Married,10780,18265,5,No,16,3,3,0,17,1,4,2,1,1,0
+35,1,Non-Travel,400,Pharmacy & Therapeutics,7,4,Medical / Nursing,1,Female,79,4,3,Therapeutics Specialist,3,Single,12960,23875,1,Yes,19,3,3,2,14,0,3,3,0,1,0
+33,0,Travel_Rarely,774,Clinical Operations,20,3,Technical Degree,3,Male,56,3,3,Operations Manager,1,Married,12400,22188,4,Yes,17,3,3,0,10,2,2,4,3,2,1
+25,0,Travel_Rarely,1087,Biomedical R&D,3,3,Life Sciences,3,Male,53,3,1,Laboratory Technologist,3,Married,6220,18399,4,No,18,4,2,0,3,3,1,2,1,1,0
+32,0,Travel_Rarely,676,Pharmacy & Therapeutics,21,4,Technical Degree,3,Male,55,3,1,Pharmacy Manager,3,Single,7200,16118,2,No,17,3,3,0,10,3,2,3,2,1,1
+22,0,Non-Travel,1325,Pharmacy & Therapeutics,17,3,Biochemistry,3,Female,77,3,2,Therapeutics Specialist,3,Single,8540,18322,3,No,15,3,4,0,1,4,1,1,0,0,0
+31,0,Non-Travel,1191,Biomedical R&D,29,4,Technical Degree,3,Male,67,4,1,Clinical Research Associate,4,Married,7200,9271,5,No,18,3,3,0,10,2,2,5,3,1,2
+37,0,Travel_Rarely,846,Clinical Operations,7,4,Biochemistry,3,Male,77,4,2,Operations Manager,2,Single,10500,22650,2,No,13,3,4,0,15,0,1,4,3,1,1
+35,0,Travel_Rarely,797,Clinical Operations,13,5,Biochemistry,4,Female,45,3,3,Operations Manager,3,Married,12680,16078,5,No,16,4,3,0,12,3,3,6,4,3,1
+46,0,Travel_Frequently,1010,Pharmacy & Therapeutics,13,4,Biochemistry,3,Male,58,2,4,Pharmacology Lead,3,Single,17100,22780,6,No,22,3,3,0,25,3,4,14,6,11,3
+35,1,Travel_Rarely,962,Pharmacy & Therapeutics,17,2,Healthcare Administration,2,Male,78,4,1,Therapeutics Specialist,3,Married,7760,10329,3,No,13,3,3,1,14,2,4,0,0,0,0
+42,0,Travel_Rarely,810,Pharmacy & Therapeutics,20,5,Biochemistry,4,Male,92,3,3,Clinical Pharmacist,2,Single,13800,19174,5,No,17,3,3,1,20,1,4,9,8,6,3
+32,0,Non-Travel,482,Patient Care,3,4,Technical Degree,2,Female,80,3,3,Nurse Practitioner,2,Divorced,12260,17415,5,No,13,3,4,0,9,1,2,5,3,1,2
+30,0,Travel_Rarely,1184,Biomedical R&D,19,4,Life Sciences,4,Female,69,2,3,Laboratory Technologist,2,Married,12260,11045,4,No,14,3,3,0,9,2,3,8,7,4,4
+30,0,Travel_Rarely,1126,Biomedical R&D,8,3,Medical / Nursing,1,Male,73,3,3,Clinical Research Associate,3,Married,12260,9874,6,No,19,4,3,0,9,3,2,4,3,1,1
+34,0,Travel_Rarely,829,Patient Care,1,4,Life Sciences,3,Male,85,3,1,Registered Nurse,4,Single,7480,23491,4,No,21,3,3,1,12,4,4,1,0,0,0
+39,0,Travel_Rarely,612,Patient Care,1,2,Biochemistry,3,Female,76,2,2,Triage Specialist,2,Married,10640,21657,6,No,23,3,3,0,16,4,3,1,0,0,0
+29,0,Non-Travel,546,Clinical Operations,25,4,Medical / Nursing,4,Male,94,3,2,Care Coordinator,3,Married,9380,11609,6,No,14,3,3,2,7,3,3,7,2,4,0
+56,0,Travel_Frequently,871,Patient Care,22,4,Healthcare Administration,2,Male,59,2,1,Patient Care Supervisor,2,Married,10420,23388,3,Yes,20,3,3,2,33,2,4,0,0,0,0
+27,0,Non-Travel,866,Pharmacy & Therapeutics,2,3,Biochemistry,2,Female,55,3,1,Pharmacy Manager,2,Married,6500,8852,3,Yes,20,3,4,0,5,2,3,4,3,1,2
+36,0,Travel_Frequently,1369,Biomedical R&D,18,3,Biochemistry,1,Female,75,4,2,Clinical Research Associate,3,Married,10360,22724,4,No,12,3,3,0,14,1,4,3,1,1,0
+42,0,Non-Travel,895,Patient Care,19,3,Biochemistry,3,Female,79,3,2,Triage Specialist,2,Divorced,11060,13202,3,Yes,14,3,3,0,19,3,2,8,5,2,4
+45,0,Travel_Rarely,423,Clinical Operations,12,2,Biochemistry,2,Female,76,2,3,Operations Manager,4,Divorced,14080,10333,3,No,21,3,3,2,22,2,2,3,0,2,0
+29,0,Travel_Rarely,627,Clinical Operations,25,3,Life Sciences,2,Female,95,3,3,Care Coordinator,3,Married,12120,12753,2,No,21,3,2,0,8,2,3,4,3,1,2
+33,0,Travel_Rarely,866,Biomedical R&D,21,4,Technical Degree,4,Male,62,2,1,Laboratory Technologist,2,Divorced,7200,10778,1,Yes,14,3,4,1,10,2,4,6,4,5,3
+31,1,Travel_Rarely,932,Clinical Operations,15,3,Medical / Nursing,3,Male,56,4,4,Clinical Nurse Specialist,3,Married,14860,17819,4,Yes,16,3,3,0,9,4,3,4,3,1,2
+34,0,Travel_Rarely,458,Biomedical R&D,23,4,Medical / Nursing,3,Male,78,3,3,Laboratory Technologist,3,Single,12540,16070,1,No,12,3,4,0,11,3,1,3,1,1,0
+30,0,Travel_Rarely,1350,Biomedical R&D,27,3,Technical Degree,2,Female,71,4,1,Clinical Research Associate,4,Single,6920,22890,2,No,16,3,2,0,8,2,2,7,2,4,1
+37,0,Travel_Rarely,755,Clinical Operations,16,3,Life Sciences,2,Male,90,3,2,Operations Manager,4,Married,10640,17218,3,Yes,18,4,3,1,16,3,1,4,3,1,2
+29,1,Travel_Rarely,953,Clinical Operations,3,3,Life Sciences,4,Male,80,3,2,Care Coordinator,3,Single,9520,12397,6,No,17,3,3,1,8,2,3,8,6,2,4
+41,0,Travel_Rarely,1269,Pharmacy & Therapeutics,3,3,Medical / Nursing,3,Female,88,3,2,Therapeutics Specialist,3,Married,11200,16978,2,No,14,3,3,0,20,3,3,1,0,0,0
+54,0,Travel_Rarely,1399,Clinical Operations,2,3,Technical Degree,1,Female,52,3,5,Operations Manager,1,Married,20540,12388,1,Yes,16,4,3,0,31,2,4,13,11,7,6
+36,0,Travel_Rarely,1035,Biomedical R&D,28,3,Healthcare Administration,4,Female,65,4,1,Clinical Research Associate,4,Married,7620,22839,5,No,19,3,3,0,13,2,2,1,0,0,0
+28,0,Travel_Frequently,1017,Biomedical R&D,16,4,Life Sciences,3,Female,95,3,1,Principal Investigator,2,Married,6500,20334,1,No,21,3,4,0,5,1,2,0,0,0,0
+29,0,Travel_Rarely,436,Clinical Operations,11,3,Biochemistry,4,Male,84,3,2,Clinical Director,4,Married,9380,18546,3,No,11,3,2,0,7,2,3,2,0,0,0
+27,0,Non-Travel,915,Biomedical R&D,1,2,Technical Degree,1,Female,73,4,2,Principal Investigator,3,Married,9100,8789,6,No,14,3,2,1,5,2,3,2,1,1,0
+27,0,Non-Travel,744,Patient Care,5,3,Biochemistry,4,Male,98,2,1,Triage Specialist,4,Single,6640,18772,2,No,21,3,2,0,6,2,2,0,0,0,0
+35,0,Travel_Rarely,1067,Patient Care,27,3,Healthcare Administration,3,Female,89,2,2,Patient Care Supervisor,4,Divorced,10360,20746,4,No,23,4,3,0,14,3,2,2,1,0,0
+38,1,Travel_Rarely,1314,Clinical Operations,6,2,Biochemistry,3,Female,90,4,2,Clinical Nurse Specialist,3,Married,10780,18274,6,Yes,23,3,3,0,17,3,3,9,7,2,6
+32,0,Travel_Rarely,761,Clinical Operations,11,4,Healthcare Administration,1,Male,61,3,1,Clinical Director,2,Single,7340,8071,2,No,22,3,3,0,11,2,2,2,1,0,0
+30,0,Travel_Rarely,1077,Patient Care,13,3,Life Sciences,4,Male,66,4,1,Nurse Practitioner,4,Married,7060,19502,3,Yes,13,3,3,0,9,2,1,9,8,8,6
+33,0,Travel_Rarely,1125,Patient Care,2,3,Medical / Nursing,3,Male,51,3,2,Triage Specialist,3,Married,9940,16915,4,No,22,4,3,0,11,3,3,11,5,7,2
+42,0,Travel_Rarely,834,Patient Care,13,3,Life Sciences,2,Female,80,3,4,Triage Specialist,3,Single,16400,21283,1,No,18,4,3,1,20,2,2,20,10,6,6
+46,0,Travel_Rarely,662,Pharmacy & Therapeutics,15,4,Life Sciences,2,Female,59,3,2,Clinical Pharmacist,2,Married,11900,17324,5,Yes,21,3,3,1,25,0,3,1,0,0,0
+27,0,Travel_Rarely,799,Biomedical R&D,6,2,Medical / Nursing,4,Female,57,3,1,Clinical Research Associate,3,Married,6640,11936,6,Yes,11,3,2,0,6,1,3,6,5,2,4
+30,0,Travel_Rarely,728,Biomedical R&D,24,5,Life Sciences,1,Female,71,3,3,Principal Investigator,3,Married,11980,18121,6,No,16,3,3,0,7,4,3,3,1,2,0
+47,0,Non-Travel,1372,Biomedical R&D,18,5,Healthcare Administration,3,Male,84,4,4,Biomedical Scientist,3,Single,17240,20343,4,No,19,3,2,0,26,3,2,5,3,1,1
+33,0,Travel_Rarely,923,Patient Care,9,3,Life Sciences,4,Female,76,4,3,Registered Nurse,2,Divorced,12680,22381,6,No,22,3,3,0,12,3,2,3,2,2,1
+34,0,Travel_Rarely,1197,Clinical Operations,24,3,Biochemistry,2,Male,87,3,2,Clinical Nurse Specialist,1,Single,9940,18736,1,No,21,3,3,0,11,2,3,2,1,1,0
+39,0,Non-Travel,1341,Clinical Operations,16,3,Life Sciences,1,Male,49,4,4,Clinical Director,3,Divorced,15980,12661,3,No,18,3,3,2,17,2,4,5,3,3,2
+37,0,Non-Travel,502,Patient Care,4,2,Healthcare Administration,4,Male,45,4,3,Nurse Practitioner,3,Married,13240,21366,6,No,18,3,2,2,16,2,3,7,3,4,1
+36,1,Travel_Rarely,1091,Clinical Operations,8,3,Technical Degree,3,Female,62,2,4,Clinical Director,3,Single,15700,10031,5,Yes,11,3,3,1,15,2,3,4,2,1,0
+24,0,Travel_Frequently,993,Patient Care,24,4,Life Sciences,3,Male,61,3,1,Nurse Practitioner,4,Divorced,6220,10812,6,No,16,3,3,1,3,3,3,0,0,0,0
+35,1,Travel_Frequently,1152,Biomedical R&D,8,4,Biochemistry,4,Female,63,4,1,Clinical Research Associate,3,Married,7760,23942,1,Yes,21,3,2,1,14,2,4,6,5,2,3
+27,0,Non-Travel,552,Biomedical R&D,29,3,Technical Degree,2,Male,69,3,2,Clinical Research Associate,1,Divorced,8960,18196,4,No,15,3,3,0,4,2,4,2,0,0,0
+38,0,Non-Travel,1204,Patient Care,14,3,Biochemistry,4,Male,71,3,2,Triage Specialist,2,Married,10780,18129,4,No,18,3,3,2,17,2,3,17,15,9,11
+30,0,Non-Travel,1251,Biomedical R&D,27,3,Life Sciences,3,Male,63,3,2,Laboratory Technologist,2,Married,9380,14906,4,Yes,21,3,2,0,7,2,3,6,2,1,1
+32,0,Travel_Rarely,792,Clinical Operations,8,4,Biochemistry,3,Male,99,3,2,Care Coordinator,1,Single,9800,15275,1,No,13,3,4,2,10,0,1,7,2,2,1
+34,0,Travel_Rarely,888,Clinical Operations,8,3,Technical Degree,3,Male,72,3,2,Care Coordinator,1,Married,10220,19324,4,No,19,3,3,1,13,1,4,5,2,2,1
+32,0,Non-Travel,984,Biomedical R&D,20,3,Healthcare Administration,1,Female,57,3,1,Principal Investigator,4,Married,7060,11948,3,Yes,17,3,4,1,9,0,3,1,0,0,0
+36,0,Travel_Rarely,1150,Clinical Operations,8,3,Healthcare Administration,1,Female,76,3,3,Clinical Nurse Specialist,2,Single,12960,8520,1,No,13,4,4,1,14,3,3,4,2,1,1
+36,0,Non-Travel,704,Biomedical R&D,28,2,Healthcare Administration,4,Female,55,2,1,Laboratory Technologist,3,Single,7620,19318,1,No,12,3,4,0,13,4,3,6,3,5,2
+31,0,Travel_Rarely,1303,Biomedical R&D,22,2,Technical Degree,3,Male,73,3,2,Clinical Research Associate,3,Single,9520,11402,5,Yes,20,3,4,0,8,4,3,2,1,1,0
+23,0,Travel_Rarely,687,Clinical Operations,3,3,Medical / Nursing,2,Female,68,4,1,Care Coordinator,1,Single,6080,23547,5,No,20,3,4,0,2,3,4,1,0,0,0
+30,1,Travel_Rarely,452,Biomedical R&D,16,5,Healthcare Administration,3,Female,91,3,3,Clinical Research Associate,1,Married,12120,14332,4,Yes,20,3,3,1,8,2,1,4,1,3,0
+26,1,Travel_Rarely,1081,Clinical Operations,10,3,Technical Degree,4,Female,72,3,1,Care Coordinator,2,Single,6360,23993,2,Yes,20,3,3,0,4,1,3,2,1,1,0
+52,1,Non-Travel,729,Clinical Operations,19,3,Life Sciences,3,Female,74,2,5,Operations Manager,4,Single,20400,8677,4,No,15,3,3,0,30,0,3,10,5,5,4
+31,0,Travel_Rarely,812,Clinical Operations,8,3,Biochemistry,3,Male,97,4,1,Clinical Nurse Specialist,4,Married,7200,13599,5,No,13,3,3,1,10,3,3,9,2,6,1
+47,1,Non-Travel,460,Clinical Operations,6,5,Technical Degree,2,Male,67,3,5,Care Coordinator,4,Divorced,19840,15797,2,No,13,3,3,1,26,2,4,11,4,4,2
+31,0,Travel_Rarely,1233,Patient Care,19,2,Life Sciences,2,Female,97,3,1,Triage Specialist,2,Married,7200,10392,2,No,23,3,4,0,10,1,4,10,4,4,2
+41,0,Travel_Rarely,916,Clinical Operations,27,4,Medical / Nursing,1,Male,96,3,1,Care Coordinator,2,Single,8460,8878,1,No,15,3,3,0,19,4,3,1,0,0,0
+31,0,Travel_Rarely,1265,Patient Care,24,3,Healthcare Administration,3,Male,82,4,3,Triage Specialist,2,Married,12260,16094,4,Yes,20,3,2,0,9,1,4,3,1,1,0
+35,1,Travel_Rarely,692,Clinical Operations,28,2,Medical / Nursing,3,Female,72,3,1,Clinical Nurse Specialist,3,Married,7620,17042,4,No,21,3,3,1,13,1,4,3,1,1,0
+39,0,Travel_Rarely,1139,Patient Care,5,3,Biochemistry,4,Male,76,3,1,Triage Specialist,4,Single,8040,16855,3,Yes,19,3,3,0,16,3,2,3,1,1,0
+34,0,Non-Travel,1072,Clinical Operations,25,3,Life Sciences,4,Female,88,3,2,Operations Manager,4,Single,10220,21550,6,Yes,22,3,2,1,13,2,3,13,9,7,5
+43,0,Travel_Rarely,676,Clinical Operations,7,2,Technical Degree,4,Male,59,3,5,Operations Manager,3,Single,19140,13051,6,No,18,4,4,1,21,1,2,9,8,6,5
+43,0,Travel_Rarely,1216,Patient Care,12,5,Life Sciences,2,Female,58,2,4,Registered Nurse,4,Married,16400,22590,1,No,15,3,3,0,20,2,3,8,6,5,3
+30,0,Non-Travel,490,Biomedical R&D,26,3,Life Sciences,4,Female,94,4,3,Laboratory Technologist,4,Married,12120,18077,1,No,22,3,3,0,8,2,4,8,6,2,3
+33,1,Non-Travel,679,Clinical Operations,1,3,Healthcare Administration,2,Male,85,2,1,Clinical Nurse Specialist,4,Married,7200,19023,4,No,17,3,3,1,10,1,4,0,0,0,0
+26,0,Non-Travel,824,Clinical Operations,5,3,Technical Degree,2,Male,47,3,1,Care Coordinator,3,Married,6500,18690,5,Yes,15,3,4,0,5,3,2,0,0,0,0
+38,0,Travel_Rarely,1141,Biomedical R&D,24,4,Medical / Nursing,1,Male,97,3,3,Laboratory Technologist,3,Single,13380,13139,1,No,16,3,3,0,17,4,3,4,2,0,1
+36,0,Travel_Rarely,1275,Clinical Operations,4,3,Life Sciences,4,Male,97,3,2,Operations Manager,1,Married,10360,22324,1,No,22,3,3,0,14,2,2,7,2,5,1
+33,1,Travel_Rarely,941,Patient Care,1,3,Healthcare Administration,1,Female,46,3,2,Nurse Practitioner,3,Single,10080,10468,5,No,12,3,3,1,12,3,1,4,3,1,2
+25,0,Non-Travel,529,Patient Care,25,4,Technical Degree,4,Male,67,3,1,Patient Care Supervisor,2,Divorced,6360,11323,1,No,14,3,3,0,4,4,3,4,2,2,1
+31,0,Travel_Rarely,935,Pharmacy & Therapeutics,5,4,Technical Degree,2,Female,74,4,3,Pharmacology Lead,3,Single,12120,9818,4,No,18,3,4,0,8,3,3,4,2,2,1
+34,0,Non-Travel,761,Clinical Operations,24,4,Healthcare Administration,1,Male,71,2,1,Care Coordinator,3,Married,7340,11726,4,No,21,3,4,1,11,1,3,2,1,1,0
+35,0,Travel_Rarely,996,Patient Care,21,2,Medical / Nursing,4,Male,85,4,2,Triage Specialist,3,Married,10360,12862,3,No,18,3,2,0,14,2,4,2,1,0,0
+38,0,Travel_Frequently,828,Biomedical R&D,15,2,Life Sciences,4,Male,86,2,3,Clinical Research Associate,2,Divorced,13100,19579,3,Yes,13,3,3,2,15,1,2,5,1,4,0
+36,0,Non-Travel,1117,Biomedical R&D,18,3,Life Sciences,3,Male,57,3,3,Laboratory Technologist,3,Married,12820,16591,1,No,16,3,3,2,13,0,3,4,1,1,0
+46,0,Travel_Rarely,717,Clinical Operations,14,3,Biochemistry,4,Female,79,2,3,Care Coordinator,3,Married,14360,9003,1,No,22,3,3,0,24,2,4,7,3,4,2
+42,0,Travel_Rarely,942,Pharmacy & Therapeutics,29,2,Life Sciences,4,Female,65,3,2,Pharmacy Manager,3,Divorced,11060,17683,5,No,21,3,2,0,19,2,3,8,3,5,1
+30,0,Travel_Rarely,624,Clinical Operations,9,4,Healthcare Administration,3,Male,93,4,2,Clinical Director,3,Married,9520,16638,1,No,12,3,4,2,8,1,3,4,3,2,1
+39,0,Non-Travel,933,Patient Care,26,3,Medical / Nursing,4,Male,49,3,1,Nurse Practitioner,3,Married,8180,12646,4,Yes,12,3,4,1,17,4,2,2,0,1,0
+34,0,Travel_Rarely,691,Clinical Operations,19,3,Healthcare Administration,2,Male,77,3,2,Operations Manager,4,Married,10220,23828,2,Yes,16,3,4,0,13,2,3,3,1,1,0
+31,0,Non-Travel,1351,Patient Care,24,4,Technical Degree,4,Male,56,4,1,Nurse Practitioner,2,Married,7060,11874,2,No,20,4,4,0,9,3,3,6,2,4,0
+37,0,Travel_Rarely,466,Clinical Operations,18,3,Medical / Nursing,3,Male,67,2,3,Care Coordinator,3,Married,12960,15935,2,Yes,17,3,3,0,14,2,3,5,2,4,0
+33,0,Travel_Rarely,534,Biomedical R&D,10,4,Medical / Nursing,2,Female,97,3,2,Principal Investigator,2,Divorced,10080,14156,2,No,15,3,4,0,12,1,3,12,4,11,2
+22,1,Travel_Rarely,952,Patient Care,12,2,Technical Degree,3,Female,86,2,1,Patient Care Supervisor,2,Married,5940,22635,1,No,19,3,2,0,1,3,1,1,0,0,0
+28,0,Travel_Rarely,819,Biomedical R&D,25,5,Life Sciences,4,Female,87,4,1,Principal Investigator,2,Married,6640,23647,4,No,16,3,4,0,6,2,2,2,1,0,0
+35,0,Travel_Rarely,1318,Biomedical R&D,18,5,Life Sciences,4,Female,57,3,1,Clinical Research Associate,4,Divorced,7760,18335,1,No,11,3,4,0,14,0,3,4,3,3,2
+34,0,Travel_Rarely,1240,Clinical Operations,25,4,Life Sciences,3,Female,62,4,1,Care Coordinator,3,Married,7480,11372,4,No,19,3,3,0,12,4,4,3,2,2,0
+49,0,Non-Travel,930,Patient Care,22,5,Biochemistry,2,Male,63,4,4,Patient Care Supervisor,3,Single,17240,22596,6,No,13,3,2,1,26,1,4,11,7,8,6
+33,1,Travel_Rarely,1156,Clinical Operations,13,4,Biochemistry,3,Female,77,2,2,Clinical Director,3,Married,10080,22469,5,No,14,3,4,0,12,1,3,7,3,6,2
+44,1,Travel_Frequently,594,Pharmacy & Therapeutics,22,2,Technical Degree,2,Male,54,4,5,Clinical Pharmacist,4,Married,19280,14567,6,No,15,3,3,0,22,3,4,7,4,3,3
+43,0,Travel_Rarely,673,Patient Care,14,4,Technical Degree,1,Female,63,4,3,Registered Nurse,4,Married,13800,11807,1,No,17,3,2,1,20,1,4,5,3,2,2
+37,0,Travel_Rarely,981,Clinical Operations,3,2,Biochemistry,2,Male,75,2,3,Care Coordinator,3,Married,12960,16627,2,No,17,3,3,2,14,2,3,5,2,4,0
+25,1,Non-Travel,408,Patient Care,13,3,Biochemistry,3,Female,54,2,2,Triage Specialist,2,Single,8680,10727,1,Yes,12,3,4,1,2,2,2,2,0,1,0
+22,0,Travel_Rarely,957,Patient Care,23,3,Biochemistry,1,Male,99,2,1,Nurse Practitioner,3,Single,5940,19542,3,No,16,3,4,1,1,1,1,1,0,0,0
+41,0,Travel_Rarely,750,Biomedical R&D,9,2,Technical Degree,4,Male,52,3,3,Biomedical Scientist,3,Divorced,13800,8411,6,No,13,3,4,1,20,1,3,7,6,5,4
+37,0,Non-Travel,1048,Pharmacy & Therapeutics,12,4,Medical / Nursing,3,Female,61,4,4,Clinical Pharmacist,3,Divorced,15560,10205,2,No,22,3,3,0,14,1,3,5,4,3,2
+22,0,Travel_Frequently,1321,Patient Care,18,3,Healthcare Administration,3,Female,85,4,1,Patient Care Supervisor,3,Married,5940,16079,6,No,16,3,4,1,1,4,3,1,0,0,0
+29,0,Travel_Rarely,1205,Patient Care,16,4,Healthcare Administration,4,Male,93,3,1,Nurse Practitioner,3,Single,6920,21395,6,Yes,21,3,3,1,8,2,3,2,1,1,0
+30,0,Travel_Rarely,524,Clinical Operations,7,3,Medical / Nursing,3,Male,98,2,1,Care Coordinator,3,Married,6780,19173,2,Yes,13,3,2,2,7,3,3,6,5,4,2
+32,0,Travel_Rarely,1273,Biomedical R&D,5,3,Healthcare Administration,2,Female,59,2,2,Principal Investigator,3,Single,9940,14290,5,Yes,16,4,2,0,11,2,2,8,7,5,3
+27,0,Travel_Rarely,1343,Patient Care,7,3,Technical Degree,2,Male,51,3,1,Triage Specialist,3,Married,6500,18414,1,No,23,3,3,0,5,2,3,5,4,4,2
+22,0,Travel_Rarely,433,Pharmacy & Therapeutics,24,5,Technical Degree,3,Female,47,3,1,Pharmacy Manager,3,Single,5940,22119,3,No,15,3,3,1,1,3,2,1,0,0,0
+34,0,Travel_Rarely,912,Patient Care,11,4,Medical / Nursing,3,Male,60,4,3,Triage Specialist,1,Married,12540,11694,1,Yes,11,3,4,2,11,3,3,11,6,3,2
+33,1,Travel_Frequently,691,Biomedical R&D,22,3,Technical Degree,3,Female,88,3,1,Principal Investigator,3,Married,7200,19813,5,Yes,23,4,4,0,10,3,3,4,2,0,1
+26,0,Travel_Rarely,1312,Clinical Operations,12,3,Technical Degree,3,Male,53,3,1,Clinical Nurse Specialist,4,Divorced,6500,8822,4,No,22,3,3,1,5,4,1,2,0,1,0
+28,0,Travel_Rarely,1347,Biomedical R&D,24,3,Technical Degree,1,Female,50,4,1,Clinical Research Associate,2,Married,6780,17289,4,No,19,3,2,0,7,1,2,7,4,1,1
+40,0,Travel_Rarely,982,Clinical Operations,8,4,Technical Degree,1,Female,74,2,2,Clinical Director,4,Married,10920,23163,5,No,17,3,3,0,18,1,3,6,5,4,4
+30,0,Non-Travel,1044,Biomedical R&D,29,3,Life Sciences,2,Male,93,3,1,Clinical Research Associate,4,Single,6780,18714,1,No,23,4,4,0,7,2,2,4,2,1,1
+49,0,Non-Travel,504,Clinical Operations,15,3,Technical Degree,2,Female,92,3,5,Clinical Nurse Specialist,4,Single,20120,21385,5,No,17,4,3,0,28,1,2,9,7,7,3
+46,0,Travel_Rarely,678,Clinical Operations,9,4,Healthcare Administration,3,Female,69,4,3,Operations Manager,2,Single,14500,23884,1,No,16,3,2,1,25,3,3,5,3,3,2
+35,1,Travel_Rarely,1378,Clinical Operations,1,4,Life Sciences,2,Male,72,4,4,Operations Manager,3,Married,15560,15854,5,No,15,3,3,1,14,2,3,10,4,7,2
+26,0,Travel_Rarely,1246,Biomedical R&D,29,3,Medical / Nursing,2,Female,56,3,1,Principal Investigator,4,Married,6360,21894,2,No,13,4,4,0,4,2,2,4,3,1,1
+39,0,Travel_Rarely,964,Biomedical R&D,29,3,Life Sciences,2,Male,88,3,4,Principal Investigator,2,Single,16120,16229,3,No,23,3,3,0,18,1,3,6,5,4,2
+31,0,Travel_Rarely,724,Pharmacy & Therapeutics,10,4,Healthcare Administration,4,Male,50,2,2,Clinical Pharmacist,3,Divorced,9800,8607,6,No,20,3,4,0,10,2,1,8,2,5,1
+22,0,Non-Travel,751,Clinical Operations,12,3,Healthcare Administration,3,Female,57,3,1,Clinical Director,2,Married,5940,19234,5,Yes,13,3,4,0,1,1,3,1,0,0,0
+28,0,Travel_Rarely,888,Biomedical R&D,5,2,Healthcare Administration,4,Male,79,3,1,Principal Investigator,1,Married,6500,12567,4,No,17,3,4,0,5,1,3,1,0,0,0
+27,1,Non-Travel,873,Clinical Operations,8,2,Biochemistry,3,Female,87,3,1,Clinical Director,2,Single,6640,9171,3,No,18,3,2,0,6,3,2,2,1,1,0
+23,0,Travel_Rarely,544,Pharmacy & Therapeutics,5,3,Healthcare Administration,4,Female,47,3,1,Pharmacy Manager,1,Married,6080,11801,2,No,18,3,3,0,2,3,2,0,0,0,0
+43,0,Travel_Rarely,690,Clinical Operations,20,2,Biochemistry,1,Male,92,3,2,Care Coordinator,3,Married,11340,12502,5,No,18,3,3,1,21,2,3,4,2,1,1
+27,0,Travel_Rarely,877,Clinical Operations,13,2,Biochemistry,3,Female,99,3,1,Clinical Nurse Specialist,3,Divorced,6360,8753,2,No,17,3,4,1,4,2,2,0,0,0,0
+22,0,Travel_Rarely,1387,Biomedical R&D,27,3,Technical Degree,3,Female,82,3,2,Laboratory Technologist,3,Single,8540,9921,5,No,21,3,4,0,1,2,3,1,0,0,0
+33,0,Non-Travel,985,Clinical Operations,27,3,Life Sciences,3,Male,87,3,1,Care Coordinator,3,Single,7480,20487,2,Yes,11,3,3,0,12,1,2,5,3,3,1
+35,0,Travel_Rarely,445,Clinical Operations,19,2,Biochemistry,2,Female,92,3,2,Clinical Nurse Specialist,3,Married,10080,13489,5,No,11,3,3,0,12,0,2,1,0,0,0
+28,0,Travel_Rarely,1372,Clinical Operations,20,3,Biochemistry,3,Male,84,2,1,Clinical Nurse Specialist,4,Divorced,6780,9060,4,No,21,3,2,0,7,4,2,0,0,0,0
+38,1,Travel_Rarely,1053,Pharmacy & Therapeutics,9,2,Healthcare Administration,3,Male,55,4,1,Clinical Pharmacist,2,Married,7900,8459,5,No,13,3,2,0,15,3,2,0,0,0,0
+31,0,Travel_Rarely,1281,Clinical Operations,14,4,Life Sciences,3,Male,56,3,1,Care Coordinator,3,Married,7200,23577,4,No,20,4,3,0,10,0,2,1,0,0,0
+31,0,Non-Travel,563,Clinical Operations,6,2,Life Sciences,4,Male,48,2,3,Care Coordinator,3,Single,12400,17319,4,No,11,3,2,1,10,1,2,5,4,1,2
+42,0,Non-Travel,828,Patient Care,22,3,Medical / Nursing,1,Male,68,4,4,Nurse Practitioner,4,Married,16400,15190,1,No,22,4,3,2,20,2,2,5,1,4,0
+24,0,Travel_Rarely,1052,Clinical Operations,1,2,Technical Degree,4,Male,69,2,1,Care Coordinator,1,Single,6080,9845,6,Yes,11,4,3,0,2,2,4,2,1,0,0
+38,0,Travel_Rarely,1051,Pharmacy & Therapeutics,19,5,Medical / Nursing,4,Female,83,3,2,Therapeutics Specialist,3,Married,10640,12061,2,Yes,12,4,3,0,16,3,1,5,1,4,0
+38,1,Non-Travel,1066,Patient Care,3,3,Technical Degree,3,Male,91,3,3,Triage Specialist,3,Single,13100,15541,5,Yes,17,3,2,0,15,1,2,5,3,4,2
+44,0,Travel_Frequently,601,Pharmacy & Therapeutics,29,5,Biochemistry,4,Female,57,3,5,Therapeutics Specialist,3,Married,19140,23279,5,Yes,18,3,3,0,21,1,3,10,3,4,1
+36,0,Non-Travel,958,Pharmacy & Therapeutics,24,4,Technical Degree,4,Female,58,3,1,Therapeutics Specialist,3,Divorced,7760,12502,5,No,12,3,2,0,14,3,1,0,0,0,0
+49,0,Non-Travel,732,Biomedical R&D,20,3,Life Sciences,2,Male,56,2,5,Laboratory Technologist,3,Married,19840,8027,4,No,11,3,4,1,26,2,3,10,8,5,3
+43,0,Travel_Rarely,928,Clinical Operations,29,3,Healthcare Administration,3,Male,53,3,4,Clinical Nurse Specialist,3,Married,16400,18703,4,No,20,3,2,2,20,1,4,5,2,2,1
+49,0,Travel_Rarely,1268,Clinical Operations,3,3,Medical / Nursing,2,Male,53,2,2,Clinical Director,3,Divorced,12040,9931,1,Yes,20,3,3,0,26,2,4,5,4,3,2
+47,0,Travel_Rarely,1228,Pharmacy & Therapeutics,24,3,Healthcare Administration,3,Male,47,3,3,Pharmacy Manager,2,Divorced,14360,11008,1,No,12,3,2,0,24,1,3,4,3,3,1
+44,1,Non-Travel,1397,Biomedical R&D,10,3,Medical / Nursing,4,Male,74,2,4,Clinical Research Associate,3,Married,16680,17530,6,No,14,3,3,0,22,2,3,6,2,3,1
+25,0,Travel_Rarely,1253,Clinical Operations,14,2,Biochemistry,2,Male,56,3,3,Care Coordinator,3,Married,11560,17003,5,No,11,3,3,0,4,1,4,3,1,1,0
+29,0,Non-Travel,614,Patient Care,29,3,Biochemistry,3,Female,47,3,1,Registered Nurse,4,Single,6640,21364,1,No,14,3,3,2,6,3,2,3,2,0,1
+23,0,Non-Travel,611,Biomedical R&D,6,4,Healthcare Administration,4,Male,90,4,1,Biomedical Scientist,4,Married,5940,13291,2,Yes,23,3,3,0,1,2,3,1,0,0,0
+43,0,Non-Travel,1153,Biomedical R&D,5,5,Life Sciences,3,Male,75,2,2,Principal Investigator,3,Married,11340,9540,6,No,22,3,3,0,21,1,2,4,2,1,1
+29,0,Non-Travel,446,Biomedical R&D,3,4,Healthcare Administration,3,Female,53,4,1,Biomedical Scientist,4,Divorced,6640,18236,5,No,19,3,3,0,6,2,4,1,0,0,0
+36,0,Travel_Rarely,785,Clinical Operations,24,3,Healthcare Administration,4,Male,70,4,1,Clinical Nurse Specialist,3,Married,7620,15937,2,No,16,3,3,0,13,1,3,1,0,0,0
+35,0,Non-Travel,1105,Clinical Operations,10,4,Healthcare Administration,4,Male,95,3,2,Clinical Nurse Specialist,4,Married,10220,12020,3,Yes,17,3,4,0,13,3,2,6,3,3,2
+45,1,Travel_Rarely,742,Biomedical R&D,28,4,Healthcare Administration,2,Male,56,3,5,Laboratory Technologist,2,Married,19420,13750,1,No,18,3,4,0,23,2,3,6,5,1,3
+41,0,Non-Travel,906,Clinical Operations,3,3,Biochemistry,4,Female,75,2,5,Care Coordinator,1,Single,18720,16759,3,Yes,22,3,3,0,18,1,3,13,9,9,4
+30,0,Non-Travel,897,Pharmacy & Therapeutics,11,3,Life Sciences,3,Male,52,3,2,Therapeutics Specialist,3,Married,9380,17323,3,No,14,3,3,0,7,3,3,2,0,0,0
+31,1,Travel_Rarely,786,Biomedical R&D,16,4,Life Sciences,4,Male,46,4,1,Biomedical Scientist,4,Single,6920,15355,2,No,16,3,3,2,8,1,1,8,3,6,1
+47,0,Travel_Rarely,1176,Clinical Operations,22,3,Healthcare Administration,1,Female,95,3,5,Care Coordinator,1,Single,19840,19815,2,No,20,3,4,1,26,1,1,11,10,9,4
+35,0,Non-Travel,735,Clinical Operations,1,2,Healthcare Administration,4,Male,98,3,3,Clinical Director,3,Single,12680,9604,4,No,21,3,3,0,12,2,3,6,4,3,2
+41,0,Non-Travel,1225,Biomedical R&D,20,4,Technical Degree,4,Female,46,3,3,Clinical Research Associate,3,Single,13800,15559,6,No,18,3,4,0,20,1,3,4,2,1,1
+41,0,Travel_Rarely,1053,Patient Care,19,2,Life Sciences,3,Male,51,2,2,Patient Care Supervisor,3,Married,11200,12587,2,No,23,3,3,1,20,2,2,5,4,1,2
+27,0,Travel_Rarely,543,Clinical Operations,21,4,Biochemistry,3,Male,72,2,2,Care Coordinator,2,Divorced,9240,23828,3,Yes,15,3,2,0,6,1,4,6,2,2,1
+52,1,Travel_Rarely,602,Patient Care,10,5,Medical / Nursing,2,Female,98,3,5,Patient Care Supervisor,3,Single,20400,9236,2,No,15,3,3,0,30,3,1,13,5,12,2
+39,0,Travel_Rarely,820,Biomedical R&D,20,3,Biochemistry,1,Male,46,3,3,Biomedical Scientist,3,Single,13380,16412,1,Yes,14,3,3,1,17,1,3,8,5,1,2
+35,0,Travel_Frequently,692,Biomedical R&D,18,3,Life Sciences,2,Female,74,3,3,Clinical Research Associate,1,Married,12680,11162,1,No,16,3,2,0,12,1,4,11,9,7,4
+40,0,Travel_Rarely,903,Clinical Operations,5,2,Biochemistry,1,Female,89,4,5,Clinical Nurse Specialist,2,Divorced,18720,17487,6,No,13,3,2,0,18,4,3,9,8,5,4
+29,0,Travel_Rarely,418,Patient Care,18,2,Healthcare Administration,2,Female,65,3,2,Patient Care Supervisor,3,Married,9380,22234,2,Yes,14,3,3,1,7,1,4,4,3,0,1
+31,0,Travel_Rarely,1322,Pharmacy & Therapeutics,16,3,Healthcare Administration,3,Male,55,4,1,Pharmacy Manager,4,Single,6920,11223,1,Yes,19,3,4,0,8,3,4,3,1,1,0
+35,0,Travel_Rarely,1319,Clinical Operations,19,4,Biochemistry,4,Female,84,3,2,Operations Manager,3,Single,10080,16418,3,Yes,18,3,4,1,12,1,4,8,4,2,3
+33,0,Travel_Rarely,1192,Biomedical R&D,28,3,Healthcare Administration,1,Male,62,3,4,Clinical Research Associate,2,Single,15280,19697,5,Yes,20,3,4,1,12,2,3,5,4,2,2
+40,0,Travel_Rarely,425,Biomedical R&D,4,3,Healthcare Administration,2,Female,86,3,4,Principal Investigator,1,Divorced,15980,18623,1,No,22,3,3,2,17,2,4,7,4,5,2
+31,0,Travel_Rarely,1066,Biomedical R&D,29,2,Healthcare Administration,3,Male,58,3,2,Clinical Research Associate,3,Married,9520,10048,5,No,23,3,3,0,8,3,4,1,0,0,0
+36,1,Non-Travel,1017,Clinical Operations,27,3,Life Sciences,3,Female,50,3,2,Clinical Nurse Specialist,3,Married,10220,15166,6,No,14,3,4,1,13,4,4,4,2,1,1
+32,1,Travel_Rarely,899,Biomedical R&D,5,5,Healthcare Administration,3,Female,93,3,2,Laboratory Technologist,2,Married,9800,18867,5,No,16,3,2,0,10,3,1,1,0,0,0
+23,0,Travel_Rarely,441,Patient Care,28,3,Life Sciences,2,Female,68,3,1,Triage Specialist,4,Married,5940,19501,3,Yes,22,4,3,0,1,1,3,1,0,0,0
+35,0,Travel_Rarely,1374,Clinical Operations,9,2,Life Sciences,3,Female,75,4,2,Operations Manager,4,Married,10360,14825,2,No,16,4,3,0,14,2,3,2,0,1,0
+40,0,Travel_Frequently,799,Pharmacy & Therapeutics,15,3,Biochemistry,4,Female,75,4,3,Pharmacy Manager,2,Married,13380,15426,3,No,17,4,3,2,17,1,3,4,3,3,2
+32,0,Non-Travel,442,Clinical Operations,23,3,Healthcare Administration,4,Female,82,2,1,Clinical Nurse Specialist,2,Single,7340,14356,2,No,16,3,4,0,11,2,4,3,1,0,0
+37,0,Non-Travel,805,Patient Care,10,4,Medical / Nursing,3,Male,59,3,2,Registered Nurse,3,Single,10640,9934,5,No,15,3,4,0,16,3,3,4,3,2,1
+22,1,Travel_Rarely,519,Clinical Operations,26,3,Healthcare Administration,4,Male,81,3,3,Clinical Nurse Specialist,2,Married,11140,13659,6,Yes,13,3,2,1,1,1,2,1,0,0,0
+46,0,Travel_Frequently,785,Patient Care,24,5,Technical Degree,2,Female,78,4,5,Triage Specialist,2,Married,19560,23111,3,No,15,3,4,1,24,1,1,9,3,7,2
+32,0,Non-Travel,657,Clinical Operations,7,3,Technical Degree,3,Male,68,4,2,Operations Manager,3,Married,9800,18446,3,No,14,3,3,0,10,3,3,5,1,1,0
+36,0,Travel_Frequently,775,Clinical Operations,5,4,Technical Degree,4,Male,54,2,1,Clinical Nurse Specialist,1,Single,7900,8743,3,No,12,3,4,1,15,1,3,10,7,5,3
+35,1,Travel_Rarely,922,Pharmacy & Therapeutics,28,4,Technical Degree,4,Female,72,3,1,Pharmacy Manager,3,Married,7480,12655,5,Yes,19,3,3,1,12,3,3,2,1,1,0
+28,0,Travel_Rarely,554,Biomedical R&D,18,2,Biochemistry,3,Female,47,3,1,Laboratory Technologist,3,Married,6640,13151,6,No,13,3,4,1,6,4,3,6,4,2,2
+32,0,Travel_Rarely,926,Clinical Operations,18,5,Technical Degree,4,Male,99,2,2,Clinical Nurse Specialist,4,Married,9660,18562,1,No,16,3,3,0,9,4,3,4,3,0,2
+30,0,Travel_Rarely,789,Clinical Operations,26,3,Life Sciences,2,Male,70,4,2,Operations Manager,3,Divorced,9520,21640,2,No,18,3,4,0,8,4,3,8,5,7,3
+35,0,Travel_Rarely,1300,Biomedical R&D,13,3,Medical / Nursing,4,Male,90,4,3,Principal Investigator,3,Married,12960,15967,1,No,18,3,4,0,14,1,3,13,9,11,7
+46,1,Travel_Frequently,948,Clinical Operations,3,3,Medical / Nursing,3,Female,48,2,4,Clinical Nurse Specialist,3,Married,16960,20558,2,Yes,16,4,4,0,24,2,3,4,3,0,2
+30,0,Travel_Rarely,1339,Pharmacy & Therapeutics,12,3,Technical Degree,3,Female,78,4,2,Pharmacology Lead,1,Single,9380,15594,3,No,17,3,3,0,7,1,3,7,5,4,2
+41,0,Travel_Rarely,458,Patient Care,23,4,Healthcare Administration,4,Female,62,2,5,Registered Nurse,4,Married,19000,18846,6,No,19,3,3,0,20,3,3,7,5,5,3
+28,0,Travel_Rarely,953,Clinical Operations,26,5,Medical / Nursing,4,Male,83,3,1,Clinical Director,3,Married,6780,19279,1,Yes,22,4,3,0,7,2,4,4,2,3,1
+37,0,Non-Travel,544,Pharmacy & Therapeutics,25,2,Technical Degree,4,Male,71,2,1,Therapeutics Specialist,3,Divorced,7900,22860,4,No,12,4,3,0,15,1,1,3,2,1,1
+47,0,Travel_Rarely,937,Clinical Operations,24,3,Biochemistry,1,Female,75,3,4,Clinical Nurse Specialist,4,Single,17240,12641,1,Yes,16,3,3,0,26,4,2,10,6,9,3
+35,0,Non-Travel,830,Pharmacy & Therapeutics,5,2,Biochemistry,3,Male,67,2,3,Therapeutics Specialist,1,Divorced,12820,14630,1,No,22,3,3,1,13,2,2,3,1,0,0
+31,1,Non-Travel,1113,Biomedical R&D,9,4,Life Sciences,3,Female,50,4,2,Biomedical Scientist,1,Married,9800,13802,1,No,18,3,3,1,10,3,3,2,0,1,0
+22,0,Travel_Rarely,575,Biomedical R&D,25,3,Technical Degree,3,Male,66,3,1,Principal Investigator,4,Married,5940,16221,2,No,17,4,2,0,1,2,4,1,0,0,0
+24,0,Travel_Rarely,521,Clinical Operations,26,3,Biochemistry,4,Female,93,4,1,Care Coordinator,3,Married,5940,11499,5,Yes,13,3,3,0,1,0,4,1,0,0,0
+22,0,Travel_Rarely,661,Clinical Operations,14,3,Life Sciences,4,Male,92,3,2,Care Coordinator,4,Divorced,8540,12428,3,Yes,18,3,4,2,1,2,4,1,0,0,0
+34,1,Travel_Frequently,1350,Clinical Operations,18,4,Technical Degree,3,Male,95,4,2,Clinical Director,3,Married,9940,8425,6,Yes,12,3,3,0,11,1,3,1,0,0,0
+30,0,Travel_Rarely,1060,Biomedical R&D,7,3,Life Sciences,3,Female,73,2,1,Biomedical Scientist,1,Single,7060,19654,4,Yes,22,3,3,0,9,2,2,1,0,0,0
+30,0,Travel_Frequently,760,Pharmacy & Therapeutics,29,2,Life Sciences,1,Female,52,3,1,Pharmacy Manager,4,Married,6780,18732,3,No,23,3,2,1,7,4,2,1,0,0,0
+46,0,Non-Travel,1089,Clinical Operations,8,3,Medical / Nursing,2,Female,89,2,3,Clinical Director,3,Divorced,14500,16072,6,No,17,3,4,2,25,2,3,3,2,2,1
+31,0,Non-Travel,1022,Pharmacy & Therapeutics,7,4,Technical Degree,4,Male,73,4,2,Therapeutics Specialist,3,Divorced,9800,13502,2,No,12,3,3,0,10,2,1,10,9,4,4
+43,0,Travel_Rarely,1197,Biomedical R&D,6,3,Healthcare Administration,2,Male,87,4,1,Principal Investigator,2,Single,8880,22313,5,No,21,3,3,2,22,3,2,11,3,9,1
+36,0,Travel_Frequently,692,Pharmacy & Therapeutics,27,3,Healthcare Administration,3,Male,98,3,3,Pharmacology Lead,2,Single,13100,11655,3,No,20,3,2,1,15,2,4,3,2,2,1
+37,0,Travel_Rarely,1334,Patient Care,9,3,Healthcare Administration,1,Female,85,4,3,Nurse Practitioner,4,Married,12960,15696,6,No,20,4,2,0,14,4,4,3,1,0,0
+30,0,Travel_Rarely,902,Clinical Operations,9,4,Medical / Nursing,4,Male,94,4,2,Clinical Nurse Specialist,3,Married,9520,18838,5,No,21,3,4,0,8,2,3,2,1,1,0
+39,0,Travel_Rarely,552,Clinical Operations,24,3,Healthcare Administration,3,Female,49,4,3,Clinical Nurse Specialist,2,Married,13380,16392,3,No,19,3,2,0,17,2,2,17,7,8,3
+33,0,Travel_Rarely,533,Clinical Operations,22,4,Biochemistry,4,Female,65,3,1,Operations Manager,4,Married,7480,19925,5,No,19,3,4,0,12,2,1,12,10,4,5
+32,0,Travel_Rarely,1136,Clinical Operations,27,4,Life Sciences,2,Male,99,3,3,Clinical Nurse Specialist,2,Married,12540,13476,4,No,20,3,4,0,11,1,2,4,3,1,1
+35,1,Travel_Rarely,428,Clinical Operations,8,4,Healthcare Administration,4,Male,57,3,3,Care Coordinator,4,Married,12680,14884,4,No,17,3,3,1,12,2,2,6,4,1,1
+25,0,Non-Travel,1102,Clinical Operations,27,2,Biochemistry,4,Female,98,3,1,Clinical Director,3,Single,6080,17926,1,No,21,3,4,1,2,2,2,1,0,0,0
+30,0,Non-Travel,916,Patient Care,27,4,Technical Degree,3,Female,73,3,2,Nurse Practitioner,3,Married,9520,20929,4,Yes,12,3,3,0,8,2,4,3,2,2,1
+46,0,Travel_Rarely,473,Clinical Operations,9,3,Healthcare Administration,3,Male,51,2,5,Clinical Nurse Specialist,3,Married,19560,19850,1,No,14,3,3,2,24,3,2,12,9,11,4
+41,0,Travel_Rarely,1018,Pharmacy & Therapeutics,27,5,Healthcare Administration,3,Female,76,3,4,Therapeutics Specialist,3,Married,16260,17517,4,Yes,13,3,3,0,19,2,3,12,9,2,6
+31,0,Travel_Frequently,860,Pharmacy & Therapeutics,22,3,Medical / Nursing,3,Male,77,4,2,Pharmacy Manager,1,Married,9660,21056,1,No,23,3,4,0,9,2,4,2,0,1,0
+25,0,Travel_Rarely,1379,Clinical Operations,1,3,Life Sciences,3,Male,84,3,2,Care Coordinator,3,Married,8960,15086,1,Yes,11,3,4,1,4,2,3,1,0,0,0
+31,0,Travel_Rarely,1270,Pharmacy & Therapeutics,24,3,Healthcare Administration,2,Male,84,4,1,Pharmacology Lead,3,Married,7200,22929,6,No,15,3,3,0,10,3,1,1,0,0,0
+38,0,Travel_Rarely,1300,Clinical Operations,8,3,Life Sciences,3,Female,62,2,4,Clinical Nurse Specialist,2,Married,15700,18779,1,No,11,3,3,0,15,1,4,8,4,2,2
+25,0,Non-Travel,1226,Pharmacy & Therapeutics,7,3,Life Sciences,3,Male,69,4,2,Clinical Pharmacist,4,Married,8680,15546,4,No,15,4,2,0,2,0,3,2,1,1,0
+52,0,Travel_Rarely,989,Pharmacy & Therapeutics,29,4,Biochemistry,3,Female,67,2,5,Pharmacology Lead,3,Single,20400,21406,3,Yes,23,3,2,0,30,4,1,7,2,3,1
+33,0,Non-Travel,868,Clinical Operations,28,3,Technical Degree,3,Female,88,3,3,Clinical Nurse Specialist,2,Single,12540,22790,1,No,21,3,2,0,11,1,4,4,2,0,1
+35,0,Travel_Rarely,987,Biomedical R&D,18,4,Biochemistry,3,Male,48,4,3,Principal Investigator,4,Married,12680,10075,6,Yes,13,3,3,2,12,3,2,3,2,0,1
+24,0,Travel_Rarely,811,Biomedical R&D,27,2,Technical Degree,3,Male,71,2,2,Clinical Research Associate,3,Married,8680,23454,2,No,21,3,4,0,2,1,1,2,0,1,0
+28,0,Travel_Rarely,1178,Biomedical R&D,13,3,Medical / Nursing,3,Male,90,3,2,Biomedical Scientist,3,Married,9100,22841,2,Yes,22,4,4,1,5,3,3,5,3,4,1
+26,1,Non-Travel,1332,Clinical Operations,5,4,Healthcare Administration,3,Male,99,3,1,Care Coordinator,2,Married,6220,12339,3,Yes,17,3,4,1,3,0,3,1,0,0,0
+34,0,Travel_Frequently,1389,Patient Care,19,3,Medical / Nursing,3,Male,56,3,2,Triage Specialist,4,Married,10080,18957,3,No,18,3,3,0,12,2,3,3,1,2,0
+35,0,Travel_Rarely,873,Patient Care,25,4,Life Sciences,4,Female,99,3,1,Triage Specialist,4,Single,7480,8878,1,No,13,3,3,1,12,2,3,4,2,2,1
+37,0,Travel_Rarely,1235,Clinical Operations,28,4,Life Sciences,4,Female,83,4,3,Clinical Nurse Specialist,3,Married,13100,14601,6,No,13,3,2,0,15,0,3,4,1,1,0
+38,0,Travel_Rarely,453,Clinical Operations,17,3,Medical / Nursing,4,Male,70,3,1,Operations Manager,3,Married,8040,23932,5,No,17,3,4,1,16,3,2,14,12,4,6
+43,0,Travel_Frequently,1260,Clinical Operations,13,5,Medical / Nursing,2,Male,70,2,2,Clinical Director,2,Married,11480,21507,3,No,16,3,2,2,22,3,1,8,3,4,2
+31,0,Non-Travel,964,Clinical Operations,6,3,Life Sciences,2,Male,45,4,1,Operations Manager,2,Married,7060,11051,4,Yes,19,3,4,0,9,1,2,9,8,7,6
+31,0,Travel_Rarely,819,Clinical Operations,21,4,Biochemistry,1,Male,71,3,2,Clinical Nurse Specialist,3,Single,9520,17152,3,Yes,16,3,2,1,8,1,3,4,1,2,0
+38,0,Travel_Rarely,898,Clinical Operations,6,4,Healthcare Administration,4,Male,60,4,2,Clinical Director,3,Single,10640,8510,3,No,19,3,3,0,16,2,2,1,0,0,0
+37,0,Travel_Rarely,1177,Biomedical R&D,18,5,Technical Degree,3,Male,71,3,1,Principal Investigator,4,Single,7760,13135,1,No,11,3,2,1,14,2,1,0,0,0,0
+30,0,Travel_Rarely,933,Clinical Operations,8,4,Biochemistry,3,Female,71,4,1,Clinical Director,3,Married,6920,22121,5,No,16,3,3,0,8,2,3,6,5,5,4
+46,0,Travel_Rarely,1140,Clinical Operations,23,3,Biochemistry,3,Female,78,3,3,Operations Manager,2,Married,14360,14298,4,No,20,3,3,0,24,3,3,6,4,2,2
+24,0,Non-Travel,1216,Patient Care,18,3,Healthcare Administration,3,Female,52,3,1,Triage Specialist,1,Married,6220,18447,5,Yes,15,3,4,0,3,1,4,1,0,0,0
+40,1,Travel_Rarely,1297,Clinical Operations,9,2,Life Sciences,4,Female,71,3,3,Care Coordinator,3,Married,13660,13743,2,No,21,4,2,1,19,3,2,6,3,1,2
+38,0,Travel_Rarely,810,Clinical Operations,16,3,Life Sciences,3,Female,62,2,3,Operations Manager,3,Married,13100,14711,3,No,20,3,3,1,15,1,4,3,1,2,0
+32,0,Travel_Rarely,1194,Patient Care,22,3,Life Sciences,3,Female,61,3,2,Triage Specialist,4,Married,9660,11411,3,Yes,13,3,3,0,9,2,3,2,1,0,0
+30,0,Non-Travel,1357,Biomedical R&D,7,2,Healthcare Administration,3,Female,72,2,1,Biomedical Scientist,3,Married,6920,18653,4,No,16,4,4,0,8,2,3,2,0,1,0
+42,0,Travel_Rarely,1093,Patient Care,19,4,Healthcare Administration,3,Male,83,3,4,Registered Nurse,3,Married,16260,19942,5,No,11,3,4,1,19,3,3,6,2,2,1
+46,0,Travel_Rarely,917,Patient Care,12,4,Biochemistry,4,Male,88,3,4,Patient Care Supervisor,3,Married,17100,10129,3,Yes,15,3,4,0,25,1,3,6,3,1,2
+33,0,Travel_Rarely,810,Clinical Operations,8,3,Life Sciences,3,Male,90,3,2,Operations Manager,3,Single,9940,20917,5,No,16,3,3,0,11,3,4,5,4,1,2
+25,1,Travel_Rarely,512,Clinical Operations,12,2,Medical / Nursing,4,Male,56,3,3,Clinical Director,3,Married,11280,15207,4,No,12,3,3,0,2,2,4,2,1,0,0
+28,0,Non-Travel,1389,Patient Care,4,3,Life Sciences,3,Female,73,2,1,Registered Nurse,3,Married,6500,20536,2,No,23,4,2,0,5,2,2,2,0,1,0
+25,0,Travel_Rarely,730,Clinical Operations,4,4,Medical / Nursing,4,Female,54,3,1,Clinical Nurse Specialist,1,Married,6080,22955,1,No,14,3,2,0,2,3,3,2,1,0,0
+27,0,Travel_Frequently,504,Patient Care,13,4,Medical / Nursing,3,Male,62,2,2,Nurse Practitioner,2,Single,8960,18299,1,No,19,3,4,0,4,1,2,4,3,1,2
+32,0,Travel_Frequently,1138,Clinical Operations,1,2,Technical Degree,3,Female,99,3,3,Operations Manager,3,Married,12400,10828,5,No,16,3,3,0,10,3,1,3,2,1,1
+41,0,Travel_Rarely,748,Clinical Operations,16,3,Healthcare Administration,2,Male,71,2,3,Operations Manager,4,Single,13520,11481,6,No,22,3,3,0,18,2,3,8,7,7,3
+28,1,Travel_Rarely,956,Biomedical R&D,27,2,Technical Degree,3,Male,83,3,2,Principal Investigator,4,Divorced,9240,19885,2,No,14,3,3,0,6,1,2,3,1,0,0
+35,0,Travel_Frequently,874,Clinical Operations,3,4,Biochemistry,3,Male,76,3,2,Care Coordinator,4,Single,10360,10227,3,No,15,3,3,0,14,1,4,3,2,0,1
+33,0,Non-Travel,1268,Biomedical R&D,17,3,Technical Degree,4,Female,49,3,2,Laboratory Technologist,2,Single,9800,20935,3,No,20,3,3,0,10,3,3,1,0,0,0
+26,0,Travel_Rarely,1396,Clinical Operations,8,2,Life Sciences,4,Female,90,3,1,Care Coordinator,3,Divorced,6360,18548,4,No,16,3,3,1,4,1,3,0,0,0,0
+32,0,Travel_Rarely,1345,Clinical Operations,24,2,Biochemistry,4,Female,46,2,1,Clinical Nurse Specialist,2,Married,7340,14842,1,Yes,16,4,2,0,11,4,4,0,0,0,0
+30,0,Travel_Rarely,1249,Clinical Operations,22,5,Technical Degree,4,Female,63,2,1,Care Coordinator,3,Married,6780,22007,6,Yes,20,3,2,0,7,2,3,0,0,0,0
+41,0,Travel_Rarely,1143,Pharmacy & Therapeutics,19,4,Technical Degree,3,Female,58,2,3,Pharmacology Lead,4,Married,13800,22357,6,Yes,14,3,3,1,20,2,3,7,3,3,2
+38,0,Non-Travel,434,Clinical Operations,9,4,Medical / Nursing,2,Female,60,2,2,Clinical Director,3,Single,10500,17107,4,No,18,3,4,0,15,2,2,6,5,5,2
+22,0,Travel_Rarely,826,Clinical Operations,9,4,Healthcare Administration,4,Female,68,3,1,Clinical Director,2,Married,5940,13135,2,Yes,18,4,3,0,1,2,3,0,0,0,0
+38,0,Non-Travel,1020,Pharmacy & Therapeutics,16,4,Technical Degree,3,Female,62,3,2,Pharmacology Lead,3,Single,10640,15810,3,No,19,3,3,0,16,3,3,4,2,2,1
+38,1,Travel_Rarely,920,Biomedical R&D,6,3,Medical / Nursing,4,Male,51,4,2,Principal Investigator,1,Married,10780,12635,2,No,11,3,2,1,17,2,4,3,2,2,0
+41,1,Travel_Rarely,1195,Patient Care,18,4,Medical / Nursing,2,Female,88,3,5,Nurse Practitioner,4,Married,18720,12697,4,No,23,3,3,2,18,2,3,8,4,2,2
+22,0,Non-Travel,421,Clinical Operations,24,4,Healthcare Administration,3,Female,57,4,2,Care Coordinator,3,Married,8540,13180,1,No,18,4,4,0,1,4,1,1,0,0,0
+40,1,Travel_Rarely,726,Patient Care,2,3,Healthcare Administration,4,Male,58,2,1,Patient Care Supervisor,3,Married,8460,17638,4,No,14,3,4,1,19,1,1,6,3,5,1
+28,0,Non-Travel,1065,Clinical Operations,19,3,Technical Degree,3,Male,61,4,1,Care Coordinator,2,Married,6640,19585,3,No,15,4,3,1,6,1,2,4,2,2,1
+42,0,Travel_Rarely,813,Patient Care,22,5,Healthcare Administration,1,Male,85,4,1,Nurse Practitioner,2,Married,8740,9412,6,No,21,3,4,0,21,3,1,1,0,0,0
+34,0,Non-Travel,577,Patient Care,19,5,Technical Degree,4,Male,82,4,1,Patient Care Supervisor,3,Married,7340,9568,3,No,13,3,4,2,11,1,4,3,1,1,0
+27,0,Travel_Rarely,1024,Patient Care,19,3,Technical Degree,3,Male,60,3,1,Triage Specialist,2,Single,6640,9277,4,No,19,3,3,1,6,1,3,1,0,0,0
+36,0,Travel_Rarely,1102,Patient Care,29,3,Healthcare Administration,1,Female,46,3,3,Registered Nurse,2,Married,12960,16273,4,Yes,23,3,3,2,14,2,4,9,3,5,1
+30,0,Travel_Rarely,1149,Biomedical R&D,20,4,Biochemistry,4,Male,87,4,3,Biomedical Scientist,3,Married,12260,17880,5,No,19,3,4,0,9,2,2,7,4,4,2
+26,0,Travel_Rarely,586,Pharmacy & Therapeutics,2,3,Biochemistry,3,Male,95,2,1,Pharmacy Manager,3,Married,6220,18019,1,Yes,18,3,3,0,3,3,3,0,0,0,0
+33,0,Travel_Frequently,1234,Patient Care,16,2,Medical / Nursing,4,Male,78,3,1,Nurse Practitioner,3,Married,7200,20466,5,No,14,3,3,1,10,2,3,6,3,4,2
+44,0,Non-Travel,1089,Patient Care,13,3,Technical Degree,3,Female,48,2,2,Registered Nurse,3,Divorced,11480,19140,2,Yes,21,3,3,1,22,1,2,9,2,3,0
+26,0,Non-Travel,915,Pharmacy & Therapeutics,25,3,Healthcare Administration,3,Female,97,3,3,Pharmacology Lead,4,Single,11420,10306,5,No,21,3,3,0,3,4,4,3,2,2,1
+40,1,Travel_Rarely,999,Clinical Operations,26,3,Biochemistry,4,Male,53,4,3,Operations Manager,3,Divorced,13380,13944,4,Yes,18,3,2,0,17,2,1,10,3,4,2
+31,1,Travel_Rarely,884,Pharmacy & Therapeutics,27,4,Biochemistry,4,Female,98,4,3,Pharmacy Manager,3,Married,12400,23903,1,Yes,11,3,2,0,10,0,4,4,1,2,0
+22,0,Travel_Rarely,1369,Clinical Operations,14,4,Healthcare Administration,4,Female,87,2,1,Care Coordinator,3,Married,5940,16493,4,No,17,3,2,2,1,4,3,1,0,0,0
+41,0,Non-Travel,1007,Pharmacy & Therapeutics,16,4,Life Sciences,4,Female,85,3,2,Pharmacology Lead,2,Married,10920,18877,2,Yes,22,3,3,2,18,2,3,5,3,1,1
+38,0,Travel_Rarely,1201,Biomedical R&D,2,2,Life Sciences,4,Female,95,3,2,Laboratory Technologist,2,Single,10780,10310,1,Yes,14,3,2,0,17,2,3,2,1,1,0
+36,0,Travel_Rarely,1387,Patient Care,8,3,Healthcare Administration,3,Male,84,2,1,Triage Specialist,3,Married,7900,21136,5,Yes,22,3,4,0,15,0,3,4,2,1,1
+35,0,Non-Travel,1127,Clinical Operations,15,3,Biochemistry,3,Female,82,4,1,Care Coordinator,2,Married,7480,13886,2,No,20,4,3,2,12,1,3,2,1,0,0
+39,0,Travel_Frequently,873,Patient Care,29,3,Medical / Nursing,4,Female,87,4,1,Registered Nurse,2,Married,8040,23398,6,No,11,3,3,0,16,4,3,0,0,0,0
+22,1,Travel_Rarely,1286,Patient Care,19,3,Biochemistry,2,Male,76,4,2,Triage Specialist,1,Married,8540,14339,5,Yes,16,3,3,0,1,2,3,1,0,0,0
+33,0,Travel_Frequently,1190,Clinical Operations,23,4,Medical / Nursing,1,Male,74,2,1,Operations Manager,2,Married,7200,15719,1,No,13,3,4,0,10,0,4,1,0,0,0
+46,0,Travel_Rarely,1065,Clinical Operations,12,4,Technical Degree,4,Male,54,2,3,Operations Manager,3,Divorced,14360,21173,5,No,17,3,3,1,24,2,2,3,2,2,1
+22,0,Travel_Rarely,1291,Patient Care,21,4,Life Sciences,2,Male,89,3,1,Registered Nurse,3,Divorced,5940,21596,4,No,23,3,2,0,1,3,3,1,0,0,0
+36,0,Travel_Rarely,942,Clinical Operations,24,3,Life Sciences,3,Female,74,3,1,Clinical Director,3,Married,7760,18309,6,No,21,3,2,0,14,1,4,3,2,1,1
+32,1,Non-Travel,1231,Patient Care,25,3,Medical / Nursing,3,Male,65,3,3,Patient Care Supervisor,3,Single,12400,19257,1,Yes,22,4,4,0,10,2,2,4,2,1,1
+49,0,Travel_Rarely,404,Clinical Operations,25,4,Healthcare Administration,2,Female,63,4,4,Care Coordinator,3,Single,17520,22359,4,No,20,3,3,1,28,3,4,13,9,9,8
+22,0,Non-Travel,1114,Biomedical R&D,27,4,Biochemistry,4,Female,86,2,2,Clinical Research Associate,1,Single,8540,17944,2,No,20,3,3,2,1,2,3,1,0,0,0
+32,0,Travel_Rarely,1376,Biomedical R&D,9,4,Technical Degree,3,Male,51,4,1,Clinical Research Associate,2,Single,7340,17657,2,No,23,3,2,1,11,2,2,0,0,0,0
+48,0,Non-Travel,1116,Biomedical R&D,27,3,Healthcare Administration,3,Male,63,4,5,Laboratory Technologist,3,Married,19840,12571,2,No,17,3,2,1,26,2,3,10,5,3,4
+33,0,Travel_Rarely,941,Clinical Operations,17,2,Technical Degree,3,Female,67,4,4,Operations Manager,2,Single,15000,23840,4,No,12,4,3,0,10,3,2,4,2,2,1
+46,0,Travel_Rarely,898,Biomedical R&D,20,2,Technical Degree,4,Female,73,2,5,Principal Investigator,1,Married,19560,8569,1,No,11,3,3,0,24,1,4,8,4,2,3
+43,0,Travel_Rarely,608,Biomedical R&D,7,4,Healthcare Administration,4,Male,46,3,3,Biomedical Scientist,3,Married,13940,16026,2,No,18,3,3,0,21,2,4,4,1,2,0
+27,0,Travel_Frequently,932,Pharmacy & Therapeutics,22,3,Medical / Nursing,4,Male,59,2,1,Clinical Pharmacist,2,Married,6640,23085,4,No,14,4,3,2,6,2,3,0,0,0,0
+38,0,Travel_Rarely,1028,Clinical Operations,16,3,Technical Degree,4,Male,45,3,3,Care Coordinator,3,Married,13240,20398,2,No,20,3,2,0,16,2,2,5,2,1,1
+30,0,Travel_Rarely,423,Biomedical R&D,7,3,Healthcare Administration,3,Male,80,2,1,Principal Investigator,3,Married,6780,17298,6,No,21,3,4,0,7,0,3,3,2,0,1
+50,0,Travel_Rarely,827,Patient Care,12,2,Technical Degree,3,Male,72,3,4,Triage Specialist,2,Single,17380,9146,2,No,16,3,4,0,27,1,3,6,2,5,1
+24,0,Non-Travel,1066,Clinical Operations,15,4,Life Sciences,4,Male,88,3,1,Care Coordinator,2,Divorced,6080,14815,1,Yes,19,3,3,0,2,3,2,2,1,0,0
+22,0,Travel_Frequently,1269,Clinical Operations,15,4,Healthcare Administration,4,Female,86,2,1,Clinical Director,1,Married,5940,10739,6,No,23,3,3,0,1,3,2,1,0,0,0
+34,1,Travel_Rarely,793,Clinical Operations,25,4,Healthcare Administration,4,Male,77,2,1,Operations Manager,2,Single,7480,22241,6,No,17,3,2,0,12,1,1,1,0,0,0
+26,0,Travel_Rarely,401,Clinical Operations,17,3,Healthcare Administration,3,Male,98,2,1,Operations Manager,3,Married,6360,8845,5,No,19,4,4,0,4,3,4,0,0,0,0
+43,0,Non-Travel,977,Biomedical R&D,20,2,Biochemistry,3,Female,52,3,2,Principal Investigator,4,Married,11480,9817,5,Yes,21,3,3,2,22,2,3,20,9,15,3
+37,0,Travel_Rarely,468,Clinical Operations,6,2,Technical Degree,3,Male,79,4,2,Operations Manager,1,Divorced,10640,22501,6,No,23,4,2,0,16,2,4,2,1,0,0
+22,0,Non-Travel,975,Pharmacy & Therapeutics,26,4,Medical / Nursing,3,Female,75,4,2,Therapeutics Specialist,3,Single,8540,15452,3,No,18,3,4,0,1,1,4,1,0,0,0
+34,0,Travel_Rarely,847,Pharmacy & Therapeutics,4,5,Technical Degree,3,Female,46,4,2,Pharmacology Lead,4,Single,10080,19351,4,No,15,3,3,0,12,0,2,1,0,0,0
+40,0,Travel_Rarely,1302,Clinical Operations,3,3,Medical / Nursing,1,Male,90,4,2,Clinical Director,1,Single,10780,10285,4,Yes,22,3,4,0,17,2,3,3,1,0,0
+37,0,Travel_Rarely,566,Patient Care,27,4,Life Sciences,3,Male,96,3,2,Triage Specialist,3,Single,10500,21389,4,No,11,3,4,0,15,1,3,4,1,1,0
+29,0,Non-Travel,567,Pharmacy & Therapeutics,2,3,Life Sciences,3,Male,98,4,2,Pharmacology Lead,3,Married,9380,20573,1,No,11,3,2,0,7,2,3,7,5,6,3
+47,0,Travel_Rarely,934,Pharmacy & Therapeutics,11,5,Medical / Nursing,3,Male,86,3,3,Pharmacology Lead,3,Single,14500,10254,2,No,18,3,4,1,25,3,4,8,7,2,6
+24,0,Travel_Frequently,1354,Biomedical R&D,23,3,Healthcare Administration,3,Female,50,4,1,Principal Investigator,4,Single,6220,13164,5,No,14,3,3,1,3,2,3,0,0,0,0
+35,0,Travel_Rarely,464,Pharmacy & Therapeutics,22,4,Technical Degree,3,Female,71,3,1,Therapeutics Specialist,4,Single,7760,12255,2,No,20,3,4,0,14,2,2,1,0,0,0
+22,0,Travel_Rarely,917,Pharmacy & Therapeutics,20,3,Healthcare Administration,3,Female,76,4,1,Pharmacology Lead,1,Single,5940,8157,1,No,18,3,4,0,1,1,3,1,0,0,0
+29,0,Travel_Rarely,1274,Pharmacy & Therapeutics,23,5,Healthcare Administration,2,Male,48,2,1,Pharmacology Lead,3,Single,6640,10568,2,No,11,4,3,0,6,1,3,1,0,0,0
+26,0,Travel_Rarely,1144,Clinical Operations,2,2,Medical / Nursing,4,Male,85,3,5,Care Coordinator,2,Divorced,16900,13641,1,No,14,3,4,0,5,2,3,5,3,3,1
+23,0,Travel_Rarely,604,Clinical Operations,20,3,Healthcare Administration,3,Female,64,3,1,Clinical Director,3,Married,6080,22657,4,Yes,11,3,3,0,2,4,2,2,1,0,0
+37,0,Travel_Rarely,1002,Biomedical R&D,15,3,Technical Degree,2,Female,64,2,1,Biomedical Scientist,4,Single,7760,10169,1,Yes,14,3,4,0,14,2,4,0,0,0,0
+34,0,Travel_Rarely,1060,Clinical Operations,17,3,Biochemistry,2,Female,69,3,1,Clinical Director,4,Married,7480,14146,2,No,11,3,3,0,12,3,3,2,1,1,0
+42,0,Non-Travel,921,Biomedical R&D,22,3,Technical Degree,3,Male,59,3,4,Clinical Research Associate,2,Married,16540,13208,2,Yes,16,3,4,0,21,0,2,5,1,1,0
+36,0,Non-Travel,425,Clinical Operations,10,3,Biochemistry,3,Female,50,3,1,Operations Manager,4,Single,7900,23973,4,Yes,16,3,2,0,15,4,3,2,1,1,0
+44,0,Non-Travel,683,Clinical Operations,10,3,Technical Degree,3,Female,59,4,5,Operations Manager,2,Single,19280,15835,2,Yes,12,3,3,1,22,2,3,8,3,3,1
+33,1,Travel_Rarely,826,Clinical Operations,1,3,Healthcare Administration,3,Male,62,3,1,Clinical Nurse Specialist,3,Married,7340,19678,1,No,19,3,4,0,11,1,4,2,0,1,0
+37,0,Travel_Rarely,471,Pharmacy & Therapeutics,24,3,Healthcare Administration,4,Male,80,4,1,Clinical Pharmacist,4,Single,7760,20138,5,No,15,3,2,0,14,1,4,0,0,0,0
+31,0,Travel_Rarely,1244,Pharmacy & Therapeutics,10,3,Biochemistry,1,Female,53,3,2,Therapeutics Specialist,4,Divorced,9800,9468,5,No,19,3,3,0,10,1,4,2,1,1,0
+35,1,Travel_Rarely,1133,Clinical Operations,23,3,Technical Degree,3,Female,87,3,5,Clinical Director,2,Married,17880,21214,1,No,21,3,2,0,12,2,4,9,6,8,3
+46,0,Non-Travel,1343,Clinical Operations,22,4,Healthcare Administration,4,Male,63,4,5,Care Coordinator,2,Single,19560,20025,2,No,23,3,4,1,24,3,3,6,4,2,2
+36,0,Travel_Rarely,639,Clinical Operations,21,4,Life Sciences,1,Female,84,3,3,Clinical Director,2,Married,12960,20337,6,No,13,3,4,0,14,2,3,5,3,2,2
+35,0,Travel_Frequently,405,Biomedical R&D,10,4,Healthcare Administration,3,Male,56,3,5,Clinical Research Associate,3,Married,18160,12159,2,No,13,3,3,0,14,2,1,10,7,9,4
+30,0,Travel_Rarely,484,Clinical Operations,13,3,Life Sciences,4,Male,80,2,2,Operations Manager,2,Divorced,9660,14521,4,No,14,3,3,0,9,4,2,6,4,4,2
+26,0,Travel_Rarely,1362,Patient Care,26,5,Biochemistry,2,Male,66,4,2,Nurse Practitioner,4,Married,9100,8638,3,No,23,3,4,2,5,1,2,2,1,0,0
+40,0,Non-Travel,1379,Biomedical R&D,23,2,Healthcare Administration,3,Male,88,4,2,Clinical Research Associate,1,Married,11060,17651,6,No,22,4,3,0,19,1,3,11,9,10,8
+34,0,Non-Travel,633,Biomedical R&D,8,3,Technical Degree,4,Male,80,3,1,Laboratory Technologist,1,Married,7340,14639,5,No,21,3,3,2,11,3,3,3,2,2,1
+30,0,Travel_Rarely,1342,Biomedical R&D,11,2,Technical Degree,4,Female,47,3,2,Principal Investigator,3,Married,9660,18615,2,No,19,3,4,0,9,2,2,4,1,3,0
+41,0,Non-Travel,660,Biomedical R&D,29,2,Biochemistry,3,Male,70,3,3,Biomedical Scientist,4,Married,13660,10877,4,Yes,21,3,3,0,19,3,3,9,3,6,2
+42,0,Travel_Frequently,772,Pharmacy & Therapeutics,23,4,Healthcare Administration,3,Female,72,2,2,Therapeutics Specialist,3,Divorced,11200,11686,1,No,21,3,3,1,20,0,3,7,5,4,3
+43,0,Travel_Rarely,930,Biomedical R&D,15,3,Life Sciences,4,Male,60,3,3,Clinical Research Associate,4,Single,13940,18654,2,No,23,3,4,0,21,4,3,3,2,1,1
+39,0,Travel_Rarely,662,Biomedical R&D,15,2,Healthcare Administration,3,Female,72,3,3,Clinical Research Associate,1,Married,13380,9313,4,No,14,3,2,1,17,2,4,5,3,3,1
+24,0,Travel_Rarely,1131,Pharmacy & Therapeutics,25,3,Medical / Nursing,4,Male,59,2,1,Pharmacology Lead,1,Single,6220,20203,5,No,21,3,3,1,3,2,2,2,1,1,0
+27,0,Travel_Rarely,1284,Clinical Operations,29,3,Healthcare Administration,4,Female,62,2,1,Care Coordinator,3,Married,6360,23807,6,No,13,3,3,0,4,2,2,0,0,0,0
+43,0,Non-Travel,1277,Biomedical R&D,8,3,Biochemistry,3,Male,47,4,5,Principal Investigator,1,Married,19280,13243,1,No,11,3,3,1,22,3,3,12,5,10,4
+37,0,Travel_Rarely,573,Patient Care,27,4,Technical Degree,2,Female,58,4,2,Registered Nurse,1,Married,10500,12178,1,No,16,4,3,0,15,1,3,4,3,2,2
+38,0,Travel_Rarely,688,Biomedical R&D,2,3,Technical Degree,3,Female,55,4,5,Clinical Research Associate,2,Married,18580,10323,3,Yes,12,3,2,0,17,3,3,8,4,6,3
+44,0,Non-Travel,475,Clinical Operations,9,4,Healthcare Administration,4,Male,57,2,4,Clinical Director,3,Married,16680,11709,4,No,18,3,4,1,22,2,3,11,7,2,3
+34,0,Travel_Rarely,770,Clinical Operations,7,3,Technical Degree,2,Female,75,4,1,Operations Manager,2,Divorced,7620,10691,2,No,19,3,4,1,13,3,1,1,0,0,0
+35,0,Travel_Rarely,575,Pharmacy & Therapeutics,23,3,Technical Degree,4,Male,97,3,3,Pharmacology Lead,4,Married,12680,13168,2,No,21,3,3,1,12,1,3,8,5,4,4
+29,0,Travel_Rarely,789,Clinical Operations,28,4,Technical Degree,3,Male,56,4,2,Clinical Director,3,Married,9240,19198,1,No,23,3,3,0,6,0,4,6,2,1,1
+36,0,Travel_Rarely,642,Clinical Operations,17,4,Medical / Nursing,3,Male,48,3,1,Operations Manager,1,Divorced,7900,15654,5,No,23,3,4,1,15,4,2,0,0,0,0
+31,0,Travel_Rarely,430,Biomedical R&D,16,2,Life Sciences,2,Female,81,2,3,Clinical Research Associate,3,Married,12120,8796,5,Yes,16,3,4,2,8,2,1,4,3,1,2
+37,1,Travel_Frequently,406,Clinical Operations,24,2,Biochemistry,1,Male,50,2,1,Operations Manager,3,Divorced,7900,23479,3,No,11,3,4,1,15,2,4,4,3,1,2
+34,0,Non-Travel,1205,Pharmacy & Therapeutics,16,3,Medical / Nursing,3,Male,72,3,2,Pharmacy Manager,3,Single,10080,21575,4,No,20,3,3,1,12,3,3,3,2,0,1
+40,0,Non-Travel,1351,Biomedical R&D,2,4,Medical / Nursing,4,Male,66,2,3,Biomedical Scientist,3,Single,13520,13784,3,No,15,3,3,0,18,1,2,3,2,0,1
+41,0,Travel_Rarely,1071,Clinical Operations,15,3,Medical / Nursing,3,Female,78,4,4,Operations Manager,3,Married,16120,17971,5,No,22,3,4,0,18,3,4,7,5,2,4
+46,0,Travel_Rarely,417,Patient Care,16,4,Technical Degree,3,Female,90,4,4,Triage Specialist,4,Single,17100,19273,3,Yes,13,3,2,0,25,1,1,12,5,5,3
+29,0,Travel_Rarely,869,Patient Care,29,3,Technical Degree,3,Female,90,2,1,Patient Care Supervisor,1,Married,6640,16846,3,No,13,3,3,1,6,4,2,4,3,0,1
+48,0,Travel_Rarely,1389,Patient Care,27,2,Medical / Nursing,1,Female,61,3,3,Nurse Practitioner,4,Single,14780,9688,1,No,21,4,3,0,27,2,4,4,2,1,1
+28,0,Non-Travel,558,Patient Care,29,2,Life Sciences,3,Male,90,2,1,Patient Care Supervisor,4,Married,6640,8977,4,Yes,23,3,4,1,6,2,4,1,0,0,0
+32,0,Travel_Rarely,920,Clinical Operations,28,5,Healthcare Administration,1,Male,63,3,3,Clinical Nurse Specialist,2,Married,12540,17328,2,No,20,3,3,0,11,1,3,3,2,1,1
+27,0,Travel_Rarely,1241,Clinical Operations,9,2,Life Sciences,3,Male,48,3,1,Operations Manager,3,Married,6500,15248,5,Yes,14,3,2,0,5,1,3,2,0,0,0
+29,0,Non-Travel,450,Biomedical R&D,19,4,Biochemistry,4,Male,89,3,2,Principal Investigator,4,Single,9520,10993,1,Yes,14,3,3,1,8,2,4,2,1,1,0
+36,0,Travel_Rarely,1381,Clinical Operations,9,3,Biochemistry,1,Male,90,2,2,Clinical Director,3,Single,10500,18112,1,No,14,4,3,1,15,4,1,4,1,3,0
+30,0,Travel_Rarely,1006,Patient Care,21,3,Biochemistry,3,Female,57,3,1,Patient Care Supervisor,3,Single,7060,19481,5,No,23,3,3,1,9,4,3,1,0,0,0
+40,0,Travel_Rarely,626,Patient Care,4,3,Technical Degree,3,Male,80,3,2,Registered Nurse,3,Divorced,10920,23180,2,Yes,14,3,4,0,18,3,1,1,0,0,0
+41,0,Travel_Frequently,719,Clinical Operations,27,3,Life Sciences,4,Female,60,2,3,Operations Manager,3,Single,13800,9144,5,No,19,3,2,0,20,3,3,3,2,0,1
+34,0,Travel_Rarely,1192,Pharmacy & Therapeutics,18,4,Life Sciences,3,Male,55,4,4,Clinical Pharmacist,1,Married,15140,19896,5,No,22,3,2,0,11,4,4,11,10,2,8
+38,0,Travel_Rarely,1220,Biomedical R&D,23,3,Biochemistry,1,Male,73,3,5,Laboratory Technologist,4,Single,18440,10158,5,No,17,3,2,0,16,1,3,8,2,3,0
+28,0,Non-Travel,1334,Patient Care,2,2,Medical / Nursing,3,Male,83,3,1,Triage Specialist,4,Married,6500,9072,4,No,17,3,3,0,5,2,3,0,0,0,0
+34,0,Non-Travel,1323,Clinical Operations,4,4,Medical / Nursing,3,Female,49,3,3,Care Coordinator,3,Married,12820,9908,3,No,16,3,3,0,13,2,3,3,1,0,0
+22,0,Travel_Rarely,995,Clinical Operations,7,3,Biochemistry,3,Male,54,3,1,Clinical Nurse Specialist,3,Married,5940,21280,3,No,13,3,2,0,1,0,2,1,0,0,0
+39,0,Travel_Rarely,1294,Clinical Operations,19,3,Healthcare Administration,3,Male,98,2,1,Clinical Nurse Specialist,3,Married,8040,23050,1,No,16,3,3,1,16,3,3,2,1,1,0
+36,0,Travel_Rarely,1186,Pharmacy & Therapeutics,7,3,Medical / Nursing,1,Female,49,3,2,Clinical Pharmacist,2,Married,10500,14817,1,Yes,14,4,3,0,15,3,4,3,2,1,1
+35,0,Travel_Frequently,931,Pharmacy & Therapeutics,1,3,Technical Degree,3,Male,63,4,1,Pharmacy Manager,3,Single,7760,12093,5,No,15,3,3,2,14,0,4,11,6,6,5
+28,0,Travel_Rarely,1225,Clinical Operations,3,3,Medical / Nursing,4,Male,87,3,2,Operations Manager,3,Married,9380,20801,6,No,16,3,3,1,7,1,3,3,1,0,0
+40,0,Travel_Rarely,741,Patient Care,24,2,Technical Degree,3,Female,83,3,2,Nurse Practitioner,3,Divorced,11060,12986,2,Yes,17,3,4,0,19,3,2,5,4,4,3
+36,0,Travel_Rarely,1166,Clinical Operations,17,5,Biochemistry,4,Male,72,3,3,Clinical Director,1,Married,13100,13967,6,No,19,3,2,0,15,3,3,9,5,5,2
+46,0,Non-Travel,1015,Pharmacy & Therapeutics,11,3,Medical / Nursing,1,Female,55,4,4,Pharmacy Manager,3,Married,16820,19086,1,No,16,3,3,0,23,2,3,6,5,3,3
+30,0,Travel_Rarely,834,Patient Care,15,5,Life Sciences,2,Female,93,2,2,Nurse Practitioner,4,Married,9520,22744,1,No,23,3,2,0,8,2,4,1,0,0,0
+31,0,Travel_Rarely,696,Patient Care,26,3,Medical / Nursing,4,Female,96,2,1,Patient Care Supervisor,3,Married,6920,9285,4,Yes,13,3,4,0,8,0,2,1,0,0,0
+43,0,Travel_Rarely,668,Clinical Operations,21,4,Medical / Nursing,1,Female,75,3,4,Clinical Director,4,Married,16400,15887,3,No,17,3,2,0,20,2,3,11,3,7,2
+37,0,Non-Travel,1215,Biomedical R&D,9,3,Healthcare Administration,1,Male,85,2,2,Biomedical Scientist,3,Married,10360,19709,6,No,13,3,4,0,14,2,3,2,1,1,0
+45,1,Travel_Frequently,589,Patient Care,19,3,Biochemistry,2,Female,67,2,2,Triage Specialist,2,Divorced,11620,10240,2,Yes,13,3,4,1,23,1,2,2,1,1,0
+41,0,Travel_Rarely,562,Clinical Operations,23,3,Life Sciences,2,Female,66,3,3,Care Coordinator,3,Single,13660,17923,4,No,22,3,3,0,19,0,2,5,2,4,1
+44,0,Travel_Rarely,900,Clinical Operations,14,2,Technical Degree,3,Female,80,2,3,Clinical Director,3,Single,13940,20885,1,No,14,3,3,0,21,2,3,3,2,1,1
+28,0,Travel_Rarely,1316,Clinical Operations,2,4,Biochemistry,3,Female,93,3,2,Operations Manager,3,Married,9380,15374,3,Yes,13,4,3,0,7,1,3,4,3,1,2
+26,1,Travel_Rarely,927,Biomedical R&D,23,2,Biochemistry,4,Female,81,2,1,Principal Investigator,2,Divorced,6500,18384,2,No,23,3,3,0,5,2,3,3,2,1,1
+36,1,Travel_Rarely,596,Patient Care,19,5,Biochemistry,3,Female,55,3,1,Patient Care Supervisor,2,Married,7760,16162,6,No,18,3,3,0,14,0,1,2,0,0,0
+27,0,Travel_Rarely,837,Biomedical R&D,1,5,Technical Degree,2,Male,91,3,1,Biomedical Scientist,4,Single,6640,23216,3,No,15,3,4,1,6,2,4,1,0,0,0
+27,0,Travel_Rarely,405,Biomedical R&D,13,3,Healthcare Administration,3,Male,53,2,1,Clinical Research Associate,1,Married,6360,23640,3,No,11,3,4,0,4,3,1,4,1,2,0
+26,0,Travel_Rarely,1247,Clinical Operations,15,4,Life Sciences,2,Female,95,2,1,Clinical Director,4,Married,6500,17757,2,No,16,4,2,0,5,2,1,5,3,2,2
+31,0,Travel_Rarely,1106,Biomedical R&D,17,2,Medical / Nursing,3,Female,67,4,2,Clinical Research Associate,3,Single,9660,12253,5,Yes,16,3,2,0,9,1,3,7,4,6,2
+41,0,Travel_Rarely,1220,Pharmacy & Therapeutics,6,3,Healthcare Administration,4,Female,60,3,2,Pharmacy Manager,3,Single,11060,9691,1,No,20,3,4,2,19,3,3,4,3,3,1
+44,0,Travel_Frequently,531,Patient Care,27,4,Biochemistry,3,Male,98,4,4,Registered Nurse,3,Single,16820,16379,1,Yes,18,4,2,0,23,1,3,4,2,2,1
+43,1,Travel_Frequently,744,Clinical Operations,10,5,Medical / Nursing,4,Female,59,4,3,Care Coordinator,3,Divorced,13800,17416,5,No,19,3,3,1,20,0,3,4,3,1,1
+40,0,Travel_Rarely,1049,Clinical Operations,23,3,Life Sciences,2,Female,76,3,2,Operations Manager,3,Married,11060,13546,5,No,12,3,4,0,19,2,3,8,6,4,3
+39,0,Non-Travel,1284,Clinical Operations,7,3,Life Sciences,3,Male,91,3,3,Care Coordinator,3,Married,13240,11945,3,No,15,3,4,0,16,3,4,6,3,1,2
+31,0,Travel_Rarely,867,Patient Care,14,2,Life Sciences,1,Male,78,2,2,Patient Care Supervisor,2,Single,9800,10394,2,No,21,3,2,0,10,2,2,5,3,1,2
+33,1,Travel_Rarely,964,Biomedical R&D,6,3,Healthcare Administration,1,Female,71,3,1,Laboratory Technologist,4,Divorced,7480,21641,2,No,13,3,2,0,12,2,3,0,0,0,0
+35,0,Non-Travel,513,Clinical Operations,8,2,Medical / Nursing,2,Female,80,3,2,Operations Manager,4,Married,10080,10319,3,No,23,3,2,0,12,0,3,2,1,0,0
+36,0,Travel_Rarely,436,Biomedical R&D,26,2,Healthcare Administration,2,Female,90,3,1,Principal Investigator,2,Married,7900,23038,6,No,19,3,4,0,15,1,2,4,1,1,0
+31,0,Non-Travel,1317,Patient Care,1,3,Life Sciences,1,Female,77,3,1,Triage Specialist,3,Married,7060,17303,1,No,23,3,4,0,9,1,3,1,0,0,0
+30,0,Travel_Rarely,451,Clinical Operations,21,3,Healthcare Administration,4,Female,50,3,3,Operations Manager,3,Married,12120,13111,2,No,18,3,4,1,8,2,4,4,1,2,0
+28,1,Non-Travel,456,Biomedical R&D,14,4,Healthcare Administration,3,Female,66,3,1,Laboratory Technologist,3,Married,6780,9545,4,No,19,3,3,0,7,1,2,0,0,0,0
+22,0,Travel_Rarely,1069,Pharmacy & Therapeutics,5,4,Life Sciences,4,Male,71,3,1,Pharmacy Manager,3,Divorced,5940,23053,1,No,12,4,3,0,1,1,3,0,0,0,0
+33,0,Travel_Rarely,1019,Clinical Operations,15,3,Biochemistry,4,Male,54,4,1,Clinical Nurse Specialist,3,Married,7480,8916,3,No,15,3,2,2,12,3,2,0,0,0,0
+25,0,Travel_Frequently,854,Patient Care,14,3,Biochemistry,3,Male,47,4,1,Patient Care Supervisor,2,Divorced,6080,13031,3,No,19,3,3,1,2,2,4,2,1,0,0
+39,0,Travel_Rarely,995,Clinical Operations,6,2,Medical / Nursing,4,Female,83,3,2,Operations Manager,1,Divorced,10780,12322,6,No,17,3,3,0,17,2,3,3,1,1,0
+35,0,Travel_Rarely,1109,Biomedical R&D,8,4,Technical Degree,4,Male,64,2,1,Principal Investigator,4,Married,7620,12204,4,No,17,3,4,0,13,0,2,10,9,2,4
+33,0,Travel_Rarely,828,Clinical Operations,15,3,Medical / Nursing,3,Female,67,2,1,Clinical Nurse Specialist,4,Married,7480,19946,5,No,18,4,3,0,12,0,4,2,1,0,0
+34,0,Non-Travel,649,Patient Care,8,3,Healthcare Administration,4,Female,82,3,2,Nurse Practitioner,3,Single,10080,19117,2,Yes,11,3,3,0,12,2,4,3,2,1,1
+39,0,Travel_Rarely,598,Clinical Operations,25,2,Biochemistry,4,Male,80,3,2,Operations Manager,4,Married,10780,23366,6,No,17,3,3,1,17,2,3,2,1,0,0
+28,0,Non-Travel,571,Pharmacy & Therapeutics,4,5,Biochemistry,3,Female,65,3,1,Clinical Pharmacist,4,Married,6780,20667,2,Yes,18,3,3,0,7,1,4,6,3,3,2
+23,0,Travel_Frequently,718,Clinical Operations,8,4,Medical / Nursing,3,Female,64,3,1,Clinical Nurse Specialist,3,Divorced,6080,16592,3,Yes,11,3,3,0,2,1,3,2,1,1,0
+31,1,Travel_Rarely,850,Patient Care,16,3,Biochemistry,2,Male,58,2,1,Patient Care Supervisor,3,Single,7060,23946,1,Yes,17,3,4,0,9,2,2,0,0,0,0
+34,0,Travel_Frequently,830,Biomedical R&D,10,4,Biochemistry,2,Male,55,3,1,Biomedical Scientist,3,Married,7340,14843,3,No,14,3,3,0,11,2,3,8,3,2,2
+22,0,Non-Travel,609,Clinical Operations,9,3,Biochemistry,3,Male,92,4,1,Operations Manager,1,Married,5940,9855,6,Yes,12,3,3,2,1,3,3,0,0,0,0
+44,0,Non-Travel,1215,Clinical Operations,19,3,Biochemistry,4,Male,62,3,2,Operations Manager,2,Married,11480,14305,2,No,18,3,2,0,22,3,2,5,1,1,0
+34,0,Travel_Rarely,1006,Clinical Operations,2,3,Life Sciences,1,Male,71,4,1,Clinical Nurse Specialist,3,Single,7620,19839,3,Yes,20,3,3,2,13,0,4,3,1,0,0
+37,0,Travel_Rarely,896,Clinical Operations,10,5,Technical Degree,2,Female,76,3,4,Clinical Nurse Specialist,1,Married,15560,19184,2,Yes,15,3,4,0,14,1,3,4,1,3,0
+38,1,Travel_Rarely,724,Clinical Operations,24,5,Biochemistry,4,Male,93,3,4,Clinical Nurse Specialist,3,Married,15980,11064,5,Yes,20,3,3,0,17,2,2,5,2,4,1
+38,0,Non-Travel,727,Pharmacy & Therapeutics,28,2,Biochemistry,2,Male,99,2,2,Therapeutics Specialist,2,Married,10500,23405,3,No,16,4,4,0,15,2,2,8,7,3,4
+26,0,Travel_Rarely,848,Biomedical R&D,6,3,Technical Degree,3,Male,75,3,1,Biomedical Scientist,3,Single,6360,15927,5,Yes,18,3,2,0,4,1,4,1,0,0,0
+24,0,Non-Travel,510,Clinical Operations,17,4,Medical / Nursing,4,Male,52,3,2,Operations Manager,3,Divorced,8820,18493,6,No,12,4,3,1,3,4,3,3,2,1,1
+47,0,Travel_Rarely,660,Biomedical R&D,28,3,Life Sciences,4,Female,45,4,3,Biomedical Scientist,3,Married,14360,19574,1,No,15,3,4,1,24,1,1,3,1,1,0
+26,0,Travel_Rarely,913,Patient Care,14,5,Healthcare Administration,3,Female,80,3,1,Triage Specialist,3,Single,6360,17490,1,No,15,3,4,0,4,1,1,2,1,1,0
+34,0,Non-Travel,520,Clinical Operations,11,4,Biochemistry,4,Male,88,3,1,Clinical Director,3,Divorced,7480,19973,1,Yes,22,3,4,0,12,2,3,0,0,0,0
+47,0,Travel_Rarely,1187,Clinical Operations,14,4,Technical Degree,1,Male,97,3,5,Clinical Nurse Specialist,3,Married,19560,11868,1,No,18,3,2,1,24,2,2,9,3,7,1
+30,0,Non-Travel,802,Clinical Operations,22,3,Healthcare Administration,4,Female,63,3,1,Clinical Nurse Specialist,1,Married,6920,9755,3,No,23,3,3,1,8,2,3,3,2,2,1
+22,0,Travel_Rarely,1146,Clinical Operations,16,5,Medical / Nursing,2,Female,82,3,1,Clinical Nurse Specialist,2,Married,5940,8886,3,Yes,14,3,4,0,1,3,3,1,0,0,0
+25,0,Travel_Rarely,1261,Biomedical R&D,29,3,Medical / Nursing,4,Female,74,4,1,Principal Investigator,3,Married,6080,20356,1,No,17,3,3,1,2,2,1,2,1,0,0
+36,0,Travel_Rarely,473,Patient Care,17,5,Medical / Nursing,3,Female,63,2,1,Patient Care Supervisor,4,Married,7900,16312,5,Yes,17,4,3,1,15,3,1,0,0,0,0
+40,0,Travel_Frequently,559,Pharmacy & Therapeutics,4,5,Medical / Nursing,4,Male,56,4,5,Clinical Pharmacist,3,Divorced,18580,21552,1,No,20,3,3,0,17,3,4,10,7,7,2
+41,0,Non-Travel,872,Clinical Operations,6,3,Healthcare Administration,3,Male,96,3,5,Operations Manager,1,Married,18860,16232,2,Yes,17,3,3,1,19,1,4,13,10,7,6
+36,0,Travel_Frequently,921,Patient Care,9,3,Life Sciences,4,Female,90,4,3,Nurse Practitioner,4,Married,13100,23542,2,Yes,21,3,4,1,15,3,3,8,6,5,3
+22,0,Travel_Rarely,907,Pharmacy & Therapeutics,23,3,Life Sciences,1,Female,61,3,1,Therapeutics Specialist,4,Married,5940,18073,4,No,22,3,3,1,1,2,1,1,0,0,0
+42,0,Travel_Rarely,494,Clinical Operations,29,3,Medical / Nursing,3,Female,72,3,2,Clinical Nurse Specialist,3,Married,11060,10857,2,No,23,3,4,0,19,1,2,3,1,0,0
+36,0,Travel_Rarely,1083,Clinical Operations,10,4,Medical / Nursing,2,Female,75,2,3,Clinical Director,3,Married,12820,14368,4,No,19,3,3,1,13,1,3,4,1,1,0
+55,0,Travel_Rarely,1354,Patient Care,16,4,Biochemistry,2,Male,78,4,5,Registered Nurse,4,Married,20680,8125,2,Yes,11,4,3,0,32,1,4,6,2,3,1
+42,0,Travel_Frequently,918,Biomedical R&D,9,2,Medical / Nursing,1,Female,97,2,3,Clinical Research Associate,2,Married,13940,16771,2,No,22,3,2,1,21,4,3,5,4,4,2
+29,0,Travel_Rarely,763,Biomedical R&D,15,5,Life Sciences,1,Female,67,2,2,Principal Investigator,2,Single,9380,22582,6,No,19,3,2,0,7,2,2,7,2,3,1
+36,0,Travel_Rarely,427,Patient Care,20,3,Biochemistry,2,Male,98,3,1,Patient Care Supervisor,2,Married,7760,13243,5,No,22,3,2,0,14,2,4,8,7,2,6
+40,0,Travel_Rarely,621,Patient Care,15,4,Life Sciences,1,Male,52,3,5,Patient Care Supervisor,4,Married,18860,16471,1,No,20,3,4,0,19,3,3,11,5,3,4

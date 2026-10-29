@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareerPath Intelligence | Enterprise Career Progression & Retention Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('cp_intel_theme') || 'midnight';
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          var savedGrid = localStorage.getItem('cp_intel_grid');
+          if (savedGrid === 'true' || savedGrid === null) {
+            document.documentElement.setAttribute('data-grid', 'dots');
+          }
+          var savedDensity = localStorage.getItem('cp_intel_density') || 'compact';
+          document.documentElement.setAttribute('data-density', savedDensity);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
