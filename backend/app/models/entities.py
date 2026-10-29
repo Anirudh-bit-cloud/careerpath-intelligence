@@ -93,6 +93,10 @@ class InterventionRecord(Base):
     notes = Column(Text, nullable=True)
     committee_review_status = Column(String(32), default="Not Requested")  # Not Requested, Requested, Approved, Declined
     committee_notes = Column(Text, nullable=True)
+    outcome_status = Column(String(32), nullable=True)  # Retained, Promoted, Departed, In Progress
+    outcome_date = Column(DateTime, nullable=True)
+    retained_at_90_days = Column(Boolean, nullable=True)
+    succession_readiness = Column(String(32), nullable=True, default="1-2 years")  # Ready Now, 1-2 years, 3+ years
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

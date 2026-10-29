@@ -519,5 +519,52 @@ export const api = {
     const res = await fetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
     if (!res.ok) throw new Error('Failed to run backtest');
     return res.json();
+  },
+
+  // ── Succession Planning & Outcome Tracking ─────────────────────────
+  async getNineBoxGrid(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/succession/9-box`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch 9-box talent grid');
+    return res.json();
+  },
+
+  async getCriticalRoles(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/succession/critical-roles`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch critical roles');
+    return res.json();
+  },
+
+  async getInterventionEffectiveness(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/succession/effectiveness`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch intervention effectiveness');
+    return res.json();
+  },
+
+  async updateInterventionOutcome(interventionId: number, payload: {
+    outcome_status: string;
+    retained_at_90_days?: boolean;
+    succession_readiness?: string;
+    notes?: string;
+  }): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/succession/outcomes/${interventionId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to record intervention outcome');
+    return res.json();
   }
 };

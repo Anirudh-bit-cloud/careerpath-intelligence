@@ -17,6 +17,7 @@ import { ConnectorsView } from './views/ConnectorsView';
 import { TrustCenterView } from './views/TrustCenterView';
 import { DesignSystemView } from './views/DesignSystemView';
 import { FairnessAuditView } from './views/FairnessAuditView';
+import { SuccessionView } from './views/SuccessionView';
 import { GuidedTourModal } from './components/GuidedTourModal';
 
 import { ThemeProvider } from './context/ThemeContext';
@@ -214,6 +215,10 @@ function AppContent() {
 
           {currentTab === 'fairness-audit' && (
             <FairnessAuditView />
+          )}
+
+          {currentTab === 'succession' && (
+            <SuccessionView />
           )}
 
           {currentTab === 'impact-estimator' && (

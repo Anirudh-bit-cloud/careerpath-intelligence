@@ -33,6 +33,18 @@ def init_and_migrate_db():
             if "committee_notes" not in columns:
                 conn.execute(text("ALTER TABLE interventions ADD COLUMN committee_notes TEXT;"))
                 conn.commit()
+            if "outcome_status" not in columns:
+                conn.execute(text("ALTER TABLE interventions ADD COLUMN outcome_status VARCHAR(32);"))
+                conn.commit()
+            if "outcome_date" not in columns:
+                conn.execute(text("ALTER TABLE interventions ADD COLUMN outcome_date DATETIME;"))
+                conn.commit()
+            if "retained_at_90_days" not in columns:
+                conn.execute(text("ALTER TABLE interventions ADD COLUMN retained_at_90_days BOOLEAN;"))
+                conn.commit()
+            if "succession_readiness" not in columns:
+                conn.execute(text("ALTER TABLE interventions ADD COLUMN succession_readiness VARCHAR(32) DEFAULT '1-2 years';"))
+                conn.commit()
 
             # Check and migrate users table for security hardening columns
             user_cols_res = conn.execute(text("PRAGMA table_info(users);")).fetchall()

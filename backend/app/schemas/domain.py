@@ -2,7 +2,7 @@
 Pydantic schemas for data validation and API request/response models.
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 
@@ -17,6 +17,10 @@ class InterventionBase(BaseModel):
     owner: str = "HR Talent Partner"
     target_date: Optional[str] = None
     notes: Optional[str] = None
+    outcome_status: Optional[str] = None
+    outcome_date: Optional[datetime] = None
+    retained_at_90_days: Optional[bool] = None
+    succession_readiness: Optional[str] = "1-2 years"
 
 class InterventionCreate(InterventionBase):
     pass
@@ -29,14 +33,17 @@ class InterventionUpdate(BaseModel):
     owner: Optional[str] = None
     target_date: Optional[str] = None
     notes: Optional[str] = None
+    outcome_status: Optional[str] = None
+    outcome_date: Optional[datetime] = None
+    retained_at_90_days: Optional[bool] = None
+    succession_readiness: Optional[str] = None
 
 class InterventionResponse(InterventionBase):
     id: int
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ClusteringConfigRequest(BaseModel):
     n_clusters: int = Field(default=5, ge=2, le=10)
