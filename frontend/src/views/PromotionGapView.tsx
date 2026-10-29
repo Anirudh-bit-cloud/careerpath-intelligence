@@ -203,13 +203,21 @@ export const PromotionGapView: React.FC<PromotionGapViewProps> = ({ onSelectEmpl
 
       {/* ── ANALYTICAL DATA TABLE ── */}
       <div className="rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-cp-border bg-cp-bg-elevated/40 flex items-center justify-between">
-          <div className="text-xs font-semibold text-cp-text-primary">
-            Showing {data?.records.length || 0} of {data?.total_count || 0} Filtered Records
+        <div className="px-5 py-3.5 border-b border-cp-border bg-cp-bg-elevated/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="text-xs font-semibold text-cp-text-primary flex items-center gap-2">
+            <span>Showing {data?.records.length || 0} of {data?.total_count || 0} Filtered Records</span>
+            <span className="text-[10px] font-mono text-cp-text-muted bg-cp-bg-surface px-1.5 py-0.5 rounded border border-cp-border">
+              n = {data?.total_count || 1470}
+            </span>
           </div>
-          <div className="text-[11px] text-cp-text-muted font-mono">
+          <div className="text-[11px] text-cp-text-muted font-mono tabular-nums">
             Page {data?.page || 1} of {data?.total_pages || 1}
           </div>
+        </div>
+
+        {/* Model Card Disclosure */}
+        <div className="px-5 py-2 border-b border-cp-border/50 bg-cp-bg-elevated/20 text-[10.5px] text-cp-text-muted leading-tight">
+          Promotion latency benchmarks reflect deviation from role-level historical promotion cadences. Illustrative decision support based on synthetic benchmark profiles.
         </div>
 
         <div className="overflow-x-auto">

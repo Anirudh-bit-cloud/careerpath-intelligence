@@ -14,7 +14,8 @@ import {
   ExternalLink,
   Award,
   ChevronRight,
-  Filter
+  Filter,
+  Info
 } from 'lucide-react';
 import { api } from '../services/api';
 
@@ -158,6 +159,17 @@ export const SuccessionView: React.FC = () => {
               <span className="text-[11px] font-mono text-cp-text-muted">
                 Click any cell to drill into individual candidate tokens
               </span>
+            </div>
+
+            {/* Model Card Proxy Disclosure */}
+            <div className="p-3 rounded-lg bg-cp-bg-elevated/70 border border-cp-border text-[11px] text-cp-text-muted flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-cp-accent shrink-0 mt-0.5" />
+              <div className="space-y-0.5 leading-relaxed">
+                <span className="font-semibold text-cp-text-secondary">Model Card Proxy & Synthetic Data Disclosure:</span>
+                <p>
+                  "Potential" is an algorithmic proxy calculated from historical velocity, performance consistency, and developmental activity—not an innate or unalterable attribute. Evaluated workforce cohort: <strong className="font-mono text-cp-text-primary tabular-nums">n = {nineBoxData?.total_evaluated || 1470} profiles</strong>. Decision support only; requires human committee review.
+                </p>
+              </div>
             </div>
 
             {/* Grid layout */}
