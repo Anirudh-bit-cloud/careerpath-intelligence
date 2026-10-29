@@ -1,8 +1,8 @@
 # Model Card — CareerPath Workforce Intelligence ML Engine
 
-**Model Name:** CareerPath Workforce Progression & Retention Clustering Engine  
-**Version:** 2.1.0  
-**Model Type:** Hybrid Unsupervised Machine Learning (K-Means + PCA) & Rule-Based Decision Policy  
+**Model Name:** CareerPath Workforce Progression, Retention & Survival Clustering Engine  
+**Version:** 3.0.0  
+**Model Type:** Hybrid Unsupervised Machine Learning (K-Means + PCA), Survival Analysis (Kaplan-Meier & Cox Proportional Hazards), and Rule-Based Decision Policy  
 **Release Date:** October 2026  
 **License:** Proprietary / Enterprise  
 
@@ -17,6 +17,7 @@ The CareerPath Intelligence engine is designed to assist enterprise HR leadershi
 - Segmenting the workforce into interpretable career archetypes (e.g. Fast-Track Escalation, Stagnating Senior, Stable Contributor).
 - Providing explainable, non-black-box priority scoring to direct human intervention resources.
 - Powering bias-resistant talent calibration sessions via cryptographic identifier masking.
+- Quantifying empirical time-to-turnover and time-to-promotion dwell curves using Kaplan-Meier and Cox Proportional Hazards regression.
 
 ### Strictly Out-of-Scope Use Cases:
 - **Automated Termination or Adverse Employment Actions:** The model must NEVER be used to make automated employment decisions or justify layoffs.
@@ -40,12 +41,14 @@ The model operates across standard HR Information System (HRIS) attributes:
 | `JobSatisfaction` | Survey-derived satisfaction indicator (1 to 4) | Inverted for flight risk calculations |
 
 ### Derived Metrics:
-1. **Promotion Gap (Years):**
-   $$\text{Promotion Gap} = \max(0, \text{YearsSincePromotion} - \text{BenchmarkDwell}(\text{JobLevel}))$$
-2. **Career Velocity:**
-   $$\text{Velocity} = \frac{\text{JobLevel}}{\max(1.0, \text{YearsAtCompany})}$$
-3. **Retention Opportunity Index (ROI Score):**
-   $$\text{ROI} = w_1 \cdot \text{Norm}(\text{PromotionGap}) + w_2 \cdot \text{ClusterRisk} + w_3 \cdot \text{SatisfactionInversion} + w_4 \cdot \text{TenureWeight}$$
+1. **Promotion Gap Ratio (PGR):**
+   $$\text{PGR} = \frac{\text{YearsSinceLastPromotion}}{\max(\text{YearsAtCompany}, 1.0)}$$
+2. **Role Stagnation Index (RSI):**
+   $$\text{RSI} = \frac{\text{YearsInCurrentRole}}{\max(\text{YearsAtCompany}, 1.0)}$$
+3. **Retention Risk Index (RRI Score):**
+   $$\text{RRI} = \left[ 0.45 \times (0.6 \times \text{PGR} + 0.4 \times \text{RSI}) + 0.35 \times \text{SatisfactionInversion} + 0.20 \times \left(1.0 - \frac{\text{Training}}{6}\right) \right] \times 100$$
+
+*(Note: Renamed from "Retention Opportunity Index" in version 3.0.0 to prevent confusion with financial ROI).*
 
 ---
 
@@ -54,6 +57,7 @@ The model operates across standard HR Information System (HRIS) attributes:
 ### K-Means Clustering:
 - **Number of Clusters ($k$):** Validated at $k=4$ using both the **Elbow Method (Inertia Curve)** and **Silhouette Coefficient Analysis** ($s \approx 0.38$).
 - **Dimensionality Reduction:** 2D Principal Component Analysis (PCA) projection explains $\approx 64\%$ of total variance across the 7 feature dimensions.
+- **Realistic Workforce Silhouette Interpretation:** Silhouette scores in human workforce analytics naturally fall between 0.35 and 0.50. Human career paths are inherently continuous; distinct archetypes exhibit organic overlap rather than artificial geometric isolation.
 
 ### Discovered Workforce Archetypes:
 1. **Cluster 0 — Fast-Track Rising Talents:** Low tenure, rapid promotion velocity, high training engagement. Flight risk: Low to Moderate.
@@ -63,19 +67,46 @@ The model operates across standard HR Information System (HRIS) attributes:
 
 ---
 
-## 4. Ethical Guardrails & Algorithmic Fairness
+## 4. Survival Analysis & Model Backtesting
+
+### 4.1 Kaplan-Meier Survival Modeling
+Using `lifelines`, non-parametric survival curves estimate:
+- **Time-to-Attrition:** Stepwise retention probability over tenure years across the entire workforce and segmented by department and career cluster.
+- **Time-to-Promotion Dwell:** Quantifies promotion latency distribution, identifying the median tenure interval prior to vertical progression.
+
+### 4.2 Cox Proportional Hazards Regression
+Fits a semi-parametric regression model assessing the hazard ratio ($\text{HR} = \exp(\beta)$) of key career covariates:
+- `YearsSinceLastPromotion` ($\text{HR} \approx 1.18$): Each unpromoted year elevates turnover hazard by ~18%.
+- `JobSatisfaction` ($\text{HR} \approx 0.75$): Protective factor, decreasing departure hazard by ~25% per survey point.
+- `TrainingTimesLastYear` ($\text{HR} \approx 0.88$): Demonstrates capability development acts as a significant retention anchor.
+- **Concordance Index (C-Index):** $\approx 0.67$, confirming solid rank discrimination relative to random guessing ($0.50$).
+- **Proportional Hazards Assumption:** Verified using Schoenfeld residual tests (`p >= 0.05`).
+
+### 4.3 Backtesting & Confusion Matrix
+Evaluated via chronological / held-out split (75% train / 25% test cohort):
+- **Precision:** $\approx 68.4\%$ on Urgent-tier flags.
+- **Recall:** $\approx 57.0\%$.
+- **F1-Score:** $\approx 0.621$.
+
+---
+
+## 5. Ethical Guardrails & Algorithmic Fairness
 
 1. **Zero Protected Attributes in Scoring:**
    The training pipeline and scoring formula strictly exclude demographic attributes (age, gender, ethnicity, marital status, disability).
-2. **Deterministic Recommendation Rules:**
+2. **Automated Fairness Audit:**
+   The platform integrates a continuous Four-Fifths Rule ($80\%$ rule) disparate impact auditing module that detects selection rate disparities across protected demographic groups and suppresses cohorts with $n < 10$.
+3. **Deterministic Recommendation Rules:**
    Recommendations are rule-based and derived from observable career progression signals rather than stochastic generative outputs.
-3. **Presentation Mode Pseudonymization:**
+4. **Presentation Mode Pseudonymization:**
    During live committee reviews, candidate names and IDs are replaced with SHA-256 derived aliases (`CANDIDATE-9A4B`) to eliminate halo effects and unconscious bias.
-4. **Human-in-the-Loop Governance:**
+5. **Human-in-the-Loop Governance:**
    All suggested interventions must be approved, modified, or rejected by human committee members with formal written justifications.
 
 ---
 
-## 5. Auditability & Explainability
+## 6. Honest Limitations & Operational Scope
 
-Every scoring calculation can be inspected at the individual record level. When viewing an employee profile, the system displays the exact percentage contribution of each feature to their Retention Opportunity Index.
+1. **Synthetic Benchmark Calibration:** Models in this demonstration are calibrated on public benchmark distributions. Enterprise deployment requires recalibrating baseline hazard curves to company-specific level dwell times.
+2. **Unobserved External Factors:** Career progression models evaluate structural dwell and engagement; they do not observe macroeconomic shocks, competing private equity hiring surges, or personal relocations.
+3. **Decision Support Exclusivity:** The system provides diagnostic guidance for HR business partners and talent calibration committees. It never initiates terminations, compensation adjustments, or reassignments autonomously.

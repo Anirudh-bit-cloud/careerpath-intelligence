@@ -494,5 +494,30 @@ export const api = {
     });
     if (!res.ok) throw new Error(`Failed to fetch fairness data for ${attributeName}`);
     return res.json();
+  },
+
+  // ── Model Validation & Survival Analysis ───────────────────────────
+  async getValidationOverview(): Promise<any> {
+    const res = await fetch(`${API_BASE}/validation/metrics`);
+    if (!res.ok) throw new Error('Failed to fetch validation telemetry');
+    return res.json();
+  },
+
+  async getSurvivalCurves(): Promise<any> {
+    const res = await fetch(`${API_BASE}/validation/survival-curves`);
+    if (!res.ok) throw new Error('Failed to fetch survival curves');
+    return res.json();
+  },
+
+  async getCoxRegression(): Promise<any> {
+    const res = await fetch(`${API_BASE}/validation/cox-regression`);
+    if (!res.ok) throw new Error('Failed to fetch Cox regression');
+    return res.json();
+  },
+
+  async getBacktest(trainFraction: number = 0.75): Promise<any> {
+    const res = await fetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
+    if (!res.ok) throw new Error('Failed to run backtest');
+    return res.json();
   }
 };
