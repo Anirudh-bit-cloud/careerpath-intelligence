@@ -84,6 +84,12 @@ export const api = {
     return res.json();
   },
 
+  async getScoreExplanation(employeeId: string): Promise<any> {
+    const res = await fetch(`${API_BASE}/employees/${employeeId}/score-explanation`);
+    if (!res.ok) throw new Error(`Failed to fetch score explanation for ${employeeId}`);
+    return res.json();
+  },
+
   async searchEmployees(query: string = ''): Promise<any[]> {
     const res = await fetch(`${API_BASE}/employees?query=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error('Failed to search employees');

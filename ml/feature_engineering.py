@@ -91,9 +91,9 @@ def compute_career_features(df_input: pd.DataFrame) -> pd.DataFrame:
     ) * 100
     df['CareerDevelopmentNeedScore'] = dev_need_raw.round(1)
     
-    # 8. Retention Opportunity Index (ROI, 0 - 100)
+    # 8. Retention Risk Index (RRI, 0 - 100) — formerly Retention Opportunity Index (ROI)
     # The cornerstone metric: identifies engaged, active employees who are experiencing structural stagnation
-    # Note: Not an attrition probability. Represents potential impact of proactive career intervention.
+    # Note: Not an attrition probability. Represents potential risk of departure and impact of proactive career intervention.
     attrition_val = df['Attrition'] if 'Attrition' in df.columns else 0
     is_active = (attrition_val == 0) if isinstance(attrition_val, pd.Series) else True
     
@@ -102,20 +102,23 @@ def compute_career_features(df_input: pd.DataFrame) -> pd.DataFrame:
     
     is_engaged = (sat_level >= 2) & (involve_level >= 2)
     
-    # Opportunity calculation
+    # Risk calculation
     stagnation_weight = (df['PromotionGapRatio'] * 0.55) + (df['RoleStagnationIndex'] * 0.45)
     engagement_factor = (sat_level / 4.0 * 0.5) + (involve_level / 4.0 * 0.5)
     
-    roi_raw = ((stagnation_weight * 0.50) + (engagement_factor * 0.30) + (train_deficit * 0.20)) * 100
+    rri_raw = ((stagnation_weight * 0.50) + (engagement_factor * 0.30) + (train_deficit * 0.20)) * 100
     # Employees who are already disengaged or departed have lower proactive retention window
-    df['RetentionOpportunityIndex'] = np.where(is_active & is_engaged, roi_raw, roi_raw * 0.45).round(1)
+    calculated_rri = np.where(is_active & is_engaged, rri_raw, rri_raw * 0.45).round(1)
+    df['RetentionRiskIndex'] = calculated_rri
+    # Backward compatibility alias
+    df['RetentionOpportunityIndex'] = calculated_rri
     
-    roi_conditions = [
-        (df['RetentionOpportunityIndex'] >= 65.0),
-        (df['RetentionOpportunityIndex'] >= 45.0) & (df['RetentionOpportunityIndex'] < 65.0),
-        df['RetentionOpportunityIndex'] < 45.0
+    rri_conditions = [
+        (df['RetentionRiskIndex'] >= 65.0),
+        (df['RetentionRiskIndex'] >= 45.0) & (df['RetentionRiskIndex'] < 65.0),
+        df['RetentionRiskIndex'] < 45.0
     ]
-    df['RetentionPriority'] = np.select(roi_conditions, ['Urgent', 'Moderate', 'Standard'], default='Standard')
+    df['RetentionPriority'] = np.select(rri_conditions, ['Urgent', 'Moderate', 'Standard'], default='Standard')
     
     # 9. Anonymous Employee Identifier if not present
     if 'EmployeeID' not in df.columns:

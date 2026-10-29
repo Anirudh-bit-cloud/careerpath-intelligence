@@ -163,6 +163,18 @@ def get_employee_profile(employee_id: str, db: Session = Depends(get_db)):
     return profile
 
 
+@router.get("/employees/{employee_id}/score-explanation")
+def get_employee_score_explanation(employee_id: str):
+    """
+    Returns explainable component points waterfall and counterfactual analysis
+    showing how the employee can transition down one retention risk tier.
+    """
+    explanation = analytics_service.explain_score(employee_id)
+    if not explanation:
+        raise HTTPException(status_code=404, detail=f"Score explanation for employee {employee_id} not found")
+    return explanation
+
+
 # ==============================================================================
 # PERSISTENT INTERVENTIONS WORKFLOW (CRUD)
 # ==============================================================================

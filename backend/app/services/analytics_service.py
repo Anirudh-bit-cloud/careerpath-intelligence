@@ -434,7 +434,8 @@ class AnalyticsService:
         moderate_count = int((df['RetentionPriority'] == 'Moderate').sum()) if filtered_count > 0 else 0
         standard_count = int((df['RetentionPriority'] == 'Standard').sum()) if filtered_count > 0 else 0
         median_promotion_gap = float(round(df['YearsSinceLastPromotion'].median(), 1)) if filtered_count > 0 else 0.0
-        avg_opportunity_index = float(round(df['RetentionOpportunityIndex'].mean(), 1)) if filtered_count > 0 else 0.0
+        rri_col = 'RetentionRiskIndex' if 'RetentionRiskIndex' in df.columns else 'RetentionOpportunityIndex'
+        avg_risk_index = float(round(df[rri_col].mean(), 1)) if filtered_count > 0 else 0.0
         avg_tenure = float(round(df['YearsAtCompany'].mean(), 1)) if filtered_count > 0 else 0.0
 
         # Sort order
@@ -442,7 +443,7 @@ class AnalyticsService:
             ascending = (sort_dir.lower() == 'asc') if sort_dir else False
             df = df.sort_values(sort_by, ascending=ascending)
         else:
-            df = df.sort_values('RetentionOpportunityIndex', ascending=False)
+            df = df.sort_values(rri_col, ascending=False)
 
         total_count = len(df)
         total_pages = max(1, (total_count + page_size - 1) // page_size)
@@ -463,7 +464,7 @@ class AnalyticsService:
             'YearsInCurrentRole', 'YearsSinceLastPromotion', 'PromotionGapRatio',
             'RoleStagnationIndex', 'PromotionGapScore', 'CareerCluster',
             'TrainingTimesLastYear', 'JobSatisfaction', 'YearsWithCurrManager',
-            'RetentionOpportunityIndex', 'RetentionPriority', 'RecommendedCategory',
+            'RetentionRiskIndex', 'RetentionOpportunityIndex', 'RetentionPriority', 'RecommendedCategory',
             'RecommendedAction', 'RecommendationTriggers'
         ]
         # Keep only existing columns
@@ -482,7 +483,8 @@ class AnalyticsService:
                 "moderate_count": moderate_count,
                 "standard_count": standard_count,
                 "median_promotion_gap": median_promotion_gap,
-                "avg_opportunity_index": avg_opportunity_index,
+                "avg_risk_index": avg_risk_index,
+                "avg_opportunity_index": avg_risk_index,  # backward compatibility alias
                 "avg_tenure": avg_tenure
             },
             "urgent_category_breakdown": category_breakdown,
@@ -632,6 +634,7 @@ class AnalyticsService:
                 "trainings_last_year": orig_training,
                 "promotion_gap_ratio": round(orig_gap_ratio * 100, 1),
                 "role_stagnation_index": round(orig_stag_index * 100, 1),
+                "retention_risk_index": orig_roi,
                 "retention_opportunity_index": orig_roi,
                 "promotion_gap_risk": orig_risk
             },
@@ -641,6 +644,7 @@ class AnalyticsService:
                 "trainings_last_year": sim_training,
                 "promotion_gap_ratio": round(sim_gap_ratio * 100, 1),
                 "role_stagnation_index": round(sim_stag_index * 100, 1),
+                "retention_risk_index": sim_roi,
                 "retention_opportunity_index": sim_roi,
                 "promotion_gap_risk": sim_risk,
                 "retention_priority": sim_priority
@@ -671,6 +675,115 @@ class AnalyticsService:
             "missing_values": missing_summary,
             "duplicates_detected": int(df.duplicated().sum()),
             "dataset_status": "Clean & Verified" if completeness_pct >= 95.0 else "Needs Cleaning"
+        }
+
+    def explain_score(self, employee_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Computes detailed waterfall score explanation and counterfactual analysis
+        for moving down one tier.
+        """
+        df = self.df_enriched
+        if df is None:
+            return None
+        match = df[df['EmployeeID'] == employee_id]
+        if match.empty:
+            return None
+        emp = match.iloc[0].to_dict()
+
+        p_gap_ratio = float(emp.get('PromotionGapRatio', 0.0))
+        r_stag_index = float(emp.get('RoleStagnationIndex', 0.0))
+        stagnation_weight = (p_gap_ratio * 0.55) + (r_stag_index * 0.45)
+
+        sat_level = float(emp.get('JobSatisfaction', 3.0))
+        involve_level = float(emp.get('JobInvolvement', 3.0))
+        engagement_factor = (sat_level / 4.0 * 0.5) + (involve_level / 4.0 * 0.5)
+
+        training = float(emp.get('TrainingTimesLastYear', 2.0))
+        train_deficit = max(0.0, 1.0 - (training / 6.0))
+
+        # Raw component points out of 100
+        comp_stagnation = round(stagnation_weight * 0.50 * 100, 1)
+        comp_engagement = round(engagement_factor * 0.30 * 100, 1)
+        comp_training = round(train_deficit * 0.20 * 100, 1)
+
+        total_rri = round(comp_stagnation + comp_engagement + comp_training, 1)
+        priority = "Urgent" if total_rri >= 65.0 else ("Moderate" if total_rri >= 45.0 else "Standard")
+
+        components = [
+            {
+                "name": "Stagnation & Promotion Gap",
+                "weight": 0.50,
+                "value": round(stagnation_weight * 100, 1),
+                "contribution_points": comp_stagnation,
+                "description": f"Promotion gap ratio ({round(p_gap_ratio*100,1)}%) and role stagnation index ({round(r_stag_index*100,1)}%)"
+            },
+            {
+                "name": "Engagement & Satisfaction",
+                "weight": 0.30,
+                "value": round(engagement_factor * 100, 1),
+                "contribution_points": comp_engagement,
+                "description": f"Satisfaction ({sat_level}/4) and job involvement ({involve_level}/4)"
+            },
+            {
+                "name": "Training & Skills Deficit",
+                "weight": 0.20,
+                "value": round(train_deficit * 100, 1),
+                "contribution_points": comp_training,
+                "description": f"Annual training deficit ({round(train_deficit*100,1)}% based on {int(training)} sessions)"
+            }
+        ]
+
+        # Counterfactual: target threshold to move down one tier
+        target_tier = "Moderate" if priority == "Urgent" else ("Standard" if priority == "Moderate" else "Optimal")
+        target_score = 64.9 if priority == "Urgent" else (44.9 if priority == "Moderate" else total_rri)
+        score_diff_needed = max(0.0, round(total_rri - target_score, 1))
+
+        # How to achieve reduction:
+        # Option A: Promotion / Gap reduction
+        # Each year reduction in promotion gap decreases p_gap_ratio by ~ 1 / max(1, YearsAtCompany)
+        years_co = max(1.0, float(emp.get('YearsAtCompany', 5.0)))
+        # delta_score = delta_p_gap_ratio * 0.55 * 0.50 * 100 = delta_p_gap_ratio * 27.5
+        # delta_p_gap_ratio = delta_gap_years / years_co
+        # delta_score = (delta_gap_years / years_co) * 27.5 => delta_gap_years = score_diff_needed * years_co / 27.5
+        gap_reduction_years = round(score_diff_needed * years_co / 27.5, 1)
+
+        # Option B: Increase Training sessions
+        # Each training session reduces train_deficit by 1/6, lowering score by (1/6) * 0.20 * 100 = 3.33 points
+        trainings_needed = int(np.ceil(score_diff_needed / 3.33)) if score_diff_needed > 0 else 0
+
+        # Counterfactual explanation narrative
+        if priority == "Urgent":
+            narrative = (
+                f"Currently Urgent (RRI {total_rri}/100). To move down to Moderate (RRI ≤ 64.9), "
+                f"a score reduction of {score_diff_needed} points is needed. This can be achieved by: "
+                f"(1) Promoting or calibrating level dwell (reducing promotion latency by {min(gap_reduction_years, float(emp.get('YearsSinceLastPromotion', 3.0)))} yrs), or "
+                f"(2) Enrolling in {min(4, max(1, trainings_needed))} additional targeted L&D training modules alongside a lateral mentorship plan."
+            )
+        elif priority == "Moderate":
+            narrative = (
+                f"Currently Moderate (RRI {total_rri}/100). To transition to Standard (RRI ≤ 44.9), "
+                f"a score reduction of {score_diff_needed} points is required. This can be accomplished by resolving "
+                f"{min(gap_reduction_years, 2.0)} yrs of role latency or completing {min(3, max(1, trainings_needed))} skill certifications."
+            )
+        else:
+            narrative = f"Currently in Standard priority (RRI {total_rri}/100). Career progression trajectory is well-aligned with level dwell benchmarks."
+
+        return {
+            "employee_id": employee_id,
+            "job_role": emp.get('JobRole'),
+            "department": emp.get('Department'),
+            "retention_risk_index": total_rri,
+            "retention_opportunity_index": total_rri, # backward compatibility
+            "priority_tier": priority,
+            "components": components,
+            "counterfactual": {
+                "current_tier": priority,
+                "target_tier": target_tier,
+                "score_reduction_needed": score_diff_needed,
+                "gap_reduction_years": gap_reduction_years,
+                "trainings_needed": trainings_needed,
+                "explanation": narrative
+            }
         }
 
 # Global Singleton Instance

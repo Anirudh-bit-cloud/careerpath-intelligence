@@ -40,6 +40,8 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [scoreExplanation, setScoreExplanation] = useState<any | null>(null);
+  const [loadingExplanation, setLoadingExplanation] = useState<boolean>(false);
 
   // Development Plan Editor State
   const [devGoal, setDevGoal] = useState<string>('');
@@ -116,8 +118,12 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
       setLoadingProfile(true);
       setSaveSuccess(false);
       try {
-        const p = await api.getEmployeeProfile(selectedId);
+        const [p, exp] = await Promise.all([
+          api.getEmployeeProfile(selectedId),
+          api.getScoreExplanation(selectedId).catch(() => null)
+        ]);
         setProfileData(p);
+        setScoreExplanation(exp);
 
         // Prepopulate plan editor
         setDevGoal(`Resolve ${p.PromotionGapCategory} Promotion Stagnation & Elevate Capability`);
@@ -288,63 +294,63 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
 
           {/* DIAGNOSTIC SNAPSHOT & DEVELOPMENT PLAN EDITOR */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Career Snapshot Visualizer */}
+            {/* Waterfall Score Contribution & Counterfactual */}
             <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-4">
-              <div>
-                <h2 className="text-sm font-semibold text-cp-text-primary">
-                  Career Progression Diagnostic Snapshot
-                </h2>
-                <p className="text-[11px] text-cp-text-muted">
-                  Current enterprise snapshot metrics
-                </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] uppercase font-bold tracking-wider text-cp-accent">Explainable AI</div>
+                  <h2 className="text-sm font-semibold text-cp-text-primary">
+                    Retention Risk Index (RRI) Waterfall & Counterfactual
+                  </h2>
+                </div>
+                <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cp-accent/15 text-cp-accent border border-cp-accent/30">
+                  Total RRI: {scoreExplanation?.retention_risk_index ?? (profileData.RetentionRiskIndex ?? profileData.RetentionOpportunityIndex)}/100
+                </span>
               </div>
 
-              <div className="space-y-3 pt-2">
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-cp-text-secondary">Promotion Latency vs. Benchmark (3.0 yrs):</span>
-                    <span className="font-mono font-bold text-cp-text-primary">{profileData.YearsSinceLastPromotion} yrs</span>
-                  </div>
-                  <div className="w-full h-2 bg-cp-bg-elevated rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-300 ${
-                        profileData.YearsSinceLastPromotion >= 4 ? 'bg-rose-500' : 'bg-cp-accent'
-                      }`}
-                      style={{ width: `${Math.min(100, (profileData.YearsSinceLastPromotion / 8.0) * 100)}%` }}
-                    />
-                  </div>
+              {/* Waterfall Chart Elements */}
+              <div className="space-y-3 pt-1">
+                <div className="text-xs text-cp-text-muted">
+                  Weighted Factor Contributions:
                 </div>
-
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-cp-text-secondary">Role Tenure Stagnation Index:</span>
-                    <span className="font-mono font-bold text-cp-text-primary">
-                      {((profileData.RoleStagnationIndex || 0) * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-cp-bg-elevated rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-amber-500 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min(100, (profileData.RoleStagnationIndex || 0) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-cp-text-secondary">Training Participation (Benchmark: 3+/yr):</span>
-                    <span className="font-mono font-bold text-cp-text-primary">{profileData.TrainingTimesLastYear} / 6 max</span>
-                  </div>
-                  <div className="w-full h-2 bg-cp-bg-elevated rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-500 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min(100, (profileData.TrainingTimesLastYear / 6.0) * 100)}%` }}
-                    />
-                  </div>
-                </div>
+                {scoreExplanation?.components ? (
+                  scoreExplanation.components.map((comp: any, idx: number) => {
+                    const colors = ['bg-rose-500', 'bg-amber-500', 'bg-indigo-500'];
+                    return (
+                      <div key={idx} className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-cp-text-secondary font-medium">{comp.name}</span>
+                          <span className="font-mono font-bold text-cp-text-primary">+{comp.contribution_points} pts</span>
+                        </div>
+                        <div className="w-full h-2 bg-cp-bg-elevated rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${colors[idx % colors.length]}`}
+                            style={{ width: `${Math.min(100, (comp.contribution_points / 50.0) * 100)}%` }}
+                          />
+                        </div>
+                        <div className="text-[10px] text-cp-text-muted">{comp.description}</div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-xs text-cp-text-muted">Loading factor breakdown...</div>
+                )}
               </div>
 
-              <div className="p-3.5 rounded-lg bg-cp-bg-elevated border border-cp-border text-xs space-y-1.5">
+              {/* Counterfactual Guidance Box */}
+              {scoreExplanation?.counterfactual && (
+                <div className="p-3.5 rounded-lg bg-cp-bg-app border border-cp-accent/30 space-y-1.5 mt-3">
+                  <div className="text-[10.5px] uppercase font-bold text-cp-accent flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Counterfactual Transition Path ({scoreExplanation.counterfactual.current_tier} → {scoreExplanation.counterfactual.target_tier})</span>
+                  </div>
+                  <p className="text-xs text-cp-text-secondary leading-relaxed">
+                    {scoreExplanation.counterfactual.explanation}
+                  </p>
+                </div>
+              )}
+
+              <div className="p-3.5 rounded-lg bg-cp-bg-elevated border border-cp-border text-xs space-y-1.5 mt-3">
                 <div className="font-bold text-cp-text-primary">Explainable Model Triggers:</div>
                 <div className="text-cp-text-secondary text-[11px] leading-relaxed">
                   {profileData.RecommendationTriggers || 'Standard progression pattern'}

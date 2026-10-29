@@ -131,11 +131,38 @@ export interface EmployeeRecord {
   CareerCluster: string;
   RecommendedCategory: string;
   RecommendedAction: string;
-  RetentionOpportunityIndex?: number;
+  RetentionRiskIndex?: number;
+  RetentionOpportunityIndex?: number; // backward compatibility alias
   RetentionPriority?: string;
   RecommendationTriggers?: string;
   JobSatisfaction?: number;
   YearsWithCurrManager?: number;
+}
+
+export interface ScoreExplanationComponent {
+  name: string;
+  weight: number;
+  value: number;
+  contribution_points: number;
+  description: string;
+}
+
+export interface ScoreExplanationResponse {
+  employee_id: string;
+  job_role: string;
+  department: string;
+  retention_risk_index: number;
+  retention_opportunity_index?: number;
+  priority_tier: string;
+  components: ScoreExplanationComponent[];
+  counterfactual: {
+    current_tier: string;
+    target_tier: string;
+    score_reduction_needed: number;
+    gap_reduction_years: number;
+    trainings_needed: number;
+    explanation: string;
+  };
 }
 
 export interface PromotionGapResponse {

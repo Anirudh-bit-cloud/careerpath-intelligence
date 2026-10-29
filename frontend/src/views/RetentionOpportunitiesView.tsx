@@ -725,8 +725,8 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
                     {visibleColumns.training && <th className="py-2.5 px-3 text-right">L&D Trainings</th>}
                     {visibleColumns.cluster && <th className="py-2.5 px-3">Career Cluster</th>}
                     <th className="py-2.5 px-3 text-right">
-                      <div className="inline-flex items-center gap-1" title="Retention Opportunity Index prioritizes career development interventions. Not an attrition probability or financial ROI.">
-                        <span>Retention Opportunity Index</span>
+                      <div className="inline-flex items-center gap-1" title="Retention Risk Index (RRI) prioritizes proactive career development interventions based on dwell time and engagement.">
+                        <span>Retention Risk Index (RRI)</span>
                         <Info className="w-3 h-3 text-cp-text-muted" />
                       </div>
                     </th>
