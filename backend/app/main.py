@@ -24,6 +24,7 @@ from backend.app.api.pilot import router as pilot_router
 from backend.app.api.connectors import router as connectors_router
 from backend.app.api.v1_public import router as public_router
 from backend.app.api.governance import router as governance_router
+from backend.app.api.fairness import router as fairness_router
 
 # Initialize Database Schema & Run Migrations
 init_and_migrate_db()
@@ -145,6 +146,7 @@ app.include_router(pilot_router)
 app.include_router(connectors_router)
 app.include_router(public_router)
 app.include_router(governance_router)
+app.include_router(fairness_router)
 
 if __name__ == "__main__":
     import uvicorn

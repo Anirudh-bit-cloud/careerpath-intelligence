@@ -59,6 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { id: 'retention-opportunities', label: 'Retention Opportunities', icon: Target, badge: 'Urgent' },
         { id: 'committee', label: 'Talent Committee Review', icon: Briefcase, badge: 'New' },
+        { id: 'fairness-audit', label: 'Fairness & Bias Audit', icon: ShieldCheck, badge: 'Audit' },
         { id: 'impact-estimator', label: 'Impact & ROI Estimator', icon: Calculator, badge: 'ROI' },
         { id: 'employees', label: 'Employee Explorer', icon: UserSearch },
         { id: 'reports', label: 'Reports & Briefings', icon: FileSpreadsheet }

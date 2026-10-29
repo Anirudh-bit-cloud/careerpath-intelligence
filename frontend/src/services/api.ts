@@ -472,5 +472,27 @@ export const api = {
     const res = await fetch(`${API_BASE}/governance/data-subject-export?employee_id=${encodeURIComponent(employeeId)}`);
     if (!res.ok) throw new Error(`Failed to export data subject ${employeeId}`);
     return res.json();
+  },
+
+  // ── Fairness & Algorithmic Bias Audit ──────────────────────────────
+  async getFairnessSummary(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/fairness/summary`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to fetch fairness audit summary');
+    }
+    return res.json();
+  },
+
+  async getFairnessAttribute(attributeName: string): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/fairness/attribute/${attributeName}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error(`Failed to fetch fairness data for ${attributeName}`);
+    return res.json();
   }
 };

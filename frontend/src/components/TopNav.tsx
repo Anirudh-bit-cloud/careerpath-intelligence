@@ -39,6 +39,7 @@ const tabTitles: Record<string, { title: string; category: string }> = {
   'retention-opportunities': { title: 'Retention Opportunities', category: 'Intervention' },
   'manager-insights': { title: 'Manager Insights & Continuity', category: 'Leadership' },
   'committee': { title: 'Talent Review Committee Mode', category: 'Calibration' },
+  'fairness-audit': { title: 'Algorithmic Fairness & Bias Audit', category: 'Ethics & Compliance' },
   'impact-estimator': { title: 'Impact & ROI Estimator', category: 'Business Case' },
   'employees': { title: 'Employee Explorer & Profile', category: 'Talent' },
   'reports': { title: 'Reports & Analytical Briefings', category: 'Governance' },

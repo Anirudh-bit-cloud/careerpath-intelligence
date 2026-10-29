@@ -16,6 +16,7 @@ import { ImpactEstimatorView } from './views/ImpactEstimatorView';
 import { ConnectorsView } from './views/ConnectorsView';
 import { TrustCenterView } from './views/TrustCenterView';
 import { DesignSystemView } from './views/DesignSystemView';
+import { FairnessAuditView } from './views/FairnessAuditView';
 import { GuidedTourModal } from './components/GuidedTourModal';
 
 import { ThemeProvider } from './context/ThemeContext';
@@ -209,6 +210,10 @@ function AppContent() {
 
           {currentTab === 'committee' && (
             <CommitteeView onSelectEmployee={handleSelectEmployee} />
+          )}
+
+          {currentTab === 'fairness-audit' && (
+            <FairnessAuditView />
           )}
 
           {currentTab === 'impact-estimator' && (
