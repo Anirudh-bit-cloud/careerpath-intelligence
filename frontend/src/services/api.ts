@@ -566,5 +566,58 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to record intervention outcome');
     return res.json();
+  },
+
+  // ── Proactive Notification Channels ───────────────────────────────
+  async getNotificationPreferences(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/notifications/preferences`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch notification preferences');
+    return res.json();
+  },
+
+  async updateNotificationPreferences(payload: any): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/notifications/preferences`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to update notification preferences');
+    }
+    return res.json();
+  },
+
+  async testNotificationChannel(channel: 'email' | 'slack', target: string, message?: string): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/notifications/test`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ channel, target, message })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to dispatch test notification');
+    }
+    return res.json();
+  },
+
+  async getNotificationDeliveries(limit: number = 20): Promise<any[]> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await fetch(`${API_BASE}/notifications/deliveries?limit=${limit}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch notification deliveries');
+    return res.json();
   }
 };

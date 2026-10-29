@@ -192,3 +192,35 @@ class DatasetMetadata(Base):
     column_count = Column(Integer, nullable=False)
     upload_timestamp = Column(DateTime, default=datetime.utcnow)
     is_demo = Column(Integer, default=1)
+
+
+class NotificationPreference(Base):
+    __tablename__ = "notification_preferences"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", unique=True, index=True, nullable=False)
+    smtp_host = Column(String(128), default="smtp.internal.corp")
+    smtp_port = Column(Integer, default=587)
+    smtp_sender = Column(String(128), default="alerts@careerpath.corp")
+    smtp_username = Column(String(128), nullable=True)
+    smtp_password = Column(String(128), nullable=True)
+    smtp_use_tls = Column(Boolean, default=True)
+    slack_webhook_url = Column(String(256), nullable=True)
+    notify_urgent_digest = Column(Boolean, default=True)
+    notify_overdue_interventions = Column(Boolean, default=True)
+    notify_committee_reminders = Column(Boolean, default=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class NotificationDelivery(Base):
+    __tablename__ = "notification_deliveries"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    channel = Column(String(32), nullable=False)  # email, slack
+    recipient = Column(String(256), nullable=False)
+    event_type = Column(String(64), nullable=False)  # urgent_digest, overdue_reminder, committee_reminder, test_ping
+    status = Column(String(32), nullable=False)  # SENT, FAILED, SIMULATED
+    payload_json = Column(Text, nullable=True)
+    error_message = Column(Text, nullable=True)
+    sent_at = Column(DateTime, default=datetime.utcnow)

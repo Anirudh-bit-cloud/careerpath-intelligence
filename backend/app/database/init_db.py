@@ -8,7 +8,8 @@ import json
 from sqlalchemy import text
 from backend.app.database.connection import engine, Base, SessionLocal
 from backend.app.models.entities import (
-    Workspace, User, ScoringPolicy, CommitteeSession, PilotLead, InterventionRecord
+    Workspace, User, ScoringPolicy, CommitteeSession, PilotLead, InterventionRecord,
+    NotificationPreference, NotificationDelivery
 )
 from backend.app.core.security import hash_password
 

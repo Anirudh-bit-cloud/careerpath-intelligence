@@ -27,6 +27,8 @@ from backend.app.api.governance import router as governance_router
 from backend.app.api.fairness import router as fairness_router
 from backend.app.api.validation import router as validation_router
 from backend.app.api.succession import router as succession_router
+from backend.app.api.notifications import router as notifications_router
+from backend.app.services.scheduler_service import start_scheduler, stop_scheduler
 
 # Initialize Database Schema & Run Migrations
 init_and_migrate_db()
@@ -91,6 +93,14 @@ app = FastAPI(
     version="2.0.0"
 )
 
+@app.on_event("startup")
+def on_app_startup():
+    start_scheduler()
+
+@app.on_event("shutdown")
+def on_app_shutdown():
+    stop_scheduler()
+
 # Readiness & Version Telemetry Endpoints
 @app.get("/health")
 def health_check():
@@ -151,6 +161,7 @@ app.include_router(governance_router)
 app.include_router(fairness_router)
 app.include_router(validation_router)
 app.include_router(succession_router)
+app.include_router(notifications_router)
 
 if __name__ == "__main__":
     import uvicorn

@@ -46,10 +46,24 @@ export const SettingsView: React.FC = () => {
   const [alertOverdue, setAlertOverdue] = useState(true);
   const [alertCommittee, setAlertCommittee] = useState(true);
   const [notifSaved, setNotifSaved] = useState(false);
+  const [testResult, setTestResult] = useState<string | null>(null);
+  const [testingChannel, setTestingChannel] = useState(false);
 
   useEffect(() => {
     if (activeTab === 'validation' && !validationOverview) {
       loadValidationData();
+    } else if (activeTab === 'notifications') {
+      api.getNotificationPreferences().then(pref => {
+        if (pref) {
+          setSmtpHost(pref.smtp_host || 'smtp.internal.corp');
+          setSmtpPort(String(pref.smtp_port || 587));
+          setSmtpSender(pref.smtp_sender || 'careerpath-alerts@panw.corp');
+          setSlackWebhook(pref.slack_webhook_url || 'https://hooks.slack.com/services/T00/B00/XXXX');
+          setAlertUrgentTier(pref.notify_urgent_digest ?? true);
+          setAlertOverdue(pref.notify_overdue_interventions ?? true);
+          setAlertCommittee(pref.notify_committee_reminders ?? true);
+        }
+      }).catch(() => null);
     }
   }, [activeTab]);
 
@@ -71,10 +85,38 @@ export const SettingsView: React.FC = () => {
     }
   };
 
-  const handleSaveNotifications = (e: React.FormEvent) => {
+  const handleSaveNotifications = async (e: React.FormEvent) => {
     e.preventDefault();
-    setNotifSaved(true);
-    setTimeout(() => setNotifSaved(false), 3000);
+    try {
+      await api.updateNotificationPreferences({
+        smtp_host: smtpHost,
+        smtp_port: parseInt(smtpPort, 10) || 587,
+        smtp_sender: smtpSender,
+        slack_webhook_url: slackWebhook,
+        notify_urgent_digest: alertUrgentTier,
+        notify_overdue_interventions: alertOverdue,
+        notify_committee_reminders: alertCommittee
+      });
+      setNotifSaved(true);
+      setTimeout(() => setNotifSaved(false), 3000);
+    } catch (err) {
+      alert(`Error saving preferences: ${err}`);
+    }
+  };
+
+  const handleTestChannel = async (channel: 'email' | 'slack') => {
+    setTestingChannel(true);
+    setTestResult(null);
+    try {
+      const target = channel === 'email' ? smtpSender : slackWebhook;
+      const res = await api.testNotificationChannel(channel, target, `Test ping from CareerPath Intelligence settings panel.`);
+      setTestResult(`${channel.toUpperCase()}: ${res.status.toUpperCase()} (${res.channel || channel})`);
+      setTimeout(() => setTestResult(null), 4000);
+    } catch (err: any) {
+      setTestResult(`Failed: ${err.message || err}`);
+    } finally {
+      setTestingChannel(false);
+    }
   };
 
   return (
@@ -677,18 +719,43 @@ export const SettingsView: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 pt-3">
+              <div className="flex flex-wrap items-center gap-3 pt-3">
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-cp-accent text-white font-semibold text-xs hover:opacity-90 flex items-center gap-1.5 transition-opacity"
+                  className="px-4 py-2 rounded-lg bg-cp-accent text-white font-semibold text-xs hover:opacity-90 flex items-center gap-1.5 transition-opacity cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />
                   Save Alert Channels
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleTestChannel('slack')}
+                  disabled={testingChannel}
+                  className="px-3 py-2 rounded-lg border border-cp-border bg-cp-bg-elevated hover:bg-cp-bg-surface text-cp-text-primary font-semibold text-xs transition-colors cursor-pointer"
+                >
+                  Test Slack Webhook
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleTestChannel('email')}
+                  disabled={testingChannel}
+                  className="px-3 py-2 rounded-lg border border-cp-border bg-cp-bg-elevated hover:bg-cp-bg-surface text-cp-text-primary font-semibold text-xs transition-colors cursor-pointer"
+                >
+                  Test Email Dispatch
+                </button>
+
                 {notifSaved && (
                   <span className="text-xs font-medium text-emerald-400 flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     Channel configuration persisted!
+                  </span>
+                )}
+
+                {testResult && (
+                  <span className="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded border border-indigo-500/20">
+                    {testResult}
                   </span>
                 )}
               </div>
