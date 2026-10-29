@@ -110,6 +110,58 @@ export const FairnessAuditView: React.FC = () => {
         </button>
       </div>
 
+      {/* Executive Plain-Language Summary of Findings */}
+      <div className="p-4 rounded-xl bg-cp-bg-surface border border-cp-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
+        <div className="flex items-center gap-3">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+            auditData?.total_flags > 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'
+          }`}>
+            {auditData?.total_flags > 0 ? <AlertTriangle className="w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />}
+          </div>
+          <div>
+            <div className="text-xs font-bold text-cp-text-primary">
+              Executive Audit Summary: {auditData?.total_flags > 0
+                ? `${auditData.total_flags} Demographic Sub-group(s) Below 80% Parity Threshold`
+                : 'All Evaluated Demographic Cohorts Satisfy EEOC Four-Fifths Parity'}
+            </div>
+            <p className="text-[11.5px] text-cp-text-secondary mt-0.5 leading-snug">
+              {auditData?.total_flags > 0
+                ? 'Flagged groups exhibit disparate impact requiring proactive calibration in talent review sessions.'
+                : 'No actionable adverse impact detected in the active workforce dataset. All protected attributes show parity ratios ≥ 0.80.'}
+            </p>
+          </div>
+        </div>
+        <span className="text-[10px] font-mono font-bold text-cp-text-muted shrink-0 bg-cp-bg-elevated px-2 py-1 rounded border border-cp-border">
+          EEOC 4/5ths Uniform Guidelines
+        </span>
+      </div>
+
+      {/* Collapsible EEOC Four-Fifths Regulatory Guide Panel */}
+      <details className="rounded-xl border border-cp-border bg-cp-bg-surface p-4 group transition-all shadow-2xs">
+        <summary className="flex items-center justify-between cursor-pointer text-xs font-bold text-cp-text-primary select-none">
+          <span className="flex items-center gap-2">
+            <Info className="w-4 h-4 text-cp-accent" />
+            <span>How the EEOC Four-Fifths (80%) Rule Works (29 C.F.R. § 1607.4)</span>
+          </span>
+          <span className="text-[11px] text-cp-text-muted font-mono">Click to expand</span>
+        </summary>
+        <div className="mt-3 text-xs text-cp-text-secondary leading-relaxed space-y-2 border-t border-cp-border/50 pt-3">
+          <p>
+            The Four-Fifths Rule is an established regulatory test codified in Title 29 C.F.R. § 1607.4 (Uniform Guidelines on Employee Selection Procedures). If the selection, promotion, or favorable retention rate for any protected demographic class is less than 80% (4/5ths) of the rate for the highest-performing reference class, the practice is flagged as exhibiting adverse disparate impact.
+          </p>
+          <p>
+            <strong>Mathematical Formula:</strong>{' '}
+            <code className="px-1.5 py-0.5 rounded bg-cp-bg-elevated font-mono text-cp-accent text-[11px]">
+              Disparate Impact Ratio = (Favorable Rate of Protected Cohort) / (Favorable Rate of Benchmark Cohort)
+            </code>
+            . If this ratio is <strong>&lt; 0.80</strong>, the algorithm raises a formal compliance notification.
+          </p>
+          <p className="text-[11px] text-cp-text-muted">
+            *Privacy Safeguard: Demographics with fewer than 10 individuals ($n &lt; 10$) are automatically suppressed to guarantee employee anonymity and prevent small-sample volatility. Protected attributes are used strictly for post-hoc auditing and never as model inputs.
+          </p>
+        </div>
+      </details>
+
       {/* Prominent Legal Disclaimer Banner */}
       <div className="p-4 rounded-xl bg-cp-bg-surface border border-cp-accent/30 flex items-start gap-3">
         <Info className="w-5 h-5 text-cp-accent shrink-0 mt-0.5" />

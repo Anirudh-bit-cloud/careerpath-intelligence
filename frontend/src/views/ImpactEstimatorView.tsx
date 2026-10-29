@@ -9,7 +9,8 @@ import {
   Info,
   HelpCircle,
   Sliders,
-  CheckCircle2
+  CheckCircle2,
+  Printer
 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '../utils/format';
 import { useToast } from '../context/ToastContext';
@@ -91,8 +92,8 @@ PROJECTED FINANCIAL OUTCOMES:
             <h1 className="text-xl font-bold text-cp-text-primary">
               Pilot & Business Case Impact Estimator
             </h1>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-              Assumption-Driven
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+              Illustrative — Based on User Inputs
             </span>
           </div>
           <p className="text-xs text-cp-text-muted mt-1">
@@ -100,13 +101,23 @@ PROJECTED FINANCIAL OUTCOMES:
           </p>
         </div>
 
-        <button
-          onClick={handleExportBusinessCase}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cp-accent text-white hover:bg-cp-accent-hover transition-colors shadow-xs"
-        >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export Executive Briefing</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.print()}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cp-bg-surface border border-cp-border text-cp-text-primary hover:bg-cp-bg-hover transition-colors shadow-xs"
+            title="Print Executive Briefing"
+          >
+            <Printer className="w-3.5 h-3.5 text-cp-text-muted" />
+            <span className="hidden sm:inline">Print Brief</span>
+          </button>
+          <button
+            onClick={handleExportBusinessCase}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cp-accent text-white hover:bg-cp-accent-hover transition-colors shadow-xs"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export Briefing</span>
+          </button>
+        </div>
       </div>
 
       {/* Preset Buttons */}

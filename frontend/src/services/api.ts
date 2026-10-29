@@ -644,5 +644,41 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to fetch notification deliveries');
     return res.json();
+  },
+
+  // ── Multi-Factor Authentication & Profile ───────────────────────────
+  async setupMFA(): Promise<{ secret: string; otpauth_uri: string; recovery_codes: string[]; message: string }> {
+    const res = await authFetch(`${API_BASE}/auth/mfa/setup`, {
+      method: 'POST'
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to initiate MFA setup');
+    }
+    return res.json();
+  },
+
+  async verifyMFAEnrollment(totp_code: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/auth/mfa/verify-enrollment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ totp_code })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to verify MFA enrollment code');
+    }
+    return res.json();
+  },
+
+  async disableMFA(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/auth/mfa/disable`, {
+      method: 'POST'
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to disable MFA');
+    }
+    return res.json();
   }
 };

@@ -197,6 +197,17 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
             <span>Back to Employee Directory</span>
           </button>
 
+          {/* Decision Support Only Notice */}
+          <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-300 flex items-start gap-2.5 text-xs shadow-2xs">
+            <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="space-y-0.5 leading-relaxed">
+              <span className="font-bold">Human-in-the-Loop Decision Support Notice:</span>
+              <p className="text-[11px] text-amber-200/90">
+                This dossier and all analytical metrics are strictly for managerial coaching, retention planning, and career development support. No automated employment decisions, adverse actions, or compensation reductions may be taken based solely on algorithmic indices.
+              </p>
+            </div>
+          </div>
+
           {/* Profile Header Card */}
           <div className="p-6 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-cp-border">
