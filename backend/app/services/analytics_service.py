@@ -540,11 +540,37 @@ class AnalyticsService:
             "disclaimer": "Manager continuity is an observational indicator of supervisory tenure, not an individual evaluation of managerial effectiveness."
         }
 
+    def _match_employee(self, df: pd.DataFrame, employee_id: str):
+        if df is None:
+            return None
+        clean_id = str(employee_id).strip()
+        match = df[df['EmployeeID'] == clean_id]
+        if not match.empty:
+            return match
+        if clean_id.startswith('PANW-'):
+            alt = clean_id.replace('PANW-', '')
+            match = df[df['EmployeeID'] == alt]
+            if not match.empty:
+                return match
+        else:
+            match = df[df['EmployeeID'] == f'PANW-{clean_id}']
+            if not match.empty:
+                return match
+        if 'EmployeeNumber' in df.columns:
+            try:
+                num = int(clean_id.replace('PANW-', ''))
+                match = df[df['EmployeeNumber'] == num]
+                if not match.empty:
+                    return match
+            except Exception:
+                pass
+        return match
+
     def get_employee_profile(self, employee_id: str) -> Optional[Dict[str, Any]]:
         """Returns single employee career profile snapshot and diagnostic indicators."""
         df = self.df_enriched
-        match = df[df['EmployeeID'] == employee_id]
-        if match.empty:
+        match = self._match_employee(df, employee_id)
+        if match is None or match.empty:
             return None
 
         row = match.iloc[0].to_dict()
@@ -584,8 +610,8 @@ class AnalyticsService:
         or adding capability trainings for an employee.
         """
         df = self.df_enriched
-        match = df[df['EmployeeID'] == employee_id]
-        if match.empty:
+        match = self._match_employee(df, employee_id)
+        if match is None or match.empty:
             return None
         emp = match.iloc[0].to_dict()
 
@@ -685,8 +711,8 @@ class AnalyticsService:
         df = self.df_enriched
         if df is None:
             return None
-        match = df[df['EmployeeID'] == employee_id]
-        if match.empty:
+        match = self._match_employee(df, employee_id)
+        if match is None or match.empty:
             return None
         emp = match.iloc[0].to_dict()
 

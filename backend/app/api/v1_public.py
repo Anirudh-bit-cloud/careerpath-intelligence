@@ -3,7 +3,7 @@ Public Versioned API & Webhooks Engine.
 Provides versioned REST endpoints with API keys, HMAC signature validation, and event dispatch.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Header, status
+from fastapi import APIRouter, Depends, HTTPException, Header, status, Query
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, HttpUrl
 from typing import Optional, List, Dict, Any
@@ -22,18 +22,22 @@ router = APIRouter(prefix="/api", tags=["Public API & Webhooks"])
 
 class ApiKeyCreate(BaseModel):
     name: str
+    role: Optional[str] = "hr_analyst"
     scopes: Optional[List[str]] = ["read:roster", "read:plans", "write:plans"]
     workspace_id: Optional[str] = "default"
 
 
 class WebhookCreate(BaseModel):
-    url: str
-    events: Optional[List[str]] = ["plan.created", "plan.status_changed"]
+    url: Optional[str] = None
+    endpoint_url: Optional[str] = None
+    events: Optional[List[str]] = None
+    subscribed_events: Optional[List[str]] = None
+    secret_token: Optional[str] = None
     workspace_id: Optional[str] = "default"
 
 
 class WebhookTestRequest(BaseModel):
-    endpoint_id: int
+    endpoint_id: Optional[int] = None
 
 
 def verify_api_key(x_api_key: Optional[str] = Header(None), db: Session = Depends(get_db)) -> ApiKey:
@@ -154,12 +158,16 @@ def list_webhooks(workspace_id: str = "default", db: Session = Depends(get_db)):
 
 @router.post("/webhooks")
 def create_webhook(req: WebhookCreate, db: Session = Depends(get_db)):
-    secret = secrets.token_hex(24)
+    target_url = req.url or req.endpoint_url
+    if not target_url:
+        raise HTTPException(status_code=422, detail="url or endpoint_url is required.")
+    events = req.events or req.subscribed_events or ["plan.created", "plan.status_changed"]
+    secret = req.secret_token or secrets.token_hex(24)
     ep = WebhookEndpoint(
         workspace_id=req.workspace_id or "default",
-        url=req.url,
+        url=target_url,
         secret=secret,
-        events_json=json.dumps(req.events),
+        events_json=json.dumps(events),
         is_active=True
     )
     db.add(ep)
@@ -173,9 +181,22 @@ def create_webhook(req: WebhookCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/webhooks/test")
-def test_webhook_dispatch(req: WebhookTestRequest, db: Session = Depends(get_db)):
+def test_webhook_dispatch(
+    req: Optional[WebhookTestRequest] = None,
+    endpoint_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db)
+):
     """Simulates an event dispatch, computes HMAC-SHA256 signature, and logs delivery."""
-    ep = db.query(WebhookEndpoint).filter(WebhookEndpoint.id == req.endpoint_id).first()
+    target_id = None
+    if req and req.endpoint_id:
+        target_id = req.endpoint_id
+    elif endpoint_id is not None:
+        target_id = endpoint_id
+
+    if target_id is None:
+        raise HTTPException(status_code=422, detail="Missing endpoint_id.")
+
+    ep = db.query(WebhookEndpoint).filter(WebhookEndpoint.id == target_id).first()
     if not ep:
         raise HTTPException(status_code=404, detail="Webhook endpoint not found.")
 

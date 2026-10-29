@@ -75,26 +75,42 @@ def export_audit_logs_csv(
     )
 
 
-@router.post("/retention-preview")
-def preview_data_retention(req: RetentionPolicyRequest, db: Session = Depends(get_db)):
+@router.api_route("/retention-preview", methods=["GET", "POST"])
+def preview_data_retention(
+    req: Optional[RetentionPolicyRequest] = None,
+    retention_days: Optional[int] = Query(None),
+    retention_months: Optional[int] = Query(None),
+    db: Session = Depends(get_db)
+):
     """Previews how many records exceed the data retention threshold without purging."""
-    cutoff_date = datetime.utcnow() - timedelta(days=req.retention_months * 30)
+    months = 24
+    if req and req.retention_months:
+        months = req.retention_months
+    elif retention_months:
+        months = retention_months
+    elif retention_days:
+        months = max(1, round(retention_days / 30))
+
+    cutoff_date = datetime.utcnow() - timedelta(days=months * 30)
     eligible_plans = db.query(InterventionRecord).filter(InterventionRecord.created_at < cutoff_date).count()
     return {
-        "retention_threshold_months": req.retention_months,
+        "retention_threshold_months": months,
         "cutoff_date": cutoff_date.strftime("%Y-%m-%d"),
         "records_exceeding_threshold": eligible_plans,
         "action_required": "Confirmation token required to execute purge."
     }
 
 
+@router.get("/data-subject-export")
 @router.get("/data-subject-export/{employee_id}")
 def export_data_subject(
-    employee_id: str,
+    employee_id: Optional[str] = None,
     current_user: Dict[str, Any] = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Exports all stored records for an employee for data privacy & subject access compliance."""
+    if not employee_id:
+        raise HTTPException(status_code=400, detail="Employee ID required.")
     profile = analytics_service.get_employee_profile(employee_id)
     plans = db.query(InterventionRecord).filter(InterventionRecord.employee_id == employee_id).all()
 

@@ -19,7 +19,7 @@ router = APIRouter(prefix="/api/policy", tags=["Scoring Policy & Dwell Threshold
 
 class PolicyPreviewRequest(BaseModel):
     weights: Dict[str, float]
-    thresholds: Dict[str, float]
+    thresholds: Optional[Dict[str, float]] = None
 
 
 class PolicyUpdateRequest(BaseModel):
@@ -78,7 +78,15 @@ def get_active_policy(workspace_id: str = "default", db: Session = Depends(get_d
 @router.post("/preview")
 def preview_policy_impact(req: PolicyPreviewRequest):
     """Calculates exactly how many employees move between Urgent, Moderate, and Standard tiers BEFORE applying."""
-    simulation = analytics_service.simulate_policy_impact(req.weights, req.thresholds)
+    default_thresholds = {
+        "level_1_dwell_years": 2.0,
+        "level_2_dwell_years": 3.0,
+        "level_3_dwell_years": 4.0,
+        "level_4_dwell_years": 5.0,
+        "level_5_dwell_years": 6.0
+    }
+    thresholds = req.thresholds if req.thresholds else default_thresholds
+    simulation = analytics_service.simulate_policy_impact(req.weights, thresholds)
     return {
         "status": "success",
         "simulation": simulation
