@@ -16,6 +16,7 @@ from backend.app.schemas.domain import (
     InterventionCreate, InterventionUpdate, InterventionResponse
 )
 from backend.app.services.analytics_service import analytics_service
+from backend.app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api")
 
@@ -183,9 +184,11 @@ def get_employee_score_explanation(employee_id: str):
 def list_interventions(
     status_filter: Optional[str] = None,
     priority_filter: Optional[str] = None,
+    current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    query = db.query(InterventionRecord)
+    ws_id = current_user.get("workspace_id", "default")
+    query = db.query(InterventionRecord).filter(InterventionRecord.workspace_id == ws_id)
     if status_filter and status_filter != "All":
         query = query.filter(InterventionRecord.status == status_filter)
     if priority_filter and priority_filter != "All":
@@ -194,8 +197,14 @@ def list_interventions(
 
 
 @router.post("/interventions", response_model=InterventionResponse, status_code=status.HTTP_201_CREATED)
-def create_intervention(payload: InterventionCreate, db: Session = Depends(get_db)):
+def create_intervention(
+    payload: InterventionCreate,
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    ws_id = current_user.get("workspace_id", "default")
     record = InterventionRecord(
+        workspace_id=ws_id,
         employee_id=payload.employee_id,
         department=payload.department,
         job_role=payload.job_role,
@@ -214,8 +223,17 @@ def create_intervention(payload: InterventionCreate, db: Session = Depends(get_d
 
 
 @router.put("/interventions/{intervention_id}", response_model=InterventionResponse)
-def update_intervention(intervention_id: int, payload: InterventionUpdate, db: Session = Depends(get_db)):
-    record = db.query(InterventionRecord).filter(InterventionRecord.id == intervention_id).first()
+def update_intervention(
+    intervention_id: int,
+    payload: InterventionUpdate,
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    ws_id = current_user.get("workspace_id", "default")
+    record = db.query(InterventionRecord).filter(
+        InterventionRecord.id == intervention_id,
+        InterventionRecord.workspace_id == ws_id
+    ).first()
     if not record:
         raise HTTPException(status_code=404, detail="Intervention record not found")
 
@@ -228,8 +246,16 @@ def update_intervention(intervention_id: int, payload: InterventionUpdate, db: S
 
 
 @router.delete("/interventions/{intervention_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_intervention(intervention_id: int, db: Session = Depends(get_db)):
-    record = db.query(InterventionRecord).filter(InterventionRecord.id == intervention_id).first()
+def delete_intervention(
+    intervention_id: int,
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    ws_id = current_user.get("workspace_id", "default")
+    record = db.query(InterventionRecord).filter(
+        InterventionRecord.id == intervention_id,
+        InterventionRecord.workspace_id == ws_id
+    ).first()
     if not record:
         raise HTTPException(status_code=404, detail="Intervention record not found")
     db.delete(record)

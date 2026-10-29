@@ -4,7 +4,11 @@ CareerPath Intelligence - Main FastAPI Application
 
 import os
 import sys
-from fastapi import FastAPI, Request
+import uuid
+import time
+import json
+import logging
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -114,10 +118,71 @@ def readiness_check():
 def version_telemetry():
     return {
         "app": "CareerPath Intelligence",
-        "version": "2.2.0",
+        "version": "3.0.0",
         "build": "enterprise-pitch-release",
         "supported_workspaces": ["panw-cyber", "fintech-apex", "health-clinical"]
     }
+
+# Prometheus Metrics Endpoint
+_request_counter = {"GET": 0, "POST": 0, "PUT": 0, "DELETE": 0}
+
+@app.get("/metrics")
+def prometheus_metrics():
+    from backend.app.services.analytics_service import analytics_service
+    df = analytics_service.df_enriched
+    total_records = len(df) if df is not None else 0
+    urgent_records = int((df['RetentionPriority'] == 'Urgent').sum()) if df is not None and 'RetentionPriority' in df.columns else 0
+
+    metrics_text = (
+        "# HELP careerpath_http_requests_total Total HTTP requests handled by method.\n"
+        "# TYPE careerpath_http_requests_total counter\n"
+        f'careerpath_http_requests_total{{method="GET"}} {_request_counter.get("GET", 0)}\n'
+        f'careerpath_http_requests_total{{method="POST"}} {_request_counter.get("POST", 0)}\n'
+        f'careerpath_http_requests_total{{method="PUT"}} {_request_counter.get("PUT", 0)}\n'
+        f'careerpath_http_requests_total{{method="DELETE"}} {_request_counter.get("DELETE", 0)}\n\n'
+        "# HELP careerpath_active_workforce_records Total active workforce records loaded.\n"
+        "# TYPE careerpath_active_workforce_records gauge\n"
+        f"careerpath_active_workforce_records {total_records}\n\n"
+        "# HELP careerpath_retention_urgent_total Total employees in urgent flight risk tier.\n"
+        "# TYPE careerpath_retention_urgent_total gauge\n"
+        f"careerpath_retention_urgent_total {urgent_records}\n"
+    )
+    return Response(content=metrics_text, media_type="text/plain; version=0.0.4; charset=utf-8")
+
+# ── STRUCTURED JSON LOGGING & REQUEST ID MIDDLEWARE ──────────────────────────
+logger = logging.getLogger("careerpath.access")
+
+class StructuredLoggingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        req_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        request.state.request_id = req_id
+        start_time = time.time()
+
+        # Update counter
+        method = request.method.upper()
+        if method in _request_counter:
+            _request_counter[method] += 1
+
+        response = await call_next(request)
+        latency_ms = round((time.time() - start_time) * 1000, 2)
+        response.headers["X-Request-ID"] = req_id
+
+        log_payload = {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "request_id": req_id,
+            "method": request.method,
+            "path": request.url.path,
+            "status_code": response.status_code,
+            "latency_ms": latency_ms,
+            "client_ip": request.client.host if request.client else "unknown"
+        }
+        # Avoid logging noisy health checks in normal logs
+        if request.url.path not in ["/health", "/ready", "/metrics"]:
+            logger.info(json.dumps(log_payload))
+
+        return response
+
+app.add_middleware(StructuredLoggingMiddleware)
 
 # ── SECURITY HEADERS MIDDLEWARE ──────────────────────────────────────────────
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):

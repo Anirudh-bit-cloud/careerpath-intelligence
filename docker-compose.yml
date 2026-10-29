@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: careerpath-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-careerpath}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-careerpath_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-careerpath_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U careerpath -d careerpath_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   careerpath-app:
     build:
       context: .
@@ -9,15 +27,22 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=sqlite:///./backend/careerpath.db
+      - DATABASE_URL=postgresql://careerpath:careerpath_secret@postgres:5432/careerpath_db
       - SECRET_KEY=cp-super-secret-production-signing-key-change-me
       - DEFAULT_WORKSPACE=panw-cyber
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173
     volumes:
       - ./backend/data:/app/backend/data
       - ./data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+volumes:
+  postgres_data:

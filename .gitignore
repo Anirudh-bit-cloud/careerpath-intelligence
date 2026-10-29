@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+node_modules/
+dist/
+backend/careerpath.db
+*.log
+.DS_Store
