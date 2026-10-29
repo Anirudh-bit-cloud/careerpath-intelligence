@@ -38,6 +38,13 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login = Column(DateTime, nullable=True)
 
+    # Security hardening fields
+    failed_login_attempts = Column(Integer, default=0)
+    locked_until = Column(DateTime, nullable=True)
+    mfa_enabled = Column(Boolean, default=False)
+    mfa_secret = Column(String(64), nullable=True)
+    mfa_recovery_codes_json = Column(Text, nullable=True)
+
 
 class ScoringPolicy(Base):
     __tablename__ = "scoring_policies"

@@ -33,6 +33,25 @@ def init_and_migrate_db():
             if "committee_notes" not in columns:
                 conn.execute(text("ALTER TABLE interventions ADD COLUMN committee_notes TEXT;"))
                 conn.commit()
+
+            # Check and migrate users table for security hardening columns
+            user_cols_res = conn.execute(text("PRAGMA table_info(users);")).fetchall()
+            user_cols = [row[1] for row in user_cols_res]
+            if "failed_login_attempts" not in user_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN failed_login_attempts INTEGER DEFAULT 0;"))
+                conn.commit()
+            if "locked_until" not in user_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN locked_until DATETIME;"))
+                conn.commit()
+            if "mfa_enabled" not in user_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN mfa_enabled BOOLEAN DEFAULT 0;"))
+                conn.commit()
+            if "mfa_secret" not in user_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN mfa_secret VARCHAR(64);"))
+                conn.commit()
+            if "mfa_recovery_codes_json" not in user_cols:
+                conn.execute(text("ALTER TABLE users ADD COLUMN mfa_recovery_codes_json TEXT;"))
+                conn.commit()
         except Exception as e:
             print(f"[Migration Notice] Interventions column check: {e}")
 
