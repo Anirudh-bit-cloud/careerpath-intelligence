@@ -32,6 +32,7 @@ const ViewLoadingFallback = () => (
   </div>
 );
 import { GuidedTourModal } from './components/GuidedTourModal';
+import { FirstRunChecklist } from './components/FirstRunChecklist';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ReauthModal } from './components/ReauthModal';
 
@@ -349,6 +350,12 @@ function AppContent() {
       <ShortcutsModal
         isOpen={shortcutsOpen}
         onClose={() => setShortcutsOpen(false)}
+      />
+
+            {/* First-Run Onboarding Checklist Widget */}
+      <FirstRunChecklist
+        currentTab={currentTab}
+        onNavigateTab={(tab) => navigate(tab)}
       />
 
       {/* In-Place Session Re-authentication Modal (401 & 423) */}

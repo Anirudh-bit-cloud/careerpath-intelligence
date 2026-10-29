@@ -142,7 +142,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
                 {overviewData?.kpis.high_promotion_gap_cases || 517} Employees
               </div>
               <div className="text-[11px] text-cp-text-muted mt-1">
-                Spent $\ge 50\%$ of company tenure without vertical promotion.
+                Spent ≥ 50% of company tenure without vertical promotion.
               </div>
             </div>
 
@@ -152,7 +152,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
                 {overviewData?.kpis.urgent_retention_opportunities || 246} Employees
               </div>
               <div className="text-[11px] text-cp-text-muted mt-1">
-                High-performing and satisfied, but unpromoted for $\ge 4.0$ years.
+                High-performing and satisfied, but unpromoted for ≥ 4.0 years.
               </div>
             </div>
 

@@ -5,7 +5,62 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [3.0.0] — 2026-10-30
+## [3.1.0] — 2026-10-30
+
+### Enterprise Frontend Redesign — Calm, Trustworthy & Accessible UX Architecture
+
+#### Phase 1: Design System Consolidation
+- **3 Core Accessible Themes:** Consolidated visual styling from novelty themes down to three intentional themes: Light (architectural white/slate, default), Dark (charcoal slate), and High Contrast (WCAG AAA monochrome). Removed dot-matrix telemetry background.
+- **5 Muted Accessible Accents:** Restricted accent color choices to `slate-navy`, `forest-sage`, `warm-amber`, `deep-indigo`, and `rosewood`.
+- **Single Source of Truth (`tokens.ts`):** Defined complete typography, spacing, radius, elevation, z-index, and theme tokens in `tokens.ts` mapped to CSS custom variables (`--cp-*`).
+- **Tabular Numerics:** Standardized monospace tabular numbers (`tabular-nums font-mono`) across all data tables and KPI cards to eliminate layout jitter.
+- **Shared Primitive Library (`components/ui/`):** Standardized `Button`, `IconButton`, `Input`, `Select`, `Checkbox`, `Switch`, `Tabs`, `Badge`, `Card`, `MetricCard`, `DataTable`, `Drawer`, `Modal`, `Tooltip`, `PageHeader`, `FilterBar`, `EmptyState`, `ErrorState`, `Skeleton`.
+
+#### Phase 2: Information Architecture & Navigation
+- **6 Canonical Enterprise Groups:** Reorganized navigation sidebar into Overview, Workforce Analytics, Decisions, Governance & Trust, Integrations, and Administration.
+- **Role-Based Access Control (RBAC) Filtering:** Navigation items dynamically filter based on active user persona (`admin`, `hrbp`, `hr_analyst`, `talent_committee`).
+- **Cleaned Sidebar Badges:** Removed decorative novelty badges (`ML`, `New`, `ROI`, `API`, `9-Box`, `Audit`), retaining only functional counts (e.g. urgent flight risk candidates).
+- **URL Hash Routing & Shareable State:** Implemented bidirectional hash routing (`#/retention-opportunities`, `#/employees?id=PANW-1042`) supporting browser history and shareable deep links.
+- **Refreshed Command Palette & Shortcuts:** Updated global search and keyboard shortcut modal (`Ctrl+K` and `?`) to support role switching, theme switching, and quick employee search.
+
+#### Phase 3: States, Errors & Resilience
+- **Global & Route ErrorBoundary:** Built React Error Boundary catching unhandled exceptions and presenting a restrained fallback page with retry and overview navigation.
+- **In-Place Session Re-Authentication (`ReauthModal`):** Intercepts HTTP 401 (session expiration) and HTTP 423 (account lockout) in-place without losing uncommitted user form data.
+- **Optimistic Updates with Rollback:** Applied optimistic updates with immediate local state reflection and toast confirmation for committee decisions, with automatic state rollback on network failure.
+- **Standardized Loading & Empty States:** Replaced raw spinners with structural skeleton placeholders and actionable empty states across all workspaces.
+
+#### Phase 4: Data Visualization & Tables
+- **Shared Chart Wrapper (`ChartWrapper`):** Encapsulated charts with standardized titles, plain-language executive takeaway lines, units badges, and an accessible "View as Table" toggle.
+- **DataTable Primitives:** Standardized column sorting, visibility toggles, pagination, density switching, and CSV export.
+- **Model Card & Proxy Disclosures:** Displayed explicit proxy notices on the 9-box matrix and promotion gap tables, highlighting sample sizes ($n$) and clarifying that "Potential" is a managerial evaluation proxy.
+
+#### Phase 5: Sensitive Workflows Polish
+- **Talent Committee Presentation Mode:** Added candidate pseudonymization (masking IDs and names) for unconscious bias mitigation, prominent active indicator, and required 15-character justification before decision recording.
+- **Talent Decision Confirmation Dialog:** Added pre-commit modal confirming Approve, Defer, or Reject actions.
+- **Fairness Audit Enhancements:** Added plain-language executive summary of findings, collapsible EEOC Four-Fifths regulatory guide (29 C.F.R. § 1607.4), and distinct badges for suppressed cohorts ($n < 10$).
+- **Human-in-the-Loop Notices:** Embedded explicit decision-support notices in `EmployeeExplorerView` prohibiting automated adverse employment actions.
+- **Security & MFA Settings Tab:** Added full TOTP Authenticator enrollment workflow, 8 single-use recovery codes display with Copy/Download buttons, and active session revocation in `SettingsView`.
+
+#### Phase 6: Accessibility & Internationalization (WCAG 2.2 AA)
+- **Reduced Motion Support:** Injected `@media (prefers-reduced-motion: reduce)` system rules in `index.css`.
+- **Keyboard Navigation & Focus Indicators:** Standardized visible 2px outline offsets on all interactive controls.
+- **i18n & Formatting Scaffolding (`utils/i18n.ts`):** Created ECMAScript Intl-based formatting for numbers, currencies, percentages, and dates, with localized string dictionaries.
+- **Playwright Accessibility Flow:** Added Flow 7 to `e2e/test_critical_flows.spec.ts` validating landmarks, dialogs, and keyboard accessibility.
+
+#### Phase 7: Performance & Quality
+- **Dynamic Route-Level Code Splitting:** Lazy-loaded all heavy analytical workspaces using `React.lazy` and `Suspense`.
+- **Initial Bundle Optimization:** Reduced initial JavaScript down to **107.95 kB gzipped** (well beneath the 250 kB budget).
+- **Vendor Chunking:** Separated `vendor-react` and `vendor-icons` manual chunks.
+- **Code Quality:** Verified clean compilation via `tsc -b && vite build` and 0 errors across 63 files via `oxlint`.
+
+#### Phase 8: Landing Page & Onboarding
+- **Refined Value Proposition & How It Works:** Modernized `LandingView` with clear 3-step value delivery, pilot inquiry modal with inline validation and confirmation state, and academic prototype attribution.
+- **First-Run Checklist Widget:** Replaced the heavyweight spotlight tour with a sleek, dismissible onboarding checklist (`FirstRunChecklist`) tracking progress across core views.
+- **Printable Executive Briefing:** Verified clean print styling and plain-language takeaway statements in `ReportsView` and `ImpactEstimatorView`.
+
+---
+
+
 
 ### Major Release — Enterprise Production Readiness, Algorithmic Ethics, Survival Modeling & Succession Architecture
 

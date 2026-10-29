@@ -2,8 +2,8 @@
 
 > **Target Audience:** VP of Talent Management, Chief People Officer, Head of People Analytics, Enterprise Tech & Compliance Lead  
 > **Demonstrator Role:** Senior Full-Stack Engineer / Lead Data Scientist  
-> **Theme Recommendation:** Midnight Executive (Linear Navy) with Compact Tabular Layout  
-> **Version:** 3.0.0
+> **Theme Recommendation:** Architectural Light (Default) or Dark Slate with Slate-Navy Accent (WCAG AA Compliant)  
+> **Version:** 3.1.0
 
 ---
 
