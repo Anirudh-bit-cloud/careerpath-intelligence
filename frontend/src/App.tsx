@@ -2,22 +2,35 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
 import { OverviewView } from './views/OverviewView';
-import { ClustersView } from './views/ClustersView';
-import { PromotionGapView } from './views/PromotionGapView';
-import { RetentionOpportunitiesView } from './views/RetentionOpportunitiesView';
-import { ManagerInsightsView } from './views/ManagerInsightsView';
-import { EmployeeExplorerView } from './views/EmployeeExplorerView';
-import { ReportsView } from './views/ReportsView';
-import { DataManagementView } from './views/DataManagementView';
-import { SettingsView } from './views/SettingsView';
-import { LandingView } from './views/LandingView';
-import { CommitteeView } from './views/CommitteeView';
-import { ImpactEstimatorView } from './views/ImpactEstimatorView';
-import { ConnectorsView } from './views/ConnectorsView';
-import { TrustCenterView } from './views/TrustCenterView';
-import { DesignSystemView } from './views/DesignSystemView';
-import { FairnessAuditView } from './views/FairnessAuditView';
-import { SuccessionView } from './views/SuccessionView';
+// Route-level code-splitting & lazy evaluation
+const ClustersView = React.lazy(() => import('./views/ClustersView').then(m => ({ default: m.ClustersView })));
+const PromotionGapView = React.lazy(() => import('./views/PromotionGapView').then(m => ({ default: m.PromotionGapView })));
+const RetentionOpportunitiesView = React.lazy(() => import('./views/RetentionOpportunitiesView').then(m => ({ default: m.RetentionOpportunitiesView })));
+const ManagerInsightsView = React.lazy(() => import('./views/ManagerInsightsView').then(m => ({ default: m.ManagerInsightsView })));
+const EmployeeExplorerView = React.lazy(() => import('./views/EmployeeExplorerView').then(m => ({ default: m.EmployeeExplorerView })));
+const ReportsView = React.lazy(() => import('./views/ReportsView').then(m => ({ default: m.ReportsView })));
+const DataManagementView = React.lazy(() => import('./views/DataManagementView').then(m => ({ default: m.DataManagementView })));
+const SettingsView = React.lazy(() => import('./views/SettingsView').then(m => ({ default: m.SettingsView })));
+const LandingView = React.lazy(() => import('./views/LandingView').then(m => ({ default: m.LandingView })));
+const CommitteeView = React.lazy(() => import('./views/CommitteeView').then(m => ({ default: m.CommitteeView })));
+const ImpactEstimatorView = React.lazy(() => import('./views/ImpactEstimatorView').then(m => ({ default: m.ImpactEstimatorView })));
+const ConnectorsView = React.lazy(() => import('./views/ConnectorsView').then(m => ({ default: m.ConnectorsView })));
+const TrustCenterView = React.lazy(() => import('./views/TrustCenterView').then(m => ({ default: m.TrustCenterView })));
+const DesignSystemView = React.lazy(() => import('./views/DesignSystemView').then(m => ({ default: m.DesignSystemView })));
+const FairnessAuditView = React.lazy(() => import('./views/FairnessAuditView').then(m => ({ default: m.FairnessAuditView })));
+const SuccessionView = React.lazy(() => import('./views/SuccessionView').then(m => ({ default: m.SuccessionView })));
+
+const ViewLoadingFallback = () => (
+  <div className="p-8 space-y-6 max-w-7xl mx-auto animate-pulse">
+    <div className="h-8 bg-cp-bg-elevated rounded-lg w-1/4"></div>
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="h-24 bg-cp-bg-elevated rounded-xl"></div>
+      ))}
+    </div>
+    <div className="h-96 bg-cp-bg-elevated rounded-xl"></div>
+  </div>
+);
 import { GuidedTourModal } from './components/GuidedTourModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ReauthModal } from './components/ReauthModal';
@@ -198,6 +211,7 @@ function AppContent() {
         {/* Dynamic Workspace Container wrapped in resilient Error Boundary */}
         <main className="flex-1 overflow-y-auto bg-cp-bg-app p-0 transition-colors">
           <ErrorBoundary key={currentTab} fallbackTitle={`Unable to render ${currentTab} view`}>
+            <React.Suspense fallback={<ViewLoadingFallback />}>
             {!hasAccess ? (
               <div className="p-12 max-w-xl mx-auto text-center space-y-4">
                 <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-500 flex items-center justify-center mx-auto">
@@ -311,6 +325,7 @@ function AppContent() {
                 )}
               </>
             )}
+                      </React.Suspense>
           </ErrorBoundary>
         </main>
       </div>
