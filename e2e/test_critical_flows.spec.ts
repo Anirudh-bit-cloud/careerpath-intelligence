@@ -82,4 +82,27 @@ test.describe('CareerPath Intelligence — Critical Enterprise User Journeys', (
     await expect(page.locator('text=Four-Fifths Rule').or(page.locator('text=Disparate Impact')).first()).toBeVisible();
     await expect(page.locator('text=Cohort Suppression').or(page.locator('text=Demographic Audit')).first()).toBeVisible();
   });
+
+  test('Flow 7: Accessibility & Keyboard Navigation (WCAG 2.2 AA)', async ({ page }) => {
+    await page.goto('/');
+
+    // Check main landmark accessibility: header, main, nav
+    await expect(page.locator('header')).toBeVisible();
+    await expect(page.locator('nav[aria-label="Main Navigation Sidebar"]')).toBeVisible();
+    await expect(page.locator('main')).toBeVisible();
+
+    // Verify keyboard shortcut help dialog opens on ?
+    await page.keyboard.press('?');
+    await expect(page.locator('text=Keyboard Shortcuts').first()).toBeVisible();
+    await page.keyboard.press('Escape');
+
+    // Verify command menu dialog
+    await page.keyboard.press('Control+k');
+    await expect(page.locator('input[placeholder*="page name"]').first()).toBeVisible();
+    await page.keyboard.press('Escape');
+
+    // Verify Theme Switcher accessibility & High Contrast option
+    await page.click('button[aria-label="Theme settings"]');
+    await expect(page.locator('text=High Contrast').first()).toBeVisible();
+  });
 });
