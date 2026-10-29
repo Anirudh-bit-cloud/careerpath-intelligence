@@ -10,33 +10,58 @@ import {
 
 const API_BASE = '/api';
 
+export async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
+  const token = localStorage.getItem('cp_session_token');
+  const headers = new Headers(options.headers || {});
+  if (token && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+  const res = await authFetch(url, { ...options, headers });
+  if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cp:auth:expired', { detail: { status: 401, url } }));
+    }
+  } else if (res.status === 423) {
+    if (typeof window !== 'undefined') {
+      const clone = res.clone();
+      clone.json().then(body => {
+        window.dispatchEvent(new CustomEvent('cp:auth:lockout', { detail: { status: 423, detail: body.detail } }));
+      }).catch(() => {
+        window.dispatchEvent(new CustomEvent('cp:auth:lockout', { detail: { status: 423, detail: 'Account temporarily locked out.' } }));
+      });
+    }
+  }
+  return res;
+}
+
+
 export const api = {
   async getMetadata(): Promise<DatasetMetadata> {
-    const res = await fetch(`${API_BASE}/metadata`);
+    const res = await authFetch(`${API_BASE}/metadata`);
     if (!res.ok) throw new Error('Failed to fetch dataset metadata');
     return res.json();
   },
 
   async getOverview(): Promise<ExecutiveOverview> {
-    const res = await fetch(`${API_BASE}/overview`);
+    const res = await authFetch(`${API_BASE}/overview`);
     if (!res.ok) throw new Error('Failed to fetch executive overview');
     return res.json();
   },
 
   async getClusters(): Promise<CareerClustersData> {
-    const res = await fetch(`${API_BASE}/clusters`);
+    const res = await authFetch(`${API_BASE}/clusters`);
     if (!res.ok) throw new Error('Failed to fetch career clusters');
     return res.json();
   },
 
   async getElbowCurve(): Promise<{ elbow_curve: Array<{ k: number; inertia: number; silhouette_score: number }> }> {
-    const res = await fetch(`${API_BASE}/clusters/elbow-curve`);
+    const res = await authFetch(`${API_BASE}/clusters/elbow-curve`);
     if (!res.ok) throw new Error('Failed to fetch elbow curve');
     return res.json();
   },
 
   async recluster(params: { n_clusters?: number; auto_select_k?: boolean; algorithm?: string } = {}): Promise<any> {
-    const res = await fetch(`${API_BASE}/rerun-clustering`, {
+    const res = await authFetch(`${API_BASE}/rerun-clustering`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params)
@@ -55,7 +80,7 @@ export const api = {
         query.append(k, String(v));
       }
     });
-    const res = await fetch(`${API_BASE}/promotion-gap?${query.toString()}`);
+    const res = await authFetch(`${API_BASE}/promotion-gap?${query.toString()}`);
     if (!res.ok) throw new Error('Failed to fetch promotion gap records');
     return res.json();
   },
@@ -67,31 +92,31 @@ export const api = {
         query.append(k, String(v));
       }
     });
-    const res = await fetch(`${API_BASE}/retention-opportunities?${query.toString()}`);
+    const res = await authFetch(`${API_BASE}/retention-opportunities?${query.toString()}`);
     if (!res.ok) throw new Error('Failed to fetch retention opportunities');
     return res.json();
   },
 
   async getManagerInsights(): Promise<ManagerInsightsResponse> {
-    const res = await fetch(`${API_BASE}/manager-insights`);
+    const res = await authFetch(`${API_BASE}/manager-insights`);
     if (!res.ok) throw new Error('Failed to fetch manager insights');
     return res.json();
   },
 
   async getEmployeeProfile(employeeId: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/employees/${employeeId}`);
+    const res = await authFetch(`${API_BASE}/employees/${employeeId}`);
     if (!res.ok) throw new Error(`Failed to fetch profile for ${employeeId}`);
     return res.json();
   },
 
   async getScoreExplanation(employeeId: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/employees/${employeeId}/score-explanation`);
+    const res = await authFetch(`${API_BASE}/employees/${employeeId}/score-explanation`);
     if (!res.ok) throw new Error(`Failed to fetch score explanation for ${employeeId}`);
     return res.json();
   },
 
   async searchEmployees(query: string = ''): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/employees?query=${encodeURIComponent(query)}`);
+    const res = await authFetch(`${API_BASE}/employees?query=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error('Failed to search employees');
     return res.json();
   },
@@ -99,13 +124,13 @@ export const api = {
   // Interventions Workflow
   async getInterventions(statusFilter: string = 'All'): Promise<Intervention[]> {
     const query = statusFilter !== 'All' ? `?status_filter=${statusFilter}` : '';
-    const res = await fetch(`${API_BASE}/interventions${query}`);
+    const res = await authFetch(`${API_BASE}/interventions${query}`);
     if (!res.ok) throw new Error('Failed to fetch interventions');
     return res.json();
   },
 
   async createIntervention(data: Intervention): Promise<Intervention> {
-    const res = await fetch(`${API_BASE}/interventions`, {
+    const res = await authFetch(`${API_BASE}/interventions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -115,7 +140,7 @@ export const api = {
   },
 
   async updateIntervention(id: number, data: Partial<Intervention>): Promise<Intervention> {
-    const res = await fetch(`${API_BASE}/interventions/${id}`, {
+    const res = await authFetch(`${API_BASE}/interventions/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -125,7 +150,7 @@ export const api = {
   },
 
   async deleteIntervention(id: number): Promise<void> {
-    const res = await fetch(`${API_BASE}/interventions/${id}`, {
+    const res = await authFetch(`${API_BASE}/interventions/${id}`, {
       method: 'DELETE'
     });
     if (!res.ok) throw new Error('Failed to delete intervention');
@@ -143,7 +168,7 @@ export const api = {
   }> {
     const formData = new FormData();
     formData.append('file', file);
-    const res = await fetch(`${API_BASE}/dataset/upload`, {
+    const res = await authFetch(`${API_BASE}/dataset/upload`, {
       method: 'POST',
       body: formData
     });
@@ -155,13 +180,13 @@ export const api = {
   },
 
   async resetToDemo(): Promise<any> {
-    const res = await fetch(`${API_BASE}/dataset/reset`, { method: 'POST' });
+    const res = await authFetch(`${API_BASE}/dataset/reset`, { method: 'POST' });
     if (!res.ok) throw new Error('Failed to reset dataset');
     return res.json();
   },
 
   async getDataQuality(): Promise<any> {
-    const res = await fetch(`${API_BASE}/dataset/data-quality`);
+    const res = await authFetch(`${API_BASE}/dataset/data-quality`);
     if (!res.ok) throw new Error('Failed to fetch data quality report');
     return res.json();
   },
@@ -172,7 +197,7 @@ export const api = {
     lateral_move?: boolean;
     add_trainings?: number;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/simulate-career`, {
+    const res = await authFetch(`${API_BASE}/simulate-career`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -183,7 +208,7 @@ export const api = {
 
   // ── Authentication & RBAC ───────────────────────────────────────────
   async login(email: string, role: string = 'admin'): Promise<{ user: any; token: string }> {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await authFetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, role })
@@ -197,7 +222,7 @@ export const api = {
 
   async getProfile(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/auth/me`, {
+    const res = await authFetch(`${API_BASE}/auth/me`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to get user profile');
@@ -205,14 +230,14 @@ export const api = {
   },
 
   async listUsers(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/auth/users`);
+    const res = await authFetch(`${API_BASE}/auth/users`);
     if (!res.ok) throw new Error('Failed to list users');
     return res.json();
   },
 
   // ── Multi-Tenant Workspaces ─────────────────────────────────────────
   async listWorkspaces(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/workspaces`);
+    const res = await authFetch(`${API_BASE}/workspaces`);
     if (!res.ok) throw new Error('Failed to list workspaces');
     return res.json();
   },
@@ -223,7 +248,7 @@ export const api = {
     logo_svg_url?: string;
     custom_domain?: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/workspaces/${workspaceId}/branding`, {
+    const res = await authFetch(`${API_BASE}/workspaces/${workspaceId}/branding`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(branding)
@@ -239,7 +264,7 @@ export const api = {
     records: number;
     metadata: DatasetMetadata;
   }> {
-    const res = await fetch(`${API_BASE}/dataset/preset`, {
+    const res = await authFetch(`${API_BASE}/dataset/preset`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ industry })
@@ -253,7 +278,7 @@ export const api = {
 
   // ── Scoring Policy Engine & Tier Simulator ──────────────────────────
   async getActivePolicy(): Promise<any> {
-    const res = await fetch(`${API_BASE}/policy`);
+    const res = await authFetch(`${API_BASE}/policy`);
     if (!res.ok) throw new Error('Failed to fetch active policy');
     return res.json();
   },
@@ -276,7 +301,7 @@ export const api = {
       unchanged: number;
     };
   }> {
-    const res = await fetch(`${API_BASE}/policy/preview`, {
+    const res = await authFetch(`${API_BASE}/policy/preview`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(weights)
@@ -286,7 +311,7 @@ export const api = {
   },
 
   async updatePolicy(policyData: any): Promise<any> {
-    const res = await fetch(`${API_BASE}/policy/update`, {
+    const res = await authFetch(`${API_BASE}/policy/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(policyData)
@@ -296,20 +321,20 @@ export const api = {
   },
 
   async getPolicyHistory(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/policy/history`);
+    const res = await authFetch(`${API_BASE}/policy/history`);
     if (!res.ok) throw new Error('Failed to fetch policy history');
     return res.json();
   },
 
   // ── Talent Committee Review Mode ────────────────────────────────────
   async listCommitteeSessions(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/committee/sessions`);
+    const res = await authFetch(`${API_BASE}/committee/sessions`);
     if (!res.ok) throw new Error('Failed to list committee sessions');
     return res.json();
   },
 
   async createCommitteeSession(title: string, scheduledDate?: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/sessions`, {
+    const res = await authFetch(`${API_BASE}/committee/sessions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, scheduled_date: scheduledDate })
@@ -325,7 +350,7 @@ export const api = {
     notes?: string;
     decided_by?: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/sessions/${sessionId}/decisions`, {
+    const res = await authFetch(`${API_BASE}/committee/sessions/${sessionId}/decisions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(decision)
@@ -335,7 +360,7 @@ export const api = {
   },
 
   async updateCommitteeMinutes(sessionId: number, minutes: string, status?: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/sessions/${sessionId}/minutes`, {
+    const res = await authFetch(`${API_BASE}/committee/sessions/${sessionId}/minutes`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ minutes, status })
@@ -345,13 +370,13 @@ export const api = {
   },
 
   async getPlanComments(planId: number): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/committee/plans/${planId}/comments`);
+    const res = await authFetch(`${API_BASE}/committee/plans/${planId}/comments`);
     if (!res.ok) throw new Error('Failed to get plan comments');
     return res.json();
   },
 
   async addPlanComment(planId: number, authorEmail: string, authorName: string, commentText: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/plans/${planId}/comments`, {
+    const res = await authFetch(`${API_BASE}/committee/plans/${planId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -373,7 +398,7 @@ export const api = {
     primary_interest?: string;
     notes?: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/pilot/leads`, {
+    const res = await authFetch(`${API_BASE}/pilot/leads`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(lead)
@@ -383,20 +408,20 @@ export const api = {
   },
 
   async listPilotLeads(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/pilot/leads`);
+    const res = await authFetch(`${API_BASE}/pilot/leads`);
     if (!res.ok) throw new Error('Failed to list pilot leads');
     return res.json();
   },
 
   // ── HRIS Connectors & Integration Adapter ──────────────────────────
   async getConnectorsStatus(): Promise<any> {
-    const res = await fetch(`${API_BASE}/connectors/status`);
+    const res = await authFetch(`${API_BASE}/connectors/status`);
     if (!res.ok) throw new Error('Failed to fetch connectors status');
     return res.json();
   },
 
   async testMockHris(syncCount: number = 25): Promise<any> {
-    const res = await fetch(`${API_BASE}/connectors/test-hris?sync_count=${syncCount}`, {
+    const res = await authFetch(`${API_BASE}/connectors/test-hris?sync_count=${syncCount}`, {
       method: 'POST'
     });
     if (!res.ok) throw new Error('HRIS adapter test failed');
@@ -405,13 +430,13 @@ export const api = {
 
   // ── Public API Keys & Webhooks ──────────────────────────────────────
   async listApiKeys(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/keys`);
+    const res = await authFetch(`${API_BASE}/keys`);
     if (!res.ok) throw new Error('Failed to list API keys');
     return res.json();
   },
 
   async createApiKey(name: string, role: string = 'hr_analyst'): Promise<any> {
-    const res = await fetch(`${API_BASE}/keys`, {
+    const res = await authFetch(`${API_BASE}/keys`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, role })
@@ -421,18 +446,18 @@ export const api = {
   },
 
   async revokeApiKey(keyId: number): Promise<void> {
-    const res = await fetch(`${API_BASE}/keys/${keyId}`, { method: 'DELETE' });
+    const res = await authFetch(`${API_BASE}/keys/${keyId}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Failed to revoke API key');
   },
 
   async listWebhooks(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/webhooks`);
+    const res = await authFetch(`${API_BASE}/webhooks`);
     if (!res.ok) throw new Error('Failed to list webhooks');
     return res.json();
   },
 
   async createWebhook(endpointUrl: string, secretToken: string, subscribedEvents: string[]): Promise<any> {
-    const res = await fetch(`${API_BASE}/webhooks`, {
+    const res = await authFetch(`${API_BASE}/webhooks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -446,7 +471,7 @@ export const api = {
   },
 
   async testWebhook(endpointId: number, testPayload?: any): Promise<any> {
-    const res = await fetch(`${API_BASE}/webhooks/test?endpoint_id=${endpointId}`, {
+    const res = await authFetch(`${API_BASE}/webhooks/test?endpoint_id=${endpointId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(testPayload || { test: true })
@@ -457,19 +482,19 @@ export const api = {
 
   // ── Security, Audit Logs & Privacy Compliance ───────────────────────
   async getAuditLogs(limit: number = 50): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/governance/audit-logs?limit=${limit}`);
+    const res = await authFetch(`${API_BASE}/governance/audit-logs?limit=${limit}`);
     if (!res.ok) throw new Error('Failed to fetch audit logs');
     return res.json();
   },
 
   async previewRetention(retentionDays: number = 365): Promise<any> {
-    const res = await fetch(`${API_BASE}/governance/retention-preview?retention_days=${retentionDays}`);
+    const res = await authFetch(`${API_BASE}/governance/retention-preview?retention_days=${retentionDays}`);
     if (!res.ok) throw new Error('Failed to preview retention cleanup');
     return res.json();
   },
 
   async exportDataSubject(employeeId: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/governance/data-subject-export?employee_id=${encodeURIComponent(employeeId)}`);
+    const res = await authFetch(`${API_BASE}/governance/data-subject-export?employee_id=${encodeURIComponent(employeeId)}`);
     if (!res.ok) throw new Error(`Failed to export data subject ${employeeId}`);
     return res.json();
   },
@@ -477,7 +502,7 @@ export const api = {
   // ── Fairness & Algorithmic Bias Audit ──────────────────────────────
   async getFairnessSummary(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/fairness/summary`, {
+    const res = await authFetch(`${API_BASE}/fairness/summary`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) {
@@ -489,7 +514,7 @@ export const api = {
 
   async getFairnessAttribute(attributeName: string): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/fairness/attribute/${attributeName}`, {
+    const res = await authFetch(`${API_BASE}/fairness/attribute/${attributeName}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error(`Failed to fetch fairness data for ${attributeName}`);
@@ -498,25 +523,25 @@ export const api = {
 
   // ── Model Validation & Survival Analysis ───────────────────────────
   async getValidationOverview(): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/metrics`);
+    const res = await authFetch(`${API_BASE}/validation/metrics`);
     if (!res.ok) throw new Error('Failed to fetch validation telemetry');
     return res.json();
   },
 
   async getSurvivalCurves(): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/survival-curves`);
+    const res = await authFetch(`${API_BASE}/validation/survival-curves`);
     if (!res.ok) throw new Error('Failed to fetch survival curves');
     return res.json();
   },
 
   async getCoxRegression(): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/cox-regression`);
+    const res = await authFetch(`${API_BASE}/validation/cox-regression`);
     if (!res.ok) throw new Error('Failed to fetch Cox regression');
     return res.json();
   },
 
   async getBacktest(trainFraction: number = 0.75): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
+    const res = await authFetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
     if (!res.ok) throw new Error('Failed to run backtest');
     return res.json();
   },
@@ -524,7 +549,7 @@ export const api = {
   // ── Succession Planning & Outcome Tracking ─────────────────────────
   async getNineBoxGrid(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/9-box`, {
+    const res = await authFetch(`${API_BASE}/succession/9-box`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch 9-box talent grid');
@@ -533,7 +558,7 @@ export const api = {
 
   async getCriticalRoles(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/critical-roles`, {
+    const res = await authFetch(`${API_BASE}/succession/critical-roles`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch critical roles');
@@ -542,7 +567,7 @@ export const api = {
 
   async getInterventionEffectiveness(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/effectiveness`, {
+    const res = await authFetch(`${API_BASE}/succession/effectiveness`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch intervention effectiveness');
@@ -556,7 +581,7 @@ export const api = {
     notes?: string;
   }): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/outcomes/${interventionId}`, {
+    const res = await authFetch(`${API_BASE}/succession/outcomes/${interventionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -571,7 +596,7 @@ export const api = {
   // ── Proactive Notification Channels ───────────────────────────────
   async getNotificationPreferences(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/preferences`, {
+    const res = await authFetch(`${API_BASE}/notifications/preferences`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch notification preferences');
@@ -580,7 +605,7 @@ export const api = {
 
   async updateNotificationPreferences(payload: any): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/preferences`, {
+    const res = await authFetch(`${API_BASE}/notifications/preferences`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -597,7 +622,7 @@ export const api = {
 
   async testNotificationChannel(channel: 'email' | 'slack', target: string, message?: string): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/test`, {
+    const res = await authFetch(`${API_BASE}/notifications/test`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -614,7 +639,7 @@ export const api = {
 
   async getNotificationDeliveries(limit: number = 20): Promise<any[]> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/deliveries?limit=${limit}`, {
+    const res = await authFetch(`${API_BASE}/notifications/deliveries?limit=${limit}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch notification deliveries');

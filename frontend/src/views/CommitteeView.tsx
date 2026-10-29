@@ -93,24 +93,48 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
 
   const handleRecordDecision = async (decision: 'approved' | 'rejected' | 'deferred') => {
     if (!activeSession || !selectedCandidate) return;
+
+    // Snapshot state for rollback resilience
+    const prevSession = { ...activeSession };
+    const prevSessions = [...sessions];
+    const prevNotes = decisionNotes;
+
+    // Optimistically update candidate in active session
+    const optimisticDecision = {
+      employee_id: selectedCandidate.employee_id,
+      decision,
+      notes: decisionNotes,
+      decided_by: 'committee_chair',
+      timestamp: new Date().toISOString()
+    };
+    const updatedDecisions = [...(activeSession.decisions || []), optimisticDecision];
+    const updatedSession = { ...activeSession, decisions: updatedDecisions };
+
+    setActiveSession(updatedSession);
+    setSessions((prev) => prev.map((s) => (s.id === activeSession.id ? updatedSession : s)));
+    setDecisionNotes('');
     setSubmittingDecision(true);
+
     try {
       await api.logCommitteeDecision(activeSession.id, {
         employee_id: selectedCandidate.employee_id,
         decision,
-        notes: decisionNotes,
+        notes: prevNotes,
         decided_by: 'committee_chair'
       });
       addToast(`Candidate decision logged: ${decision.toUpperCase()}`, 'success');
-      setDecisionNotes('');
 
-      // Refresh active session
+      // Refresh in background
       const updatedSessions = await api.listCommitteeSessions();
       setSessions(updatedSessions);
       const cur = updatedSessions.find((s) => s.id === activeSession.id);
       if (cur) setActiveSession(cur);
     } catch (err: any) {
-      addToast(err.message || 'Failed to log decision', 'error');
+      // Rollback optimistic changes on failure
+      setActiveSession(prevSession);
+      setSessions(prevSessions);
+      setDecisionNotes(prevNotes);
+      addToast(err.message || 'Failed to log decision. Changes rolled back.', 'error');
     } finally {
       setSubmittingDecision(false);
     }

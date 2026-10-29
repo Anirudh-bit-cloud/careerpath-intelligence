@@ -19,6 +19,8 @@ import { DesignSystemView } from './views/DesignSystemView';
 import { FairnessAuditView } from './views/FairnessAuditView';
 import { SuccessionView } from './views/SuccessionView';
 import { GuidedTourModal } from './components/GuidedTourModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { ReauthModal } from './components/ReauthModal';
 
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
@@ -47,6 +49,10 @@ function AppContent() {
   const [shortcutsOpen, setShortcutsOpen] = useState<boolean>(false);
   const [tourOpen, setTourOpen] = useState<boolean>(false);
 
+  // Re-authentication & Lockout Resilience
+  const [reauthOpen, setReauthOpen] = useState<boolean>(false);
+  const [lockoutMsg, setLockoutMsg] = useState<string | null>(null);
+
   // Global data-version counter
   const [dataVersion, setDataVersion] = useState<number>(0);
 
@@ -73,6 +79,27 @@ function AppContent() {
   useEffect(() => {
     loadInitialData();
   }, [loadInitialData]);
+
+  // Auth resilience listeners for 401 (expired) and 423 (lockout)
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      setLockoutMsg(null);
+      setReauthOpen(true);
+    };
+
+    const handleAuthLockout = (e: any) => {
+      setLockoutMsg(e.detail?.detail || 'Account temporarily locked out due to multiple failed login attempts.');
+      setReauthOpen(true);
+    };
+
+    window.addEventListener('cp:auth:expired', handleAuthExpired);
+    window.addEventListener('cp:auth:lockout', handleAuthLockout);
+
+    return () => {
+      window.removeEventListener('cp:auth:expired', handleAuthExpired);
+      window.removeEventListener('cp:auth:lockout', handleAuthLockout);
+    };
+  }, []);
 
   // Global Keyboard Shortcuts
   useEffect(() => {
@@ -168,121 +195,123 @@ function AppContent() {
           onLaunchTour={() => setTourOpen(true)}
         />
 
-        {/* Dynamic Workspace Container */}
+        {/* Dynamic Workspace Container wrapped in resilient Error Boundary */}
         <main className="flex-1 overflow-y-auto bg-cp-bg-app p-0 transition-colors">
-          {!hasAccess ? (
-            <div className="p-12 max-w-xl mx-auto text-center space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-500 flex items-center justify-center mx-auto">
-                <ShieldAlert className="w-6 h-6" />
+          <ErrorBoundary key={currentTab} fallbackTitle={`Unable to render ${currentTab} view`}>
+            {!hasAccess ? (
+              <div className="p-12 max-w-xl mx-auto text-center space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-500 flex items-center justify-center mx-auto">
+                  <ShieldAlert className="w-6 h-6" />
+                </div>
+                <h2 className="text-base font-bold text-cp-text-primary">Restricted by Role Permissions</h2>
+                <p className="text-xs text-cp-text-muted leading-relaxed">
+                  Your currently selected persona role (<span className="font-semibold text-cp-text-primary uppercase">{role}</span>) does not have authorization to view this workspace. Switch to Enterprise Admin or an authorized role via the profile menu.
+                </p>
+                <div className="pt-2 flex justify-center gap-3">
+                  <Button variant="primary" onClick={() => navigate('overview')}>
+                    Return to Overview
+                  </Button>
+                </div>
               </div>
-              <h2 className="text-base font-bold text-cp-text-primary">Restricted by Role Permissions</h2>
-              <p className="text-xs text-cp-text-muted leading-relaxed">
-                Your currently selected persona role (<span className="font-semibold text-cp-text-primary uppercase">{role}</span>) does not have authorization to view this workspace. Switch to Enterprise Admin or an authorized role via the profile menu.
-              </p>
-              <div className="pt-2 flex justify-center gap-3">
-                <Button variant="primary" onClick={() => navigate('overview')}>
-                  Return to Overview
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <>
-              {currentTab === 'welcome' && (
-                <LandingView
-                  onEnterApp={() => navigate('overview')}
-                  onLaunchTour={() => setTourOpen(true)}
-                />
-              )}
+            ) : (
+              <>
+                {currentTab === 'welcome' && (
+                  <LandingView
+                    onEnterApp={() => navigate('overview')}
+                    onLaunchTour={() => setTourOpen(true)}
+                  />
+                )}
 
-              {currentTab === 'overview' && (
-                <OverviewView
-                  data={overviewData}
-                  loading={loadingOverview}
-                  onNavigateTab={(tab) => navigate(tab)}
-                />
-              )}
+                {currentTab === 'overview' && (
+                  <OverviewView
+                    data={overviewData}
+                    loading={loadingOverview}
+                    onNavigateTab={(tab) => navigate(tab)}
+                  />
+                )}
 
-              {currentTab === 'clusters' && (
-                <ClustersView
-                  data={clustersData}
-                  loading={loadingClusters}
-                  onSelectEmployee={handleSelectEmployee}
-                />
-              )}
+                {currentTab === 'clusters' && (
+                  <ClustersView
+                    data={clustersData}
+                    loading={loadingClusters}
+                    onSelectEmployee={handleSelectEmployee}
+                  />
+                )}
 
-              {currentTab === 'promotion-gap' && (
-                <PromotionGapView
-                  onSelectEmployee={handleSelectEmployee}
-                  dataVersion={dataVersion}
-                />
-              )}
+                {currentTab === 'promotion-gap' && (
+                  <PromotionGapView
+                    onSelectEmployee={handleSelectEmployee}
+                    dataVersion={dataVersion}
+                  />
+                )}
 
-              {currentTab === 'retention-opportunities' && (
-                <RetentionOpportunitiesView
-                  onSelectEmployee={handleSelectEmployee}
-                  dataVersion={dataVersion}
-                />
-              )}
+                {currentTab === 'retention-opportunities' && (
+                  <RetentionOpportunitiesView
+                    onSelectEmployee={handleSelectEmployee}
+                    dataVersion={dataVersion}
+                  />
+                )}
 
-              {currentTab === 'manager-insights' && (
-                <ManagerInsightsView dataVersion={dataVersion} />
-              )}
+                {currentTab === 'manager-insights' && (
+                  <ManagerInsightsView dataVersion={dataVersion} />
+                )}
 
-              {currentTab === 'committee' && (
-                <CommitteeView onSelectEmployee={handleSelectEmployee} />
-              )}
+                {currentTab === 'committee' && (
+                  <CommitteeView onSelectEmployee={handleSelectEmployee} />
+                )}
 
-              {currentTab === 'fairness-audit' && (
-                <FairnessAuditView />
-              )}
+                {currentTab === 'fairness-audit' && (
+                  <FairnessAuditView />
+                )}
 
-              {currentTab === 'succession' && (
-                <SuccessionView />
-              )}
+                {currentTab === 'succession' && (
+                  <SuccessionView />
+                )}
 
-              {currentTab === 'impact-estimator' && (
-                <ImpactEstimatorView />
-              )}
+                {currentTab === 'impact-estimator' && (
+                  <ImpactEstimatorView />
+                )}
 
-              {currentTab === 'employees' && (
-                <EmployeeExplorerView
-                  initialEmployeeId={params.id || null}
-                  onClearInitialEmployee={() => navigate('employees')}
-                  dataVersion={dataVersion}
-                />
-              )}
+                {currentTab === 'employees' && (
+                  <EmployeeExplorerView
+                    initialEmployeeId={params.id || null}
+                    onClearInitialEmployee={() => navigate('employees')}
+                    dataVersion={dataVersion}
+                  />
+                )}
 
-              {currentTab === 'reports' && (
-                <ReportsView
-                  overviewData={overviewData}
-                  metadata={metadata}
-                />
-              )}
+                {currentTab === 'reports' && (
+                  <ReportsView
+                    overviewData={overviewData}
+                    metadata={metadata}
+                  />
+                )}
 
-              {currentTab === 'connectors' && (
-                <ConnectorsView />
-              )}
+                {currentTab === 'connectors' && (
+                  <ConnectorsView />
+                )}
 
-              {currentTab === 'trust-center' && (
-                <TrustCenterView />
-              )}
+                {currentTab === 'trust-center' && (
+                  <TrustCenterView />
+                )}
 
-              {currentTab === 'design-system' && (
-                <DesignSystemView />
-              )}
+                {currentTab === 'design-system' && (
+                  <DesignSystemView />
+                )}
 
-              {currentTab === 'data-management' && (
-                <DataManagementView
-                  metadata={metadata}
-                  onRefreshData={handleRefreshData}
-                />
-              )}
+                {currentTab === 'data-management' && (
+                  <DataManagementView
+                    metadata={metadata}
+                    onRefreshData={handleRefreshData}
+                  />
+                )}
 
-              {currentTab === 'settings' && (
-                <SettingsView />
-              )}
-            </>
-          )}
+                {currentTab === 'settings' && (
+                  <SettingsView />
+                )}
+              </>
+            )}
+          </ErrorBoundary>
         </main>
       </div>
 
@@ -305,6 +334,16 @@ function AppContent() {
       <ShortcutsModal
         isOpen={shortcutsOpen}
         onClose={() => setShortcutsOpen(false)}
+      />
+
+      {/* In-Place Session Re-authentication Modal (401 & 423) */}
+      <ReauthModal
+        isOpen={reauthOpen}
+        onClose={() => setReauthOpen(false)}
+        lockoutMessage={lockoutMsg}
+        onSuccess={() => {
+          handleRefreshData();
+        }}
       />
     </div>
   );
