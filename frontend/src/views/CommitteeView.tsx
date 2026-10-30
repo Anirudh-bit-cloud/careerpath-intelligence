@@ -64,7 +64,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
       setSessions(sessionsData);
       if (sessionsData.length > 0) {
         setActiveSession(sessionsData[0]);
-        setMinutesText(sessionsData[0].meeting_minutes || '');
+        setMinutesText(sessionsData[0].minutes_text || sessionsData[0].meeting_minutes || '');
       }
       setCandidates(oppData.records || []);
       if (oppData.records?.length > 0) {
@@ -95,6 +95,8 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
   const handleRecordDecision = async (decision: 'approved' | 'rejected' | 'deferred') => {
     if (!activeSession || !selectedCandidate) return;
 
+    const empId = selectedCandidate.EmployeeID || selectedCandidate.employee_id;
+
     // Snapshot state for rollback resilience
     const prevSession = { ...activeSession };
     const prevSessions = [...sessions];
@@ -102,7 +104,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
 
     // Optimistically update candidate in active session
     const optimisticDecision = {
-      employee_id: selectedCandidate.employee_id,
+      employee_id: empId,
       decision,
       notes: decisionNotes,
       decided_by: 'committee_chair',
@@ -118,7 +120,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
 
     try {
       await api.logCommitteeDecision(activeSession.id, {
-        employee_id: selectedCandidate.employee_id,
+        employee_id: empId,
         decision,
         notes: prevNotes,
         decided_by: 'committee_chair'
@@ -157,11 +159,10 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
   const filteredCandidates = candidates.filter((c) => {
     if (!searchTerm) return true;
     const term = searchTerm.toLowerCase();
-    return (
-      c.employee_id.toLowerCase().includes(term) ||
-      c.job_role?.toLowerCase().includes(term) ||
-      c.department?.toLowerCase().includes(term)
-    );
+    const id = (c.EmployeeID || c.employee_id || '').toLowerCase();
+    const role = (c.JobRole || c.job_role || '').toLowerCase();
+    const dept = (c.Department || c.department || '').toLowerCase();
+    return id.includes(term) || role.includes(term) || dept.includes(term);
   });
 
   return (
@@ -248,18 +249,19 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
           <Calendar className="w-4 h-4 text-cp-accent" />
           <span className="text-xs font-semibold text-cp-text-primary">Active Review Session:</span>
           <select
-            value={activeSession?.id || ''}
+            value={activeSession ? String(activeSession.id) : ''}
             onChange={(e) => {
-              const s = sessions.find((item) => item.id === Number(e.target.value));
+              const s = sessions.find((item) => String(item.id) === e.target.value);
               if (s) {
                 setActiveSession(s);
-                setMinutesText(s.meeting_minutes || '');
+                setMinutesText(s.minutes_text || s.meeting_minutes || '');
               }
             }}
             className="px-3 py-1.5 rounded-lg bg-cp-bg-app border border-cp-border text-xs text-cp-text-primary focus:outline-none focus:border-cp-accent"
           >
+            {sessions.length === 0 && <option value="" disabled>No sessions available</option>}
             {sessions.map((s) => (
-              <option key={s.id} value={s.id}>
+              <option key={s.id} value={String(s.id)}>
                 {s.title} ({new Date(s.scheduled_date || s.created_at).toLocaleDateString()}) — {s.status.toUpperCase()}
               </option>
             ))}
@@ -309,12 +311,19 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-cp-border/50">
-                  {filteredCandidates.map((c) => {
-                    const isSelected = selectedCandidate?.employee_id === c.employee_id;
-                    const maskedId = maskEmployeeId(c.employee_id, presentationMode);
+                  {filteredCandidates.map((c, idx) => {
+                    const empId = c.EmployeeID || c.employee_id || `cand-${idx}`;
+                    const isSelected = (selectedCandidate?.EmployeeID || selectedCandidate?.employee_id) === empId;
+                    const maskedId = maskEmployeeId(empId, presentationMode);
+                    const jobRole = c.JobRole || c.job_role || 'Specialist';
+                    const department = c.Department || c.department || 'General';
+                    const yearsSincePromotion = c.YearsSinceLastPromotion ?? c.years_since_last_promotion;
+                    const promotionGap = c.PromotionGapYears ?? c.promotion_gap_years ?? (c.PromotionGapRatio != null ? c.PromotionGapRatio : 0);
+                    const priorityTier = c.RetentionPriority || c.priority_tier || 'Standard';
+                    const interventionStatus = c.InterventionStatus || c.intervention_status || 'Pending';
                     return (
                       <tr
-                        key={c.employee_id}
+                        key={empId}
                         onClick={() => setSelectedCandidate(c)}
                         className={`cursor-pointer transition-colors ${
                           isSelected
@@ -327,32 +336,32 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                         </td>
                         <td className="py-2.5 px-2.5">
                           <div className="font-semibold text-cp-text-primary truncate max-w-[150px]">
-                            {presentationMode ? 'Technical Specialist' : c.job_role}
+                            {presentationMode ? 'Technical Specialist' : jobRole}
                           </div>
                           <div className="text-[10px] text-cp-text-muted truncate">
-                            {c.department}
+                            {department}
                           </div>
                         </td>
                         <td className="py-2.5 px-2.5 text-right font-mono">
-                          {c.years_since_last_promotion != null ? `${c.years_since_last_promotion.toFixed(1)}y` : '—'}
+                          {yearsSincePromotion != null ? `${Number(yearsSincePromotion).toFixed(1)}y` : '—'}
                         </td>
                         <td className="py-2.5 px-2.5 text-right font-mono font-semibold text-amber-400">
-                          +{c.promotion_gap_years ? c.promotion_gap_years.toFixed(1) : 0}y
+                          +{Number(promotionGap).toFixed(1)}y
                         </td>
                         <td className="py-2.5 px-2.5 text-center">
                           <span
                             className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                              c.priority_tier === 'Urgent'
+                              priorityTier === 'Urgent'
                                 ? 'bg-rose-500/15 text-rose-400 border border-rose-500/25'
                                 : 'bg-amber-500/15 text-amber-400 border border-amber-500/25'
                             }`}
                           >
-                            {c.priority_tier || 'Standard'}
+                            {priorityTier}
                           </span>
                         </td>
                         <td className="py-2.5 px-2.5 text-center">
                           <span className="text-[10px] text-cp-text-muted">
-                            {c.intervention_status || 'Pending'}
+                            {interventionStatus}
                           </span>
                         </td>
                       </tr>
@@ -374,12 +383,12 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                     Calibration Dossier
                   </div>
                   <h3 className="text-lg font-bold text-cp-accent font-mono">
-                    {maskEmployeeId(selectedCandidate.employee_id, presentationMode)}
+                    {maskEmployeeId(selectedCandidate.EmployeeID || selectedCandidate.employee_id || '', presentationMode)}
                   </h3>
                 </div>
                 {onSelectEmployee && (
                   <button
-                    onClick={() => onSelectEmployee(selectedCandidate.employee_id)}
+                    onClick={() => onSelectEmployee(selectedCandidate.EmployeeID || selectedCandidate.employee_id)}
                     className="text-xs text-cp-accent hover:underline font-medium"
                   >
                     View Deep Profile →
@@ -392,16 +401,20 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                 <div className="p-3 rounded-lg bg-cp-bg-app border border-cp-border/70">
                   <div className="text-[10px] text-cp-text-muted uppercase">Retention Opportunity Index</div>
                   <div className="text-xl font-black text-cp-accent font-mono mt-0.5">
-                    {selectedCandidate.retention_opportunity_score != null
-                      ? (selectedCandidate.retention_opportunity_score * 100).toFixed(0)
-                      : 0}
+                    {(() => {
+                      const score = selectedCandidate.RetentionRiskIndex ?? selectedCandidate.RetentionOpportunityIndex ?? selectedCandidate.retention_opportunity_score ?? 0;
+                      return (Number(score) * (score <= 1 ? 100 : 1)).toFixed(0);
+                    })()}
                     <span className="text-xs font-normal text-cp-text-muted">/100</span>
                   </div>
                 </div>
                 <div className="p-3 rounded-lg bg-cp-bg-app border border-cp-border/70">
                   <div className="text-[10px] text-cp-text-muted uppercase">Promotion Lag</div>
                   <div className="text-xl font-black text-amber-400 font-mono mt-0.5">
-                    +{selectedCandidate.promotion_gap_years ? selectedCandidate.promotion_gap_years.toFixed(1) : 0}
+                    +{(() => {
+                      const gap = selectedCandidate.PromotionGapYears ?? selectedCandidate.promotion_gap_years ?? (selectedCandidate.PromotionGapRatio != null ? selectedCandidate.PromotionGapRatio : 0);
+                      return Number(gap).toFixed(1);
+                    })()}
                     <span className="text-xs font-normal text-cp-text-muted"> yrs</span>
                   </div>
                 </div>
@@ -414,10 +427,10 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                   <span>Algorithm Recommendation</span>
                 </div>
                 <div className="text-xs font-semibold text-cp-text-primary">
-                  {selectedCandidate.recommended_action || 'Career Progression & Level Calibration Review'}
+                  {selectedCandidate.RecommendedAction || selectedCandidate.recommended_action || 'Career Progression & Level Calibration Review'}
                 </div>
                 <div className="text-[11px] text-cp-text-secondary leading-snug">
-                  {selectedCandidate.explanation || 'Employee has exceeded benchmark dwell time for their level.'}
+                  {selectedCandidate.RecommendationTriggers || selectedCandidate.explanation || 'Employee has exceeded benchmark dwell time for their level.'}
                 </div>
               </div>
 
@@ -582,7 +595,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
               <div className="flex justify-between">
                 <span className="text-cp-text-muted">Candidate:</span>
                 <span className="font-mono font-bold text-cp-text-primary">
-                  {maskEmployeeId(selectedCandidate.employee_id, presentationMode)}
+                  {maskEmployeeId(selectedCandidate.EmployeeID || selectedCandidate.employee_id || '', presentationMode)}
                 </span>
               </div>
               <div className="flex justify-between">

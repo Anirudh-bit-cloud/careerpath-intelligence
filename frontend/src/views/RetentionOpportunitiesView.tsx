@@ -710,7 +710,7 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
                     <th className="py-2.5 px-3 w-8">
                       <input
                         type="checkbox"
-                        checked={data?.records && data.records.length > 0 && selectedIds.size === data.records.length}
+                        checked={Boolean(data?.records && data.records.length > 0 && selectedIds.size === data.records.length)}
                         onChange={handleToggleSelectAll}
                         className="rounded border-cp-border text-cp-accent"
                       />
