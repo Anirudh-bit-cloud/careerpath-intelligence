@@ -937,5 +937,42 @@ export const api = {
       throw new Error(err.detail || 'Historical exits upload failed');
     }
     return res.json();
-  }
+  },
+
+  // ── Compliance & Regulatory Mapping (Phase 4) ──────────────────────────────
+  async getComplianceMapping(regulation?: string, statusFilter?: string): Promise<any> {
+    const params = new URLSearchParams();
+    if (regulation) params.set('regulation', regulation);
+    if (statusFilter) params.set('status', statusFilter);
+    const url = params.toString() ? `${API_BASE}/compliance/mapping?${params}` : `${API_BASE}/compliance/mapping`;
+    const res = await authFetch(url);
+    if (!res.ok) throw new Error('Failed to fetch compliance mapping');
+    return res.json();
+  },
+
+  async getBiasAuditSummary(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/compliance/bias-audit-summary`);
+    if (!res.ok) throw new Error('Failed to fetch bias audit summary');
+    return res.json();
+  },
+
+  downloadComplianceMappingCsv(): string {
+    return `${API_BASE}/compliance/mapping/export/csv`;
+  },
+
+  downloadBiasAuditCsv(): string {
+    return `${API_BASE}/compliance/bias-audit-summary/export/csv`;
+  },
+
+  downloadModelCard(): string {
+    return `${API_BASE}/compliance/model-card`;
+  },
+
+  downloadDpiaTemplate(): string {
+    return `${API_BASE}/compliance/dpia-template`;
+  },
+
+  downloadComplianceMappingDoc(): string {
+    return `${API_BASE}/compliance/compliance-mapping-doc`;
+  },
 };
