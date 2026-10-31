@@ -9,7 +9,7 @@ from sqlalchemy import text
 from backend.app.database.connection import engine, Base, SessionLocal
 from backend.app.models.entities import (
     Workspace, User, ScoringPolicy, CommitteeSession, PilotLead, InterventionRecord,
-    NotificationPreference, NotificationDelivery
+    NotificationPreference, NotificationDelivery, WorkforceSnapshot, SnapshotRun
 )
 from backend.app.core.security import hash_password
 

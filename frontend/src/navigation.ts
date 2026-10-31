@@ -35,6 +35,13 @@ export const NAVIGATION_MAP: Record<string, NavigationItem> = {
     description: 'Stagnation latency vs. peer benchmarks, hazard models, and tenure curves',
     defaultTitle: 'Promotion Gap Monitor'
   },
+  'trends': {
+    id: 'trends',
+    title: 'Workforce Trends',
+    group: 'Workforce Analytics',
+    description: 'Longitudinal Retention Risk Index, tier migration matrices, and department trajectories',
+    defaultTitle: 'Workforce Trends'
+  },
   'manager-insights': {
     id: 'manager-insights',
     title: 'Manager Insights',

@@ -224,3 +224,37 @@ class NotificationDelivery(Base):
     payload_json = Column(Text, nullable=True)
     error_message = Column(Text, nullable=True)
     sent_at = Column(DateTime, default=datetime.utcnow)
+
+
+class WorkforceSnapshot(Base):
+    __tablename__ = "workforce_snapshots"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    snapshot_date = Column(String(10), index=True, nullable=False)  # YYYY-MM-DD
+    employee_id = Column(String(64), index=True, nullable=False)
+    rri = Column(Float, nullable=False)
+    rri_tier = Column(String(32), nullable=False)  # Urgent, Moderate, Standard
+    ml_probability = Column(Float, nullable=True)
+    cluster_id = Column(Integer, nullable=True)
+    job_level = Column(Integer, nullable=True)
+    department = Column(String(128), nullable=True)
+    promotion_gap_years = Column(Float, nullable=True)
+    satisfaction = Column(Float, nullable=True)
+    is_synthetic = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class SnapshotRun(Base):
+    __tablename__ = "snapshot_runs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    snapshot_date = Column(String(10), index=True, nullable=False)  # YYYY-MM-DD
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), nullable=False, default="system")
+    trigger_type = Column(String(64), default="manual")  # manual, roster_upload, scheduled, synthetic_seed
+    row_count = Column(Integer, nullable=False)
+    model_version = Column(String(64), nullable=True, default="v3.1.0")
+    policy_version = Column(Integer, nullable=True, default=1)
+    is_synthetic = Column(Boolean, default=False)

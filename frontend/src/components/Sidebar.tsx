@@ -19,7 +19,8 @@ import {
   Settings,
   User,
   Shield,
-  ChevronDown
+  ChevronDown,
+  TrendingUp
 } from 'lucide-react';
 import { DatasetMetadata } from '../types';
 import { BrandLogo } from './brand/BrandLogo';
@@ -72,6 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { id: 'clusters', label: 'Career Clusters', icon: Network },
         { id: 'promotion-gap', label: 'Promotion Gap Monitor', icon: ClockAlert },
+        { id: 'trends', label: 'Workforce Trends', icon: TrendingUp },
         { id: 'manager-insights', label: 'Manager Insights', icon: Users2 }
       ]
     },

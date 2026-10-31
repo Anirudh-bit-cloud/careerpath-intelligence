@@ -704,5 +704,60 @@ export const api = {
       throw new Error(err.detail || 'Failed to disable MFA');
     }
     return res.json();
+  },
+
+  // ── Historical Snapshots & Workforce Trends (Phase 3) ───────────────
+  async getTrendsOverview(range: string = '12m'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/overview?range=${range}`);
+    if (!res.ok) throw new Error('Failed to fetch workforce trends overview');
+    return res.json();
+  },
+
+  async getTrendsDepartments(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/departments`);
+    if (!res.ok) throw new Error('Failed to fetch department trends');
+    return res.json();
+  },
+
+  async getTrendsEmployee(employeeId: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/employee/${encodeURIComponent(employeeId)}`);
+    if (!res.ok) throw new Error(`Failed to fetch trends for employee ${employeeId}`);
+    return res.json();
+  },
+
+  async getTierMovement(fromDate: string, toDate: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/tier-movement?from_date=${fromDate}&to_date=${toDate}`);
+    if (!res.ok) throw new Error('Failed to fetch tier movement matrix');
+    return res.json();
+  },
+
+  async getSnapshotDates(): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/snapshots/dates`);
+    if (!res.ok) throw new Error('Failed to fetch snapshot dates');
+    return res.json();
+  },
+
+  async getAsOfSnapshots(asOfDate: string, priority: string = 'All'): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/snapshots/as-of?as_of_date=${asOfDate}&priority=${priority}`);
+    if (!res.ok) throw new Error(`Failed to fetch as-of snapshot records for ${asOfDate}`);
+    return res.json();
+  },
+
+  async createSnapshot(snapshotDate?: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/snapshots`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ snapshot_date: snapshotDate })
+    });
+    if (!res.ok) throw new Error('Failed to trigger workforce snapshot');
+    return res.json();
+  },
+
+  async seedDemoSnapshots(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/snapshots/seed-demo`, {
+      method: 'POST'
+    });
+    if (!res.ok) throw new Error('Failed to seed historical snapshots');
+    return res.json();
   }
 };

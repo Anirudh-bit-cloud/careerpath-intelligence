@@ -5,6 +5,7 @@ import { OverviewView } from './views/OverviewView';
 // Route-level code-splitting & lazy evaluation
 const ClustersView = React.lazy(() => import('./views/ClustersView').then(m => ({ default: m.ClustersView })));
 const PromotionGapView = React.lazy(() => import('./views/PromotionGapView').then(m => ({ default: m.PromotionGapView })));
+const TrendsView = React.lazy(() => import('./views/TrendsView').then(m => ({ default: m.TrendsView })));
 const RetentionOpportunitiesView = React.lazy(() => import('./views/RetentionOpportunitiesView').then(m => ({ default: m.RetentionOpportunitiesView })));
 const ManagerInsightsView = React.lazy(() => import('./views/ManagerInsightsView').then(m => ({ default: m.ManagerInsightsView })));
 const EmployeeExplorerView = React.lazy(() => import('./views/EmployeeExplorerView').then(m => ({ default: m.EmployeeExplorerView })));
@@ -258,6 +259,10 @@ function AppContent() {
                     onSelectEmployee={handleSelectEmployee}
                     dataVersion={dataVersion}
                   />
+                )}
+
+                {currentTab === 'trends' && (
+                  <TrendsView dataVersion={dataVersion} />
                 )}
 
                 {currentTab === 'retention-opportunities' && (

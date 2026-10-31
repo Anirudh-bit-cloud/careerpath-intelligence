@@ -295,6 +295,24 @@ async def upload_dataset(file: UploadFile = File(...)):
 
     try:
         analytics_service.reload_dataset(temp_path, dataset_name=file.filename)
+
+        # Automated snapshot trigger on roster upload (Phase 3)
+        try:
+            from backend.app.services.snapshot_service import snapshot_service
+            db_session = next(get_db())
+            try:
+                snapshot_service.create_snapshot(
+                    db=db_session,
+                    workspace_id="default",
+                    created_by="roster_upload",
+                    trigger_type="roster_upload",
+                    is_synthetic=False
+                )
+            finally:
+                db_session.close()
+        except Exception:
+            pass
+
         meta = analytics_service.get_metadata()
         return {
             "message": "Dataset uploaded and processed successfully",

@@ -20,7 +20,8 @@ import {
   Shield,
   Sliders,
   Settings,
-  Check
+  Check,
+  TrendingUp
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth, UserRole, ROLE_CONFIGS } from '../context/AuthContext';
@@ -79,6 +80,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     'reports': FileSpreadsheet,
     'clusters': Network,
     'promotion-gap': ClockAlert,
+    'trends': TrendingUp,
     'manager-insights': Users2,
     'retention-opportunities': Target,
     'succession': Award,

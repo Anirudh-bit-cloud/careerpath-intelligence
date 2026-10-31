@@ -32,6 +32,7 @@ from backend.app.api.fairness import router as fairness_router
 from backend.app.api.validation import router as validation_router
 from backend.app.api.succession import router as succession_router
 from backend.app.api.notifications import router as notifications_router
+from backend.app.api.snapshots import router as snapshots_router
 from backend.app.services.scheduler_service import start_scheduler, stop_scheduler
 
 # Initialize Database Schema & Run Migrations
@@ -227,6 +228,7 @@ app.include_router(fairness_router)
 app.include_router(validation_router)
 app.include_router(succession_router)
 app.include_router(notifications_router)
+app.include_router(snapshots_router)
 
 if __name__ == "__main__":
     import uvicorn
