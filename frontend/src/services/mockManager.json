@@ -1,0 +1,57 @@
+{
+  "manager_tenure_groups": [
+    {
+      "ManagerTenureGroup": "0-2 yrs",
+      "employee_count": 1231,
+      "avg_promotion_latency": 0.7,
+      "avg_gap_ratio": 32.9,
+      "avg_satisfaction": 2.72,
+      "high_gap_cases": 219
+    },
+    {
+      "ManagerTenureGroup": "3-4 yrs",
+      "employee_count": 157,
+      "avg_promotion_latency": 2.7,
+      "avg_gap_ratio": 53.8,
+      "avg_satisfaction": 2.67,
+      "high_gap_cases": 58
+    },
+    {
+      "ManagerTenureGroup": "5-7 yrs",
+      "employee_count": 68,
+      "avg_promotion_latency": 5,
+      "avg_gap_ratio": 62.4,
+      "avg_satisfaction": 2.54,
+      "high_gap_cases": 38
+    },
+    {
+      "ManagerTenureGroup": "8+ yrs",
+      "employee_count": 14,
+      "avg_promotion_latency": 7.7,
+      "avg_gap_ratio": 69,
+      "avg_satisfaction": 3,
+      "high_gap_cases": 12
+    }
+  ],
+  "department_continuity": [
+    {
+      "Department": "Human Resources",
+      "avg_manager_tenure": 1.3,
+      "avg_role_tenure": 1.3,
+      "avg_company_tenure": 2.8
+    },
+    {
+      "Department": "Research & Development",
+      "avg_manager_tenure": 1.2,
+      "avg_role_tenure": 1.2,
+      "avg_company_tenure": 2.7
+    },
+    {
+      "Department": "Sales",
+      "avg_manager_tenure": 1.3,
+      "avg_role_tenure": 1.3,
+      "avg_company_tenure": 2.9
+    }
+  ],
+  "disclaimer": "Manager continuity is an observational indicator of supervisory tenure, not an individual evaluation of managerial effectiveness."
+}

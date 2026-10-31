@@ -1,0 +1,182 @@
+[
+  {
+    "EmployeeID": "PANW-1001",
+    "Department": "Research & Development",
+    "JobRole": "Research Scientist",
+    "JobLevel": 1,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Urgent",
+    "RetentionPriority": "Urgent"
+  },
+  {
+    "EmployeeID": "PANW-1002",
+    "Department": "Research & Development",
+    "JobRole": "Manufacturing Director",
+    "JobLevel": 3,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Urgent"
+  },
+  {
+    "EmployeeID": "PANW-1003",
+    "Department": "Research & Development",
+    "JobRole": "Laboratory Technician",
+    "JobLevel": 2,
+    "CareerCluster": "Progressing Career Builders",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1004",
+    "Department": "Research & Development",
+    "JobRole": "Manufacturing Director",
+    "JobLevel": 3,
+    "CareerCluster": "Stable Long-Term Contributors",
+    "PromotionGapCategory": "Urgent",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1005",
+    "Department": "Research & Development",
+    "JobRole": "Laboratory Technician",
+    "JobLevel": 1,
+    "CareerCluster": "Progressing Career Builders",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1006",
+    "Department": "Research & Development",
+    "JobRole": "Research Scientist",
+    "JobLevel": 2,
+    "CareerCluster": "Early-Career Explorers",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1007",
+    "Department": "Sales",
+    "JobRole": "Sales Executive",
+    "JobLevel": 3,
+    "CareerCluster": "Stable Long-Term Contributors",
+    "PromotionGapCategory": "Urgent",
+    "RetentionPriority": "Urgent"
+  },
+  {
+    "EmployeeID": "PANW-1008",
+    "Department": "Research & Development",
+    "JobRole": "Manufacturing Director",
+    "JobLevel": 3,
+    "CareerCluster": "Progressing Career Builders",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Moderate"
+  },
+  {
+    "EmployeeID": "PANW-1009",
+    "Department": "Research & Development",
+    "JobRole": "Laboratory Technician",
+    "JobLevel": 1,
+    "CareerCluster": "Early-Career Explorers",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1010",
+    "Department": "Research & Development",
+    "JobRole": "Manufacturing Director",
+    "JobLevel": 3,
+    "CareerCluster": "Stable Long-Term Contributors",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1011",
+    "Department": "Sales",
+    "JobRole": "Sales Executive",
+    "JobLevel": 2,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Urgent",
+    "RetentionPriority": "Urgent"
+  },
+  {
+    "EmployeeID": "PANW-1012",
+    "Department": "Research & Development",
+    "JobRole": "Research Scientist",
+    "JobLevel": 2,
+    "CareerCluster": "Progressing Career Builders",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Moderate"
+  },
+  {
+    "EmployeeID": "PANW-1013",
+    "Department": "Research & Development",
+    "JobRole": "Research Scientist",
+    "JobLevel": 1,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Urgent",
+    "RetentionPriority": "Moderate"
+  },
+  {
+    "EmployeeID": "PANW-1014",
+    "Department": "Research & Development",
+    "JobRole": "Laboratory Technician",
+    "JobLevel": 1,
+    "CareerCluster": "Early-Career Explorers",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1015",
+    "Department": "Sales",
+    "JobRole": "Sales Representative",
+    "JobLevel": 2,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Moderate"
+  },
+  {
+    "EmployeeID": "PANW-1016",
+    "Department": "Research & Development",
+    "JobRole": "Laboratory Technician",
+    "JobLevel": 1,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Urgent",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1017",
+    "Department": "Sales",
+    "JobRole": "Sales Executive",
+    "JobLevel": 3,
+    "CareerCluster": "Promotion-Stalled Talent",
+    "PromotionGapCategory": "Moderate",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1018",
+    "Department": "Research & Development",
+    "JobRole": "Laboratory Technician",
+    "JobLevel": 1,
+    "CareerCluster": "Progressing Career Builders",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Standard"
+  },
+  {
+    "EmployeeID": "PANW-1019",
+    "Department": "Research & Development",
+    "JobRole": "Research Scientist",
+    "JobLevel": 2,
+    "CareerCluster": "Progressing Career Builders",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Moderate"
+  },
+  {
+    "EmployeeID": "PANW-1020",
+    "Department": "Research & Development",
+    "JobRole": "Research Scientist",
+    "JobLevel": 2,
+    "CareerCluster": "Early-Career Explorers",
+    "PromotionGapCategory": "Standard",
+    "RetentionPriority": "Standard"
+  }
+]

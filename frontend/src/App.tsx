@@ -254,6 +254,7 @@ function AppContent() {
                     data={overviewData}
                     loading={loadingOverview}
                     onNavigateTab={(tab) => navigate(tab)}
+                    onRetry={loadInitialData}
                   />
                 )}
 

@@ -1,0 +1,142 @@
+{
+  "name": "Palo Alto Networks Trajectory Prototype",
+  "is_demo": true,
+  "provenance": "Public Benchmark / Synthetic Demonstration Data (Non-Internal)",
+  "total_records": 1470,
+  "columns": [
+    "Age",
+    "Attrition",
+    "BusinessTravel",
+    "DailyRate",
+    "Department",
+    "DistanceFromHome",
+    "Education",
+    "EducationField",
+    "EnvironmentSatisfaction",
+    "Gender",
+    "HourlyRate",
+    "JobInvolvement",
+    "JobLevel",
+    "JobRole",
+    "JobSatisfaction",
+    "MaritalStatus",
+    "MonthlyIncome",
+    "MonthlyRate",
+    "NumCompaniesWorked",
+    "OverTime",
+    "PercentSalaryHike",
+    "PerformanceRating",
+    "RelationshipSatisfaction",
+    "StockOptionLevel",
+    "TotalWorkingYears",
+    "TrainingTimesLastYear",
+    "WorkLifeBalance",
+    "YearsAtCompany",
+    "YearsInCurrentRole",
+    "YearsSinceLastPromotion",
+    "YearsWithCurrManager",
+    "PromotionGapRatio",
+    "RoleStagnationIndex",
+    "TrainingIntensityScore",
+    "ManagerStabilityIndicator",
+    "CareerVelocity",
+    "PromotionGapScore",
+    "PromotionGapCategory",
+    "PromotionGapRiskTier",
+    "CareerDevelopmentNeedScore",
+    "RetentionRiskIndex",
+    "RetentionOpportunityIndex",
+    "RetentionPriority",
+    "EmployeeID",
+    "ManagerID",
+    "IsAnomalousStagnation",
+    "AnomalyScore",
+    "Cluster_ID",
+    "KMeans_Cluster_ID",
+    "GMM_Cluster_ID",
+    "Hierarchical_Cluster_ID",
+    "GMM_Confidence",
+    "PCA1",
+    "PCA2",
+    "CareerCluster",
+    "RecommendedCategory",
+    "RecommendedAction",
+    "RecommendationTriggers"
+  ],
+  "clustering_metrics": {
+    "n_clusters": 5,
+    "primary_algorithm": "K-Means",
+    "silhouette_score_kmeans": 0.2209,
+    "silhouette_score_gmm": 0.1537,
+    "silhouette_score_hierarchical": 0.1803,
+    "silhouette_score_primary": 0.2209,
+    "davies_bouldin_kmeans": 1.4841,
+    "davies_bouldin_gmm": 2.0893,
+    "inertia": 5335.7,
+    "pca_variance_explained": [
+      47.1,
+      15.2
+    ],
+    "pca_total_variance_explained": 62.3,
+    "features_used": [
+      "YearsAtCompany",
+      "YearsInCurrentRole",
+      "YearsSinceLastPromotion",
+      "YearsWithCurrManager",
+      "TrainingTimesLastYear",
+      "PromotionGapRatio",
+      "RoleStagnationIndex",
+      "JobLevel"
+    ],
+    "feature_importances": {
+      "JobLevel": 0.2759,
+      "PromotionGapRatio": 0.1586,
+      "YearsInCurrentRole": 0.1554,
+      "RoleStagnationIndex": 0.1217,
+      "YearsWithCurrManager": 0.0872,
+      "YearsSinceLastPromotion": 0.0834,
+      "YearsAtCompany": 0.0733,
+      "TrainingTimesLastYear": 0.0445
+    },
+    "anomaly_count": 118,
+    "anomaly_rate_percent": 8,
+    "elbow_curve": [
+      {
+        "k": 2,
+        "inertia": 8299.4,
+        "silhouette_score": 0.3967
+      },
+      {
+        "k": 3,
+        "inertia": 6560.4,
+        "silhouette_score": 0.2595
+      },
+      {
+        "k": 4,
+        "inertia": 5864.4,
+        "silhouette_score": 0.2324
+      },
+      {
+        "k": 5,
+        "inertia": 5335.7,
+        "silhouette_score": 0.2209
+      },
+      {
+        "k": 6,
+        "inertia": 4874.6,
+        "silhouette_score": 0.2195
+      },
+      {
+        "k": 7,
+        "inertia": 4460.9,
+        "silhouette_score": 0.2284
+      },
+      {
+        "k": 8,
+        "inertia": 4189.9,
+        "silhouette_score": 0.2364
+      }
+    ],
+    "auto_k_selected": false
+  }
+}
