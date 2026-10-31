@@ -32,7 +32,8 @@ export const ReauthModal: React.FC<ReauthModalProps> = ({
 
     try {
       // In demo/quick-switch mode, verify credentials or regenerate JWT token
-      const res = await fetch('/api/auth/login', {
+      const apiHost = (import.meta as any).env?.VITE_API_URL ? (import.meta as any).env.VITE_API_URL.replace(/\/+$/, '') : '';
+      const res = await fetch(`${apiHost}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
