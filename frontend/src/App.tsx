@@ -121,6 +121,13 @@ function AppContent() {
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close modals
+      if (e.key === 'Escape') {
+        setCmdOpen(false);
+        setShortcutsOpen(false);
+        return;
+      }
+
       // Ctrl+K or Cmd+K for command menu
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();

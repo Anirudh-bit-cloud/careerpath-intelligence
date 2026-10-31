@@ -114,5 +114,24 @@ Every HTTP response includes hardened security headers:
 ### Safe Artifact Loading & Canonical Path Validation
 - **Trusted Directory Confinement:** All serialized ML and survival artifacts (`.joblib` / `.pkl`) MUST only be loaded from the dedicated, application-controlled model artifact directory (`artifacts/models/<workspace_id>/`).
 - **Path Traversal Protection:** The system executes canonical path validation (`os.path.realpath`) before any deserialization, throwing a security exception if the resolved path falls outside `artifacts_base_dir`.
-- **Cryptographic Hash Verification:** Model version records store the deterministic SHA-256 data hash. The registry service optionally enforces byte-level checksum validation before unpickling/deserialization.
+- **Cryptographic Hash Verification:** Model version records store the deterministic SHA-256 data hash. The registry service enforces byte-level checksum validation before unpickling/deserialization.
 - **Untrusted Deserialization Prohibition:** Arbitrary user-uploaded pickle or joblib files are strictly rejected at the API layer. All serialized model weights are generated exclusively by internal training pipelines.
+
+---
+
+## 9. Enterprise SSO, SCIM 2.0 & Field-Level AES-256-GCM Encryption
+
+### 9.1 Enterprise OIDC PKCE Code Flow
+- Enterprise Single Sign-On conforms to **OpenID Connect (OIDC)** utilizing **Proof Key for Code Exchange (PKCE, RFC 7636)**.
+- Prevents authorization code interception attacks by verifying the SHA-256 `code_challenge` against the client's `code_verifier`.
+- Features Just-In-Time (JIT) user account provisioning, role mapping from IdP claims, and offline mock IdP support for air-gapped deployments.
+
+### 9.2 RFC 7644 SCIM 2.0 User Lifecycle Management
+- Automated user provisioning, profile updates, and instant de-provisioning (`active = false`) via SCIM 2.0 protocol (`/scim/v2/Users`).
+- Authenticated via cryptographically random Bearer tokens stored with SHA-256 hashing in `scim_tokens`.
+
+### 9.3 Field-Level AES-256-GCM Credential Encryption
+- Sensitive third-party HRIS credentials (e.g. BambooHR API keys, webhooks secrets) are encrypted at rest using **AES-256-GCM** authenticated encryption (`cryptography.hazmat.primitives.ciphers.aead.AESGCM`).
+- Each encrypted value utilizes a unique 96-bit cryptographic nonce and produces an authentication tag preventing ciphertext tampering.
+- Encryption keys are derived via PBKDF2-HMAC-SHA256 from the master secret (`ENCRYPTION_MASTER_KEY`).
+- Includes a dedicated key rotation utility (`scripts/rotate_encryption_key.py`) enabling re-encryption of all stored secrets with zero downtime.

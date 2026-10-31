@@ -1,17 +1,19 @@
-# CareerPath Intelligence — 4-6 Week Enterprise Pilot Rollout Plan
+# CareerPath Intelligence — 6-Week Enterprise Pilot Rollout Plan
 
-This document outlines the structured pilot deployment methodology for enterprise workforce analytics and retention intelligence.
+**Release Target:** v3.2.0 Enterprise Release  
+**Methodology:** Structured, phased validation of workforce analytics, temporal backtesting, intersectional fairness, and talent retention workflows.
 
 ---
 
-## 1. Pilot Objectives & Success Criteria
+## 1. Pilot Objectives & Quantitative Verification Criteria
 
-The 30-to-45 day pilot aims to validate the analytical accuracy and business utility of CareerPath Intelligence within a single division or business unit (typically 500 to 2,500 employees).
+The 6-week pilot validates analytical precision, regulatory compliance, and operational utility within a target division (typically 500 to 2,500 employees).
 
-### Quantitative Success Criteria:
-1. **Model Calibration Accuracy:** Unsupervised clustering and dwell curves align with 90%+ of historical promotions recorded over the prior 24 months.
-2. **Early Detection Reach:** Surface at least 80% of high-performing flight-risk employees at least 3 months prior to expected resignation.
-3. **Talent Committee Efficiency:** Reduce talent calibration preparation and debate time by 40% via automated dossiers and pseudonymized presentation mode.
+### Quantitative Verification Targets:
+1. **Temporal Backtest Validation:** Rolling-origin backtest on historical exits demonstrates positive Lift over Base Rate and superior calibration over naive heuristics.
+2. **Intersectional Parity Verification:** All demographic slices (Gender × AgeBand, Gender × Department) audited with False Discovery Rate (FDR) Benjamini-Hochberg correction ($q \ge 0.05$) or documented in a formal bias review sign-off.
+3. **Manager Alignment & Scoping:** 100% of frontline people managers access only direct reports with zero cross-team data leaks.
+4. **Talent Committee Velocity:** Calibration session prep and decision latency reduced by 40%+ via automated candidate dossiers and pseudonymized presentation mode.
 
 ---
 
@@ -19,65 +21,67 @@ The 30-to-45 day pilot aims to validate the analytical accuracy and business uti
 
 ```mermaid
 flowchart TD
-    W1["Week 1: Scoping & Tenant Provisioning"] --> W2["Week 2: Data Ingestion & Sanitization"]
-    W2 --> W3["Week 3: ML Calibration & Policy Baselines"]
-    W3 --> W4["Week 4: HRBP & Committee Training"]
-    W4 --> W5["Week 5: Live Calibration Session"]
-    W5 --> W6["Week 6: Pilot Review & Executive Business Case"]
+    W1["Week 1: SSO/SCIM & Tenant Setup"] --> W2["Week 2: Data Ingestion & BambooHR Sync"]
+    W2 --> W3["Week 3: Temporal Backtest & Intersectional Fairness"]
+    W3 --> W4["Week 4: HRBP & Frontline Manager Rollout"]
+    W4 --> W5["Week 5: Calibration & Succession 9-Box Review"]
+    W5 --> W6["Week 6: Executive Briefing & Observational Cohort ROI"]
 ```
 
-### Week 1: Scoping, Workspace Provisioning & RBAC Setup
-- Define pilot cohort (e.g., Global Software Engineering or Commercial Operations).
-- Provision isolated enterprise workspace (`workspace_id`).
-- Provision RBAC roles: `admin` (HR IT), `hr_analyst` (People Analytics), `hrbp` (Division HR), and `talent_committee` (Leadership).
-- Configure enterprise branding: org name, logo mark, and primary brand accent color.
+### Week 1: SSO/SCIM Configuration, Workspace Provisioning & RBAC
+- Configure Enterprise Single Sign-On (OIDC code flow with PKCE) and SCIM 2.0 provisioning (`/scim/v2/Users`).
+- Provision isolated enterprise workspace (`workspace_id`) with role-based access control:
+  - `admin`: IT / People Analytics Operations
+  - `hr_analyst`: People Analytics Modeling & Model Registry
+  - `hrbp`: Division HR Business Partners
+  - `manager`: Frontline people leaders (team-scoped)
+  - `talent_committee`: Executive calibration committee members
+- Configure visual identity: brand logo mark, primary accent color, and custom domain mapping.
 
-### Week 2: Data Ingestion & Schema Alignment
-- Secure ingestion of workforce snapshot via CSV or Reference HRIS Connector:
-  - Required fields: `EmployeeID`, `JobLevel`, `JobRole`, `Department`, `YearsAtCompany`, `YearsInCurrentRole`, `YearsSinceLastPromotion`, `PerformanceRating`.
-  - Optional enrichment: `TrainingTimesLastYear`, `JobSatisfaction`, `WorkLifeBalance`.
-- Execution of automated data quality pipeline:
-  - Null value detection, tenure boundary checks, zero-dwell imputation, and normalization.
+### Week 2: Workforce Ingestion, BambooHR Sync & Historical Exits
+- Ingestion of primary workforce roster via CSV or live BambooHR Connector:
+  - Core fields: `EmployeeID`, `JobLevel`, `JobRole`, `Department`, `YearsAtCompany`, `YearsInCurrentRole`, `YearsSinceLastPromotion`, `PerformanceRating`.
+  - Enrichment fields: `TrainingTimesLastYear`, `JobSatisfaction`, `YearsWithCurrManager`.
+- Ingestion of historical termination logs via **Bring-Your-Own (BYO) Historical Exits** flow (`POST /api/dataset/upload-exits`):
+  - Fields: `employee_id`, `exit_date`, `exit_reason`.
+- Automatic execution of data quality audit: null value handling, boundary validation, and zero-dwell imputation.
 
-### Week 3: ML Model Calibration & Policy Tuning
-- Train K-Means clustering model on pilot cohort.
-- Validate cluster count using Elbow Curve and Silhouette score evaluation ($k=4$).
-- Calibrate Level Dwell Benchmark Curves:
-  - Level 1: 1.5 years
-  - Level 2: 2.0 years
-  - Level 3: 2.8 years
-  - Level 4: 3.5 years
-  - Level 5+: 4.5 years
-- Review scoring policy versioning (`v1.0.0`) and run tier-movement simulation.
+### Week 3: Temporal Backtesting, Intersectional Fairness & Bias Sign-Off
+- Execute rolling-origin temporal backtesting across multiple historical origins, benchmarking Transparent RRI vs. Supervised HistGBDT vs. Naive Baseline.
+- Run complete Intersectional Demographic Parity audit:
+  - Evaluate Gender × AgeBand, Gender × Department, AgeBand × Department.
+  - Apply sample size $n < 10$ suppression to protect privacy.
+  - Compute Chi-Square / Fisher's Exact $p$-values and Benjamini-Hochberg adjusted $q$-values.
+- Conduct formal **Bias Review Sign-Off** (`POST /api/fairness/signoff`) with written justification before promoting the model to active inference.
 
-### Week 4: HRBP & People Manager Enablement
-- Train HRBPs on the **Retention Opportunities** workspace and longitudinal **Trends & Tier Migration** tracking.
-- Roll out **My Team & 1-on-1s** workspace to frontline people managers:
-  - Verify strict team scoping (`ManagerID == current_user.employee_id`) and negative authorization barriers (non-team access forbidden).
-  - Enable managers to review supportive 1-on-1 talking points, top 3 drivers, and schedule follow-ups without punitive framing.
-  - Require managers to sign the "Non-Punitive Diagnostic Decision Support" agreement before reviewing individual scores.
-- Review auto-generated rule-based recommendations:
-  - Career Progression & Band Calibration Review
-  - Executive Mentorship & Cross-Functional Shadowing
-  - Skill Advancement & L&D Training Allocation
-  - Lateral Mobility & Rotational Exploration
-- Log sample intervention records and verify SQLite audit trails.
+### Week 4: HRBP & Frontline People Manager Enablement
+- Train HRBPs on the **Retention Opportunities** workspace and longitudinal **Trends & Tier Migration** tracking using standardized risk tiers (`Urgent`, `Moderate`, `Standard`).
+- Deploy **My Team & 1-on-1s** workspace to frontline people managers:
+  - Verify negative authorization barriers (non-team access strictly returns `HTTP 403 Forbidden`).
+  - Equip managers with supportive 1-on-1 talking points, top 3 drivers, and developmental follow-up scheduling.
+  - Enforce "Non-Punitive Diagnostic Decision Support" agreement prior to viewing score breakdowns.
 
-### Week 5: Live Talent Review Committee Calibration
-- Conduct live Talent Calibration Review using **Talent Committee Mode**.
-- Enable **Presentation Mode** to evaluate candidates using pseudonymized identifiers (`CANDIDATE-9A4B`).
-- Record committee decisions (Approved, Deferred, Rejected) with formal justification notes.
-- Export finalized meeting minutes and executive PDF briefings.
+### Week 5: Talent Committee Calibration & Succession 9-Box Review
+- Conduct live talent calibration sessions using **Talent Committee Review**:
+  - Activate Presentation Mode to evaluate candidates using pseudonymized identifiers (`CANDIDATE-9A4B`).
+  - Calibrate employees across the 9-Box talent matrix.
+  - Detect critical Single Points of Failure (SPOFs) in leadership and technical key roles.
+- Record decisions (Approved, Deferred, Action Plan) with immutable audit logging.
 
-### Week 6: Post-Pilot Evaluation & ROI Verification
-- Execute **Impact Estimator** using observed pilot data and verified intervention conversions.
-- Present final executive briefing to Chief People Officer and VP of HR.
-- Determine enterprise-wide production deployment timeline.
+### Week 6: Automated Executive Briefing & Observational Cohort ROI
+- Generate automated **Executive Workforce Briefing** (`GET /api/briefings/executive`) with key metrics, critical departments, and talent interventions.
+- Review Matched Observational Cohort analysis comparing before/after RRI against matched controls (with transparent selection bias caveats).
+- Export complete compliance package from Trust Center:
+  - NYC Local Law 144 Bias Audit Summary (CSV)
+  - Pre-filled Data Protection Impact Assessment (`docs/DPIA_TEMPLATE.md`)
+  - Formal Model Card (`docs/MODEL_CARD.md`)
+- Present final evaluation to Chief People Officer and determine company-wide deployment plan.
 
 ---
 
-## 3. Data Privacy & Compliance Commitments During Pilot
+## 3. Data Privacy & Enterprise Trust Commitments
 
-1. **Zero External Data Leakage:** The application runs locally or within your private VPC. No employee PII is sent to external cloud LLM providers.
-2. **Pseudonymization at Ingestion:** If requested, employee identifiers can be pseudonymized prior to file upload.
-3. **Immediate Data Erasure:** Upon pilot conclusion, all database records, cached datasets, and audit logs can be permanently deleted with a single command or exported under GDPR Article 15.
+1. **Zero External Data Leakage:** All computation executes within your secure tenant container or private VPC. No employee PII is sent to external commercial LLM APIs.
+2. **Field-Level AES-256-GCM Encryption:** HRIS credentials and API tokens are encrypted at rest with PBKDF2 derived keys and random 96-bit nonces.
+3. **Automated GDPR Compliance:** Instant Data Subject Access Request (DSAR) export (`GET /api/governance/data-subject-export/{id}`) and retention preview (`GET /api/governance/preview-retention`).
+4. **Immediate Data Erasure:** Full workspace data and audit logs can be permanently sanitized upon pilot conclusion.
