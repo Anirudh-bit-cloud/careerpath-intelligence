@@ -8,6 +8,10 @@ import mockManagerData from './mockManager.json';
 import mockFairnessData from './mockFairness.json';
 import mockInterventionsData from './mockInterventions.json';
 import mockEmployeesData from './mockEmployees.json';
+import mockAuditLogsData from './mockAuditLogs.json';
+import mockBiasSummaryData from './mockBiasSummary.json';
+import mockComplianceMappingData from './mockComplianceMapping.json';
+
 
 import {
   DatasetMetadata,

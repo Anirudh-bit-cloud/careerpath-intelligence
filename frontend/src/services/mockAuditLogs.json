@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1065,
+    "timestamp": "2026-10-31T16:02:04.100055",
+    "user_email": "admin@company.com",
+    "action": "fairness.audit_viewed",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": "{\"flags_count\": 0}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1064,
+    "timestamp": "2026-10-31T16:01:44.242956",
+    "user_email": "admin@company.com",
+    "action": "fairness.audit_viewed",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": "{\"flags_count\": 0}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1063,
+    "timestamp": "2026-10-31T16:00:47.560526",
+    "user_email": "admin@company.com",
+    "action": "employee_score.viewed",
+    "entity_type": "employee",
+    "entity_id": "PANW-1042",
+    "details": "{\"viewer_id\": \"PANW-1002\", \"target_employee_id\": \"PANW-1042\", \"purpose\": \"talent_analytics_review\", \"timestamp\": \"2026-10-31T16:00:47.560526\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1062,
+    "timestamp": "2026-10-31T15:59:20.129805",
+    "user_email": "admin@company.com",
+    "action": "fairness.audit_viewed",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": "{\"flags_count\": 0}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1061,
+    "timestamp": "2026-10-31T15:57:51.325945",
+    "user_email": "admin@company.com",
+    "action": "fairness.audit_viewed",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": "{\"flags_count\": 2}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1060,
+    "timestamp": "2026-10-31T15:30:47.791034",
+    "user_email": "admin@company.com",
+    "action": "fairness.csv_exported",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1059,
+    "timestamp": "2026-10-31T15:30:47.770656",
+    "user_email": "admin@company.com",
+    "action": "fairness.audit_viewed",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": "{\"flags_count\": 6}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1058,
+    "timestamp": "2026-10-31T15:30:47.756485",
+    "user_email": "admin@company.com",
+    "action": "committee.decision",
+    "entity_type": "employee",
+    "entity_id": "1001",
+    "details": "{\"decision\": \"approved\", \"session_id\": 15}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1057,
+    "timestamp": "2026-10-31T15:30:47.736576",
+    "user_email": "system",
+    "action": "update_intervention_outcome",
+    "entity_type": "intervention",
+    "entity_id": "46",
+    "details": "{\"outcome_status\": \"Retained\", \"retained_at_90_days\": True}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1056,
+    "timestamp": "2026-10-31T15:30:46.277448",
+    "user_email": "admin@company.com",
+    "action": "auth.login_success",
+    "entity_type": "user",
+    "entity_id": "1",
+    "details": "{\"role\": \"admin\", \"mfa_used\": false}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1049,
+    "timestamp": "2026-10-31T15:30:34.351185",
+    "user_email": "admin",
+    "action": "update_notification_preferences",
+    "entity_type": "notification_preference",
+    "entity_id": "1",
+    "details": "{\"smtp_host\": \"mail.corporate.internal\", \"has_slack\": True}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1048,
+    "timestamp": "2026-10-31T15:30:34.331778",
+    "user_email": "system",
+    "action": "briefing.executive_viewed",
+    "entity_type": "executive_briefing",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1047,
+    "timestamp": "2026-10-31T15:30:34.303490",
+    "user_email": "system",
+    "action": "briefing.executive_emailed",
+    "entity_type": "executive_briefing",
+    "entity_id": null,
+    "details": "{\"recipient\": \"leadership@company.com\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1046,
+    "timestamp": "2026-10-31T15:30:34.276955",
+    "user_email": "system",
+    "action": "briefing.executive_downloaded_md",
+    "entity_type": "executive_briefing",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1045,
+    "timestamp": "2026-10-31T15:30:34.250202",
+    "user_email": "system",
+    "action": "briefing.executive_viewed",
+    "entity_type": "executive_briefing",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1044,
+    "timestamp": "2026-10-31T15:30:34.226039",
+    "user_email": "system",
+    "action": "briefing.executive_viewed",
+    "entity_type": "executive_briefing",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1043,
+    "timestamp": "2026-10-31T15:30:34.198550",
+    "user_email": "admin",
+    "action": "update_intervention_outcome",
+    "entity_type": "intervention",
+    "entity_id": "1",
+    "details": "{\"outcome_status\": \"Retained\", \"retained_at_90_days\": True}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1040,
+    "timestamp": "2026-10-31T15:30:34.088768",
+    "user_email": "admin",
+    "action": "connector.bamboohr_synced",
+    "entity_type": "hris_sync_log",
+    "entity_id": "7",
+    "details": "{\"rows\": 5, \"source\": \"recorded_fixtures\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1039,
+    "timestamp": "2026-10-31T15:30:32.740778",
+    "user_email": "admin",
+    "action": "connector.bamboohr_configured",
+    "entity_type": "hris_connector",
+    "entity_id": null,
+    "details": "{\"subdomain\": \"panw-cyber\", \"enabled\": true}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1038,
+    "timestamp": "2026-10-31T15:30:32.721427",
+    "user_email": "scim_bridge",
+    "action": "scim.user_deprovisioned",
+    "entity_type": "user",
+    "entity_id": "16",
+    "details": "{\"email\": \"scim.user.1793460632674@company.com\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1037,
+    "timestamp": "2026-10-31T15:30:32.708316",
+    "user_email": "scim_bridge",
+    "action": "scim.user_patched",
+    "entity_type": "user",
+    "entity_id": "16",
+    "details": "{\"is_active\": false, \"role\": \"hrbp\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1036,
+    "timestamp": "2026-10-31T15:30:32.686801",
+    "user_email": "scim_bridge",
+    "action": "scim.user_created",
+    "entity_type": "user",
+    "entity_id": "16",
+    "details": "{\"email\": \"scim.user.1793460632674@company.com\", \"role\": \"hrbp\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1035,
+    "timestamp": "2026-10-31T15:30:32.657284",
+    "user_email": "admin",
+    "action": "scim.token_generated",
+    "entity_type": "scim_token",
+    "entity_id": null,
+    "details": "{\"label\": \"Okta Test\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1034,
+    "timestamp": "2026-10-31T15:30:32.636443",
+    "user_email": "elena.rostova@panw.demo",
+    "action": "sso.login_success",
+    "entity_type": "session",
+    "entity_id": null,
+    "details": "{\"auth_method\": \"oidc\", \"role\": \"admin\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1033,
+    "timestamp": "2026-10-31T15:30:32.603297",
+    "user_email": "admin",
+    "action": "sso.oidc_config_updated",
+    "entity_type": "oidc_config",
+    "entity_id": null,
+    "details": "{\"enabled\": true, \"issuer\": \"http://127.0.0.1:8000/api/sso/mock-provider\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1032,
+    "timestamp": "2026-10-31T15:30:26.326784",
+    "user_email": "admin@company.com",
+    "action": "model.rollback",
+    "entity_type": "model_version",
+    "entity_id": "1",
+    "details": "{\"model_type\": \"hist_gbdt\", \"rolled_back_to_id\": 1, \"previous_archived_ids\": [18]}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1031,
+    "timestamp": "2026-10-31T15:30:26.315784",
+    "user_email": "admin@company.com",
+    "action": "model.promoted",
+    "entity_type": "model_version",
+    "entity_id": "18",
+    "details": "{\"model_type\": \"hist_gbdt\", \"promoted_id\": 18, \"previous_archived_ids\": [1]}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1030,
+    "timestamp": "2026-10-31T15:30:22.845442",
+    "user_email": "test_mgr_phase4@company.com",
+    "action": "manager.followup_created",
+    "entity_type": "manager_followup",
+    "entity_id": "PANW-1001",
+    "details": "{\"manager_id\": \"PANW-1044\", \"target_employee\": \"PANW-1001\", \"topic\": \"Career progression to Senior & Cloud Architecture stretch rotation\", \"planned_date\": \"2026-11-20\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1029,
+    "timestamp": "2026-10-31T15:30:22.836970",
+    "user_email": "test_mgr_phase4@company.com",
+    "action": "manager.acknowledgement_signed",
+    "entity_type": "manager_compliance",
+    "entity_id": "PANW-1044",
+    "details": "{\"statement\": \"I understand these indicators are meant to support employee growth and retention, not to evaluate performance or justify discipline.\", \"acknowledged_at\": \"2026-10-31T15:30:22.836970\", \"role\": \"manager\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1028,
+    "timestamp": "2026-10-31T15:30:22.827675",
+    "user_email": "test_mgr_phase4@company.com",
+    "action": "employee_score.viewed",
+    "entity_type": "employee",
+    "entity_id": "PANW-1001",
+    "details": "{\"viewer_id\": \"PANW-1044\", \"target_employee_id\": \"PANW-1001\", \"purpose\": \"manager_score_explanation_review\", \"timestamp\": \"2026-10-31T15:30:22.827675\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1027,
+    "timestamp": "2026-10-31T15:30:22.818657",
+    "user_email": "test_mgr_phase4@company.com",
+    "action": "employee_score.viewed",
+    "entity_type": "employee",
+    "entity_id": "PANW-1001",
+    "details": "{\"viewer_id\": \"PANW-1044\", \"target_employee_id\": \"PANW-1001\", \"purpose\": \"manager_direct_report_review\", \"timestamp\": \"2026-10-31T15:30:22.818657\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1026,
+    "timestamp": "2026-10-31T15:30:22.786291",
+    "user_email": "test_mgr_phase4@company.com",
+    "action": "auth.login_success",
+    "entity_type": "user",
+    "entity_id": "9",
+    "details": "{\"role\": \"manager\", \"mfa_used\": false}",
+    "ip_address": "testclient"
+  },
+  {
+    "id": 1025,
+    "timestamp": "2026-10-31T15:30:22.584905",
+    "user_email": "system",
+    "action": "compliance.bias_audit_summary_viewed",
+    "entity_type": "compliance_bias_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1024,
+    "timestamp": "2026-10-31T15:30:22.565952",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 17, \"filter\": null}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1023,
+    "timestamp": "2026-10-31T15:30:22.537447",
+    "user_email": "system",
+    "action": "compliance.bias_audit_csv_exported",
+    "entity_type": "compliance_bias_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1022,
+    "timestamp": "2026-10-31T15:30:22.513870",
+    "user_email": "system",
+    "action": "compliance.bias_audit_summary_viewed",
+    "entity_type": "compliance_bias_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1021,
+    "timestamp": "2026-10-31T15:30:22.496030",
+    "user_email": "system",
+    "action": "compliance.bias_audit_summary_viewed",
+    "entity_type": "compliance_bias_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1020,
+    "timestamp": "2026-10-31T15:30:22.476176",
+    "user_email": "system",
+    "action": "compliance.bias_audit_summary_viewed",
+    "entity_type": "compliance_bias_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1019,
+    "timestamp": "2026-10-31T15:30:22.453802",
+    "user_email": "system",
+    "action": "compliance.mapping_exported",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1018,
+    "timestamp": "2026-10-31T15:30:22.439520",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 17, \"filter\": null}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1017,
+    "timestamp": "2026-10-31T15:30:22.432668",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 17, \"filter\": null}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1016,
+    "timestamp": "2026-10-31T15:30:22.425319",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 9, \"filter\": null}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1015,
+    "timestamp": "2026-10-31T15:30:22.418531",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 6, \"filter\": \"GDPR\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1014,
+    "timestamp": "2026-10-31T15:30:22.408641",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 17, \"filter\": null}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1013,
+    "timestamp": "2026-10-31T15:30:22.400746",
+    "user_email": "system",
+    "action": "compliance.mapping_viewed",
+    "entity_type": "compliance_mapping",
+    "entity_id": null,
+    "details": "{\"count\": 17, \"filter\": null}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1009,
+    "timestamp": "2026-10-31T15:30:21.282543",
+    "user_email": "admin@company.com",
+    "action": "fairness.csv_exported",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": null,
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1008,
+    "timestamp": "2026-10-31T15:30:21.247530",
+    "user_email": "admin@company.com",
+    "action": "fairness.audit_viewed",
+    "entity_type": "fairness_audit",
+    "entity_id": null,
+    "details": "{\"flags_count\": 0}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1007,
+    "timestamp": "2026-10-31T15:30:21.211205",
+    "user_email": "admin@company.com",
+    "action": "employee_score.viewed",
+    "entity_type": "employee",
+    "entity_id": "PANW-1001",
+    "details": "{\"viewer_id\": \"PANW-1002\", \"target_employee_id\": \"PANW-1001\", \"purpose\": \"talent_analytics_review\", \"timestamp\": \"2026-10-31T15:30:21.210663\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1004,
+    "timestamp": "2026-10-31T15:30:20.771990",
+    "user_email": "system",
+    "action": "employee_score.viewed",
+    "entity_type": "employee",
+    "entity_id": "PANW-1001",
+    "details": "{\"viewer_id\": null, \"target_employee_id\": \"PANW-1001\", \"purpose\": \"talent_analytics_review\", \"timestamp\": \"2026-10-31T15:30:20.771012\"}",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "id": 1003,
+    "timestamp": "2026-10-31T15:30:11.120243",
+    "user_email": "admin@company.com",
+    "action": "auth.mfa_disabled",
+    "entity_type": "user",
+    "entity_id": "1",
+    "details": "{\"deactivated_by\": \"admin@company.com\"}",
+    "ip_address": "127.0.0.1"
+  }
+]
