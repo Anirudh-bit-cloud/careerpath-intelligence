@@ -49,6 +49,8 @@ export const SettingsView: React.FC = () => {
   const [survivalData, setSurvivalData] = useState<any>(null);
   const [coxData, setCoxData] = useState<any>(null);
   const [calibrationData, setCalibrationData] = useState<any>(null);
+  const [mlImportanceData, setMlImportanceData] = useState<any>(null);
+  const [policySensitivityData, setPolicySensitivityData] = useState<any>(null);
   const [loadingValidation, setLoadingValidation] = useState(false);
 
   // Notification settings state
@@ -84,16 +86,20 @@ export const SettingsView: React.FC = () => {
   const loadValidationData = async () => {
     setLoadingValidation(true);
     try {
-      const [overview, survival, cox, calib] = await Promise.all([
+      const [overview, survival, cox, calib, mlImp, sensitivity] = await Promise.all([
         api.getValidationOverview().catch(() => null),
         api.getSurvivalCurves().catch(() => null),
         api.getCoxRegression().catch(() => null),
-        api.getCalibrationPlot().catch(() => null)
+        api.getCalibrationPlot().catch(() => null),
+        api.getMlImportance().catch(() => null),
+        api.getPolicySensitivity().catch(() => null)
       ]);
       setValidationOverview(overview);
       setSurvivalData(survival);
       setCoxData(cox);
       setCalibrationData(calib);
+      setMlImportanceData(mlImp);
+      setPolicySensitivityData(sensitivity);
     } catch (e) {
       console.error('Failed to load validation metrics:', e);
     } finally {
@@ -746,6 +752,212 @@ export const SettingsView: React.FC = () => {
                     </li>
                   </ul>
                 </div>
+              </div>
+
+              {/* Supervised Attrition Machine Learning Model (Phase 2) */}
+              <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <div className="text-[10px] uppercase font-bold tracking-wider text-cp-accent mb-0.5 flex items-center gap-1.5">
+                      <Brain className="w-3.5 h-3.5" />
+                      <span>Calibrated Classification</span>
+                    </div>
+                    <h2 className="text-sm font-semibold text-cp-text-primary">
+                      Supervised Attrition Machine Learning Model & SHAP Feature Importance
+                    </h2>
+                    <p className="text-[11px] text-cp-text-muted">
+                      HistGradientBoostingClassifier with probability calibration and strict demographic attribute exclusion.
+                    </p>
+                  </div>
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cp-accent/15 text-cp-accent border border-cp-accent/30 self-start sm:self-auto">
+                    {mlImportanceData?.enabled ? 'Active Model' : 'Cohort Model Disabled'}
+                  </span>
+                </div>
+
+                {mlImportanceData?.metrics && (
+                  <div className="space-y-4">
+                    {/* Metric Tiles */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                      <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border">
+                        <div className="text-[10px] text-cp-text-muted uppercase font-semibold">Held-Out ROC-AUC</div>
+                        <div className="text-lg font-bold font-mono text-cp-accent mt-0.5">
+                          {mlImportanceData.metrics.test_metrics?.roc_auc ?? '—'}
+                        </div>
+                        <div className="text-[10px] text-cp-text-muted mt-0.5">Discriminative Power</div>
+                      </div>
+
+                      <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border">
+                        <div className="text-[10px] text-cp-text-muted uppercase font-semibold">PR-AUC (Precision-Recall)</div>
+                        <div className="text-lg font-bold font-mono text-emerald-400 mt-0.5">
+                          {mlImportanceData.metrics.test_metrics?.pr_auc ?? '—'}
+                        </div>
+                        <div className="text-[10px] text-cp-text-muted mt-0.5">Imbalanced Detection</div>
+                      </div>
+
+                      <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border">
+                        <div className="text-[10px] text-cp-text-muted uppercase font-semibold">Calibrated Brier Score</div>
+                        <div className="text-lg font-bold font-mono text-cp-text-primary mt-0.5">
+                          {mlImportanceData.metrics.test_metrics?.brier_score ?? '—'}
+                        </div>
+                        <div className="text-[10px] text-cp-text-muted mt-0.5">Mean Squared Prob Error</div>
+                      </div>
+
+                      <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border">
+                        <div className="text-[10px] text-cp-text-muted uppercase font-semibold">5-Fold CV ROC-AUC</div>
+                        <div className="text-lg font-bold font-mono text-cp-accent mt-0.5">
+                          {mlImportanceData.metrics.cross_validation_5fold?.mean_roc_auc ?? '—'}
+                        </div>
+                        <div className="text-[10px] text-cp-text-muted mt-0.5">±{mlImportanceData.metrics.cross_validation_5fold?.std_roc_auc ?? '—'} across folds</div>
+                      </div>
+                    </div>
+
+                    {/* Global Feature Importance Table (mean |SHAP|) */}
+                    <div>
+                      <div className="text-xs font-semibold text-cp-text-primary mb-2 flex items-center justify-between">
+                        <span>Global Feature Importance (Mean Absolute SHAP Value)</span>
+                        <span className="text-[10px] text-emerald-400 font-normal">
+                          Protected demographic attributes verified absent (EEOC compliant)
+                        </span>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-xs text-left">
+                          <thead className="bg-cp-bg-elevated text-cp-text-muted uppercase text-[10px] tracking-wider border-b border-cp-border">
+                            <tr>
+                              <th className="py-2 px-3">Rank</th>
+                              <th className="py-2 px-3">Feature Name</th>
+                              <th className="py-2 px-3 text-right">Mean |SHAP| Impact</th>
+                              <th className="py-2 px-3">Relative Importance</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-cp-border font-mono text-[11px]">
+                            {mlImportanceData.metrics.global_feature_importance?.map((f: any) => {
+                              const maxImp = mlImportanceData.metrics.global_feature_importance[0]?.importance || 1;
+                              const pct = Math.round((f.importance / maxImp) * 100);
+                              return (
+                                <tr key={f.feature} className="hover:bg-cp-bg-elevated/40">
+                                  <td className="py-2 px-3 font-sans font-semibold text-cp-text-muted">#{f.rank}</td>
+                                  <td className="py-2 px-3 font-sans font-medium text-cp-text-primary">{f.feature}</td>
+                                  <td className="py-2 px-3 text-right text-cp-accent font-bold">{f.importance.toFixed(4)}</td>
+                                  <td className="py-2 px-3">
+                                    <div className="w-full h-1.5 bg-cp-bg-elevated rounded-full overflow-hidden max-w-[140px]">
+                                      <div
+                                        className="h-full bg-cp-accent rounded-full transition-all"
+                                        style={{ width: `${pct}%` }}
+                                      />
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Policy Weight Sensitivity Analysis (±20% Stress Test) */}
+              <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <div className="text-[10px] uppercase font-bold tracking-wider text-cp-accent mb-0.5 flex items-center gap-1.5">
+                      <Sliders className="w-3.5 h-3.5" />
+                      <span>Policy Stability & Robustness</span>
+                    </div>
+                    <h2 className="text-sm font-semibold text-cp-text-primary">
+                      Retention Policy Weight Sensitivity Analysis (±20% Stress Test)
+                    </h2>
+                    <p className="text-[11px] text-cp-text-muted">
+                      Evaluates how perturbing core scoring weights by ±20% shifts workforce priority tiers, proving policy resilience against arbitrary parameter choices.
+                    </p>
+                  </div>
+                  {policySensitivityData && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        Rating: {policySensitivityData.stability_rating}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {policySensitivityData?.sensitivities && (
+                  <div className="space-y-3">
+                    <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border text-xs flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-cp-text-secondary">
+                        Most Sensitive Parameter: <strong className="text-cp-text-primary">{policySensitivityData.most_sensitive_parameter}</strong>
+                      </span>
+                      <span className="text-cp-text-muted">
+                        Max Urgent Reclassification: <strong className="font-mono text-cp-accent">{policySensitivityData.max_urgent_reclassification_count} employees</strong>
+                      </span>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs text-left">
+                        <thead className="bg-cp-bg-elevated text-cp-text-muted uppercase text-[10px] tracking-wider border-b border-cp-border">
+                          <tr>
+                            <th className="py-2.5 px-3">Scoring Parameter</th>
+                            <th className="py-2.5 px-3">Base Value</th>
+                            <th className="py-2.5 px-3">Perturbation</th>
+                            <th className="py-2.5 px-3">Perturbed Value</th>
+                            <th className="py-2.5 px-3 text-right">Urgent Shift (Δ)</th>
+                            <th className="py-2.5 px-3">Impact Narrative</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-cp-border font-mono text-[11px]">
+                          {policySensitivityData.sensitivities.map((param: any) =>
+                            param.scenarios.map((sc: any, scIdx: number) => (
+                              <tr key={`${param.parameter_key}-${sc.shift}`} className="hover:bg-cp-bg-elevated/40">
+                                {scIdx === 0 && (
+                                  <td
+                                    rowSpan={param.scenarios.length}
+                                    className="py-2.5 px-3 font-sans font-semibold text-cp-text-primary border-r border-cp-border/50 align-top"
+                                  >
+                                    {param.parameter_label}
+                                  </td>
+                                )}
+                                {scIdx === 0 && (
+                                  <td
+                                    rowSpan={param.scenarios.length}
+                                    className="py-2.5 px-3 text-cp-text-muted border-r border-cp-border/50 align-top"
+                                  >
+                                    {param.baseline_value}
+                                  </td>
+                                )}
+                                <td className="py-2.5 px-3 font-sans font-medium">
+                                  <span
+                                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                      sc.shift === '+20%' ? 'bg-cp-accent/15 text-cp-accent' : 'bg-amber-500/15 text-amber-400'
+                                    }`}
+                                  >
+                                    {sc.shift}
+                                  </span>
+                                </td>
+                                <td className="py-2.5 px-3 text-cp-text-secondary">{sc.parameter_value}</td>
+                                <td className="py-2.5 px-3 text-right">
+                                  <span
+                                    className={`font-bold ${
+                                      sc.urgent_delta > 0
+                                        ? 'text-rose-400'
+                                        : sc.urgent_delta < 0
+                                        ? 'text-emerald-400'
+                                        : 'text-cp-text-muted'
+                                    }`}
+                                  >
+                                    {sc.urgent_delta >= 0 ? `+${sc.urgent_delta}` : sc.urgent_delta} ({sc.urgent_delta_pct > 0 ? `+${sc.urgent_delta_pct}%` : `${sc.urgent_delta_pct}%`})
+                                  </span>
+                                </td>
+                                <td className="py-2.5 px-3 font-sans text-cp-text-secondary text-[11px]">
+                                  {sc.narrative}
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           )}

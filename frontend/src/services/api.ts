@@ -115,6 +115,12 @@ export const api = {
     return res.json();
   },
 
+  async getEmployeeMlExplanation(employeeId: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/employees/${employeeId}/ml-explanation`);
+    if (!res.ok) throw new Error(`Failed to fetch ML explanation for ${employeeId}`);
+    return res.json();
+  },
+
   async searchEmployees(query: string = ''): Promise<any[]> {
     const res = await authFetch(`${API_BASE}/employees?query=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error('Failed to search employees');
@@ -323,6 +329,12 @@ export const api = {
   async getPolicyHistory(): Promise<any[]> {
     const res = await authFetch(`${API_BASE}/policy/history`);
     if (!res.ok) throw new Error('Failed to fetch policy history');
+    return res.json();
+  },
+
+  async getPolicySensitivity(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/policy/sensitivity`);
+    if (!res.ok) throw new Error('Failed to fetch policy sensitivity');
     return res.json();
   },
 
@@ -543,6 +555,12 @@ export const api = {
   async getCalibrationPlot(nBins: number = 10): Promise<any> {
     const res = await authFetch(`${API_BASE}/validation/calibration-plot?n_bins=${nBins}`);
     if (!res.ok) throw new Error('Failed to fetch calibration plot');
+    return res.json();
+  },
+
+  async getMlImportance(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/validation/ml-importance`);
+    if (!res.ok) throw new Error('Failed to fetch ML feature importance');
     return res.json();
   },
 

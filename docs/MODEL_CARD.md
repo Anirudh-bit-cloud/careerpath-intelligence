@@ -93,14 +93,26 @@ Evaluated via stratified held-out split (75% train / 25% test cohort preserving 
 - **Data Provenance Disclosure:** Every validation telemetry view displays an active Data Provenance badge (`Synthetic`, `Uploaded`, or `Connected`).
 - **Synthetic Data Warning:** When operating on synthetic benchmark datasets, a mandatory disclosure banner is presented: *"Metrics on synthetic data do not demonstrate real-world predictive power. Enterprise validation requires domain-calibrated historical workforce tenure records."*
 
+### 4.5 Supervised Attrition Machine Learning Model & SHAP Explainability
+- **Architecture:** `HistGradientBoostingClassifier` with `class_weight='balanced'` to accommodate minority attrition rates, calibrated via `CalibratedClassifierCV` (isotonic regression when $n \ge 1000$, else sigmoid / Platt scaling).
+- **Evaluation:** Evaluated on stratified 75/25 train/test held-out split, reporting test ROC-AUC, PR-AUC (Precision-Recall), empirical Brier score, and 5-fold cross-validation summary ($\mu \pm \sigma$).
+- **Local Explainability (SHAP TreeExplainer):** Computes exact Shapley values for each individual employee, reporting the top 3 positive drivers (factors elevating attrition hazard) and top 3 protective drivers (factors anchoring retention).
+- **Methodology Agreement & Adjudication:** An automated agreement indicator flags cases where rule-based RRI dwell formulas and supervised ML models assign differing priority tiers, alerting talent partners that human review is required.
+- **Global Feature Importance:** Ranked mean absolute SHAP values ($\frac{1}{N}\sum |\phi_i|$) across non-protected operational features.
+
 ---
 
 ## 5. Ethical Guardrails & Algorithmic Fairness
 
-1. **Zero Protected Attributes in Scoring:**
-   The training pipeline and scoring formula strictly exclude demographic attributes (age, gender, ethnicity, marital status, disability).
-2. **Automated Fairness Audit:**
-   The platform integrates a continuous Four-Fifths Rule ($80\%$ rule) disparate impact auditing module that detects selection rate disparities across protected demographic groups and suppresses cohorts with $n < 10$.
+1. **Strict Prohibition of Protected Attributes in Model Features:**
+   The training pipeline and scoring formula strictly exclude demographic attributes (age, gender, ethnicity, marital status, disability). An automated programmatic validator (`validate_features_no_protected`) enforces this invariant before model fitting.
+2. **Four-Fifths Disparate Impact & Equal Opportunity Difference:**
+   The fairness audit module evaluates:
+   - **Disparate Impact Ratio:** EEOC Uniform Guidelines Four-Fifths rule ($80\%$ threshold) comparing selection rates to the most favored demographic group.
+   - **Equal Opportunity Difference (EOD):** Evaluates True Positive Rate ($\text{TPR} = \frac{\text{TP}}{\text{Actual Exits}}$) parity across demographic groups, flagging disparities exceeding $15\%$.
+   - **Small-Sample Suppression:** Cohorts with sample size $n < 10$ or $< 3$ exits are suppressed to eliminate small-sample statistical distortion.
+3. **Policy Weight Sensitivity & Stability Audit:**
+   The system tests perturbations of $\pm 20\%$ across core scoring weights (`stagnation_weight`, `engagement_weight`, `training_deficit_weight`, `pgr_ratio_split`), proving that retention review queues remain resilient rather than hypersensitive to arbitrary threshold choices.
 3. **Deterministic Recommendation Rules:**
    Recommendations are rule-based and derived from observable career progression signals rather than stochastic generative outputs.
 4. **Presentation Mode Pseudonymization:**

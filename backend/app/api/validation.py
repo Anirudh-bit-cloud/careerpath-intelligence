@@ -9,6 +9,7 @@ from typing import Dict, Any
 from backend.app.api.auth import get_current_user
 from backend.app.services.analytics_service import analytics_service
 from backend.app.services.validation_service import ValidationService
+from backend.app.services.attrition_service import attrition_model_service
 
 router = APIRouter(prefix="/api/validation", tags=["Survival Analysis & Model Validation"])
 validation_service = ValidationService(analytics_service=analytics_service)
@@ -97,3 +98,14 @@ def get_calibration_plot(
 ):
     """Returns calibration curve deciles (predicted vs observed event rate) and Brier score."""
     return validation_service.get_calibration_data(n_bins=n_bins)
+
+
+@router.get("/ml-importance")
+def get_ml_importance(
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """
+    Returns supervised attrition model validation metrics (ROC-AUC, PR-AUC, Brier score, 5-fold CV)
+    and global feature importance (mean absolute SHAP values) across non-protected features.
+    """
+    return attrition_model_service.get_global_importance()

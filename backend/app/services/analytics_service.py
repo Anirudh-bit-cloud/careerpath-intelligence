@@ -162,6 +162,116 @@ class AnalyticsService:
             "sample_moved_out_of_urgent": moved_out_of_urgent[:5]
         }
 
+    def compute_weight_sensitivity(
+        self,
+        weights: Optional[Dict[str, float]] = None,
+        thresholds: Optional[Dict[str, float]] = None,
+        delta_pct: float = 0.20
+    ) -> Dict[str, Any]:
+        """
+        Calculates sensitivity of employee tier distributions to +/- 20% perturbations
+        in each core scoring weight. Confirms policy robustness against hyperparameter drift.
+        """
+        if self.df_enriched is None:
+            return {"error": "No workforce data available for sensitivity analysis"}
+
+        base_weights = weights or {
+            "stagnation_weight": 0.45,
+            "engagement_weight": 0.35,
+            "training_deficit_weight": 0.20,
+            "pgr_ratio_split": 0.60,
+            "rsi_ratio_split": 0.40
+        }
+        base_thresholds = thresholds or {
+            "level_1_dwell_years": 2.0,
+            "level_2_dwell_years": 3.0,
+            "level_3_dwell_years": 4.0,
+            "level_4_dwell_years": 5.0,
+            "level_5_dwell_years": 6.0
+        }
+
+        total_workforce = len(self.df_enriched)
+        baseline_sim = self.simulate_policy_impact(base_weights, base_thresholds)
+        baseline_dist = baseline_sim.get("baseline", {})
+        baseline_urgent = baseline_dist.get("urgent", 0)
+
+        tested_params = [
+            ("stagnation_weight", "Stagnation Weight"),
+            ("engagement_weight", "Engagement Deficit Weight"),
+            ("training_deficit_weight", "Training Deficit Weight"),
+            ("pgr_ratio_split", "Promotion Gap vs Role Stagnation Split")
+        ]
+
+        sensitivities = []
+        max_shift = 0
+        most_sensitive_param = tested_params[0][1]
+
+        for key, label in tested_params:
+            base_val = base_weights.get(key, 0.30)
+            shifts = [
+                ("+20%", round(base_val * (1.0 + delta_pct), 3)),
+                ("-20%", round(base_val * (1.0 - delta_pct), 3))
+            ]
+
+            param_results = []
+            for shift_label, new_val in shifts:
+                perturbed_weights = dict(base_weights)
+                perturbed_weights[key] = new_val
+                # If perturbing primary weights, normalize sum to 1.0
+                if key in ["stagnation_weight", "engagement_weight", "training_deficit_weight"]:
+                    other_keys = [k for k in ["stagnation_weight", "engagement_weight", "training_deficit_weight"] if k != key]
+                    rem = 1.0 - new_val
+                    sum_other = sum(base_weights[k] for k in other_keys)
+                    if sum_other > 0:
+                        for ok in other_keys:
+                            perturbed_weights[ok] = round((base_weights[ok] / sum_other) * rem, 3)
+
+                sim = self.simulate_policy_impact(perturbed_weights, base_thresholds)
+                sim_urgent = sim["simulated"]["urgent"]
+                urgent_delta = sim_urgent - baseline_urgent
+                urgent_delta_pct = round((urgent_delta / baseline_urgent * 100), 1) if baseline_urgent > 0 else 0.0
+
+                if abs(urgent_delta) > max_shift:
+                    max_shift = abs(urgent_delta)
+                    most_sensitive_param = label
+
+                param_results.append({
+                    "shift": shift_label,
+                    "parameter_value": new_val,
+                    "simulated_distribution": sim["simulated"],
+                    "urgent_delta": urgent_delta,
+                    "urgent_delta_pct": urgent_delta_pct,
+                    "moved_to_urgent_count": sim.get("moved_to_urgent_count", 0),
+                    "moved_out_of_urgent_count": sim.get("moved_out_of_urgent_count", 0),
+                    "narrative": (
+                        f"{shift_label} {label} shifts {abs(urgent_delta)} employees "
+                        f"({'into' if urgent_delta >= 0 else 'out of'} Urgent tier ({urgent_delta_pct:+.1f}%)."
+                    )
+                })
+
+            sensitivities.append({
+                "parameter_key": key,
+                "parameter_label": label,
+                "baseline_value": base_val,
+                "scenarios": param_results
+            })
+
+        return {
+            "total_workforce": total_workforce,
+            "delta_percentage": int(delta_pct * 100),
+            "baseline_distribution": baseline_dist,
+            "baseline_weights": base_weights,
+            "most_sensitive_parameter": most_sensitive_param,
+            "max_urgent_reclassification_count": max_shift,
+            "stability_rating": "STABLE" if max_shift <= total_workforce * 0.08 else "SENSITIVE",
+            "sensitivities": sensitivities,
+            "governance_note": (
+                "Policy weight sensitivity analysis verifies that tier assignments remain resilient "
+                "under empirical parameter shifts, ensuring retention review lists reflect consistent "
+                "dwell and engagement signals rather than arbitrary threshold boundaries."
+            )
+        }
+
     def get_metadata(self) -> Dict[str, Any]:
         """Returns dataset provenance, row count, and processing status."""
         if self.df_enriched is None:

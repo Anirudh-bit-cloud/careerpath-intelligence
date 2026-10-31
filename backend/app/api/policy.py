@@ -75,6 +75,22 @@ def get_active_policy(workspace_id: str = "default", db: Session = Depends(get_d
     }
 
 
+@router.get("/sensitivity")
+def get_policy_sensitivity(workspace_id: str = "default", db: Session = Depends(get_db)):
+    """
+    Evaluates sensitivity of retention risk priority tiers to +/- 20% shifts
+    in scoring weights.
+    """
+    policy = db.query(ScoringPolicy).filter(
+        ScoringPolicy.workspace_id == workspace_id,
+        ScoringPolicy.is_active == True
+    ).first()
+    weights = json.loads(policy.weights_json) if policy and policy.weights_json else None
+    thresholds = json.loads(policy.thresholds_json) if policy and policy.thresholds_json else None
+
+    return analytics_service.compute_weight_sensitivity(weights=weights, thresholds=thresholds, delta_pct=0.20)
+
+
 @router.post("/preview")
 def preview_policy_impact(req: PolicyPreviewRequest):
     """Calculates exactly how many employees move between Urgent, Moderate, and Standard tiers BEFORE applying."""

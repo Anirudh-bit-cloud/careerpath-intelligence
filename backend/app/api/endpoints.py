@@ -16,6 +16,7 @@ from backend.app.schemas.domain import (
     InterventionCreate, InterventionUpdate, InterventionResponse
 )
 from backend.app.services.analytics_service import analytics_service
+from backend.app.services.attrition_service import attrition_model_service
 from backend.app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api")
@@ -174,6 +175,19 @@ def get_employee_score_explanation(employee_id: str):
     if not explanation:
         raise HTTPException(status_code=404, detail=f"Score explanation for employee {employee_id} not found")
     return explanation
+
+
+@router.get("/employees/{employee_id}/ml-explanation")
+def get_employee_ml_explanation(employee_id: str):
+    """
+    Returns supervised ML attrition probability, calibrated risk tier,
+    concurrence/disagreement with RRI, and top positive/protective SHAP feature drivers.
+    Decision support only — never automates adverse employment decisions.
+    """
+    res = attrition_model_service.get_employee_ml_explanation(employee_id)
+    if "error" in res:
+        raise HTTPException(status_code=404, detail=res["error"])
+    return res
 
 
 # ==============================================================================
