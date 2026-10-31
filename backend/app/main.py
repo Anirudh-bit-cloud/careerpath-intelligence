@@ -36,6 +36,8 @@ from backend.app.api.snapshots import router as snapshots_router
 from backend.app.api.manager import router as manager_router
 from backend.app.api.models import router as models_router
 from backend.app.api.compliance import router as compliance_router
+from backend.app.api.sso import router as sso_router
+from backend.app.api.scim import router as scim_router
 from backend.app.services.scheduler_service import start_scheduler, stop_scheduler
 
 # Initialize Database Schema & Run Migrations
@@ -235,6 +237,8 @@ app.include_router(snapshots_router)
 app.include_router(manager_router)
 app.include_router(models_router)
 app.include_router(compliance_router)
+app.include_router(sso_router)
+app.include_router(scim_router)
 
 if __name__ == "__main__":
     import uvicorn

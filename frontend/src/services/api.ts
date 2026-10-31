@@ -975,4 +975,119 @@ export const api = {
   downloadComplianceMappingDoc(): string {
     return `${API_BASE}/compliance/compliance-mapping-doc`;
   },
+
+  // ── SSO, SCIM 2.0 & BambooHR Connector (Phase 5) ──────────────────────────
+  async getOIDCConfig(workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/config?workspace_id=${workspaceId}`);
+    if (!res.ok) throw new Error('Failed to fetch OIDC configuration');
+    return res.json();
+  },
+
+  async updateOIDCConfig(data: any, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/config?workspace_id=${workspaceId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to update OIDC configuration');
+    }
+    return res.json();
+  },
+
+  async getOIDCAuthorizeUrl(redirectUri: string, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/authorize-url?workspace_id=${workspaceId}&redirect_uri=${encodeURIComponent(redirectUri)}`);
+    if (!res.ok) throw new Error('Failed to get OIDC authorize URL');
+    return res.json();
+  },
+
+  async handleOIDCCallback(payload: { code: string; state: string; code_verifier?: string; workspace_id?: string }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/callback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'OIDC callback failed');
+    }
+    return res.json();
+  },
+
+  async listSCIMTokens(workspaceId: string = 'default'): Promise<any[]> {
+    const res = await authFetch(`/scim/v2/tokens?workspace_id=${workspaceId}`);
+    if (!res.ok) throw new Error('Failed to list SCIM tokens');
+    return res.json();
+  },
+
+  async generateSCIMToken(label: string, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`/scim/v2/tokens/generate?workspace_id=${workspaceId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ label })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to generate SCIM token');
+    }
+    return res.json();
+  },
+
+  async revokeSCIMToken(tokenId: number, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`/scim/v2/tokens/${tokenId}?workspace_id=${workspaceId}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) throw new Error('Failed to revoke SCIM token');
+    return res.json();
+  },
+
+  async getBambooHRConfig(workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/config?workspace_id=${workspaceId}`);
+    if (!res.ok) throw new Error('Failed to fetch BambooHR config');
+    return res.json();
+  },
+
+  async saveBambooHRConfig(data: any, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/config?workspace_id=${workspaceId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to save BambooHR config');
+    }
+    return res.json();
+  },
+
+  async dryRunBambooHR(data: { subdomain: string; api_key?: string; field_mapping?: any }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/dry-run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'BambooHR dry-run failed');
+    }
+    return res.json();
+  },
+
+  async syncBambooHR(workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/sync?workspace_id=${workspaceId}`, {
+      method: 'POST'
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'BambooHR sync failed');
+    }
+    return res.json();
+  },
+
+  async getHRISSyncLogs(workspaceId: string = 'default', limit: number = 10): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/connectors/sync-logs?workspace_id=${workspaceId}&limit=${limit}`);
+    if (!res.ok) throw new Error('Failed to fetch HRIS sync logs');
+    return res.json();
+  }
 };

@@ -310,4 +310,78 @@ class HistoricalExit(Base):
     created_by = Column(String(128), nullable=False, default="system")
 
 
+# ── Phase 5: SSO/OIDC Configuration per Workspace ──────────────────────────
+
+class OIDCConfig(Base):
+    """Per-workspace OIDC/SSO configuration (encrypted secrets at rest)."""
+    __tablename__ = "oidc_configs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False, unique=True)
+    enabled = Column(Boolean, default=False, nullable=False)
+    issuer_url = Column(String(512), nullable=False)
+    client_id = Column(String(256), nullable=False)
+    # client_secret and other secrets are stored AES-256-encrypted
+    client_secret_enc = Column(Text, nullable=True)          # encrypted
+    allowed_email_domains = Column(Text, nullable=True)      # JSON list of domains
+    role_mapping_json = Column(Text, nullable=True)          # JSON: claim value → platform role
+    jit_default_role = Column(String(32), default="hrbp")   # JIT-provisioned user role
+    pkce_required = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_by = Column(String(128), default="system")
+
+
+class SCIMToken(Base):
+    """Per-workspace SCIM 2.0 bearer tokens (hashed)."""
+    __tablename__ = "scim_tokens"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False)
+    token_hash = Column(String(128), nullable=False)  # SHA-256 hash of the bearer token
+    label = Column(String(128), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_used_at = Column(DateTime, nullable=True)
+    revoked = Column(Boolean, default=False)
+
+
+class HRISConnectorConfig(Base):
+    """Per-workspace HRIS connector configuration (encrypted credentials)."""
+    __tablename__ = "hris_connector_configs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False)
+    connector_type = Column(String(64), nullable=False)  # 'bamboohr', 'sftp_csv', 'mock'
+    enabled = Column(Boolean, default=False)
+    # Connector-specific config stored as encrypted JSON
+    config_enc = Column(Text, nullable=True)             # encrypted JSON: api_key, subdomain, etc.
+    field_mapping_json = Column(Text, nullable=True)     # JSON: HRIS field → platform field
+    sync_schedule = Column(String(64), default="manual") # 'manual', 'daily', 'weekly'
+    last_sync_at = Column(DateTime, nullable=True)
+    last_sync_status = Column(String(32), nullable=True)  # 'success', 'partial', 'failed'
+    last_sync_rows = Column(Integer, nullable=True)
+    last_sync_error = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), default="system")
+
+
+class HRISSyncLog(Base):
+    """Per-sync run log for HRIS connectors."""
+    __tablename__ = "hris_sync_logs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False)
+    connector_type = Column(String(64), nullable=False)
+    started_at = Column(DateTime, default=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
+    status = Column(String(32), default="running")  # 'running', 'success', 'partial', 'failed'
+    rows_fetched = Column(Integer, nullable=True)
+    rows_matched = Column(Integer, nullable=True)
+    rows_skipped = Column(Integer, nullable=True)
+    error_message = Column(Text, nullable=True)
+    dry_run = Column(Boolean, default=False)
+    triggered_by = Column(String(128), default="system")
+
+
 
