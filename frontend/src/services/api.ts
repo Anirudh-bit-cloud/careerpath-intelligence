@@ -22,6 +22,9 @@ import {
 const RAW_API_BASE = import.meta.env.VITE_API_URL || '';
 const API_BASE = RAW_API_BASE ? `${RAW_API_BASE.replace(/\/+$/, '')}/api` : '/api';
 
+let activeMetadata: DatasetMetadata = mockMetadataData as unknown as DatasetMetadata;
+
+
 export async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
   const token = localStorage.getItem('cp_session_token');
   const headers = new Headers(options.headers || {});
@@ -55,7 +58,7 @@ export const api = {
     } catch (e) {
       console.warn('API /metadata unreachable, using embedded benchmark fallback', e);
     }
-    return mockMetadataData as unknown as DatasetMetadata;
+    return activeMetadata;
   },
 
   async getOverview(): Promise<ExecutiveOverview> {
