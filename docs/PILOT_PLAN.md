@@ -50,8 +50,12 @@ flowchart TD
   - Level 5+: 4.5 years
 - Review scoring policy versioning (`v1.0.0`) and run tier-movement simulation.
 
-### Week 4: HRBP Workflow Enablement & Test Interventions
-- Train HRBPs on the **Retention Opportunities** workspace.
+### Week 4: HRBP & People Manager Enablement
+- Train HRBPs on the **Retention Opportunities** workspace and longitudinal **Trends & Tier Migration** tracking.
+- Roll out **My Team & 1-on-1s** workspace to frontline people managers:
+  - Verify strict team scoping (`ManagerID == current_user.employee_id`) and negative authorization barriers (non-team access forbidden).
+  - Enable managers to review supportive 1-on-1 talking points, top 3 drivers, and schedule follow-ups without punitive framing.
+  - Require managers to sign the "Non-Punitive Diagnostic Decision Support" agreement before reviewing individual scores.
 - Review auto-generated rule-based recommendations:
   - Career Progression & Band Calibration Review
   - Executive Mentorship & Cross-Functional Shadowing

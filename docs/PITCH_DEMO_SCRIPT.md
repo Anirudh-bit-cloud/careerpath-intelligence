@@ -105,7 +105,26 @@
 
 ---
 
-## 7. Talent Committee & Presentation Mode (Minute 6:15 – 7:00)
+## 7. Longitudinal Trends, Manager Enablement & Model Governance (Minute 6:15 – 7:30)
+
+**Speaker:**
+> *"In version 3.1.0, we expanded beyond static point-in-time scoring to continuous longitudinal intelligence and frontline manager enablement."*
+
+**Action:**
+- Navigate to **Trends & Migration** (`/trends`): show 12-month workforce risk distribution and the interactive **Priority Tier Migration Matrix**.
+- Switch role to `manager` and open **My Team & 1-on-1s** (`/my-team`): show strict direct-report scoping, supportive 1-on-1 talking point generator, and follow-up scheduling.
+- Open **Themes & Settings** -> **Model Registry & Drift**: show candidate model promotion/rollback lifecycle and live feature Population Stability Index (PSI) drift monitoring.
+
+**Speaker:**
+> *"First, longitudinal snapshots track how cohorts shift across risk tiers over time, proving whether retention interventions are actually cooling flight risk.
+>
+> Second, our frontline manager view provides team leaders with supportive, empathetic 1-on-1 talking points and top 3 retention drivers—while strictly walling them off from records outside their direct hierarchy.
+>
+> Finally, our Model Registry guarantees reproducibility to 4 decimal places, logs serialized artifacts with SHA-256 data hashes, and continuously computes Population Stability Index (PSI) drift against baseline training data."*
+
+---
+
+## 8. Talent Committee & Presentation Mode (Minute 7:30 – 8:15)
 
 **Speaker:**
 > *"Finally, let's see how calibration committees run unbiased reviews."*

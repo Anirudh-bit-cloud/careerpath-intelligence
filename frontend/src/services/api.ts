@@ -826,5 +826,43 @@ export const api = {
       throw new Error(err.detail || 'Failed to update follow-up');
     }
     return res.json();
+  },
+
+  // ── Model Registry & Drift Governance ────────────────────────────────
+  async listModels(modelType?: string): Promise<any[]> {
+    const url = modelType ? `${API_BASE}/models?model_type=${modelType}` : `${API_BASE}/models`;
+    const res = await authFetch(url);
+    if (!res.ok) throw new Error('Failed to fetch registered models');
+    return res.json();
+  },
+
+  async getModel(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}`);
+    if (!res.ok) throw new Error(`Failed to fetch model version ${id}`);
+    return res.json();
+  },
+
+  async promoteModel(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}/promote`, { method: 'POST' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to promote model');
+    }
+    return res.json();
+  },
+
+  async rollbackModel(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}/rollback`, { method: 'POST' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to rollback model');
+    }
+    return res.json();
+  },
+
+  async getModelDrift(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}/drift`);
+    if (!res.ok) throw new Error(`Failed to compute drift for model ${id}`);
+    return res.json();
   }
 };

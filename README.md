@@ -1,7 +1,8 @@
-# CareerPath Intelligence
+# CareerPath Intelligence v3.1.0
 ### Enterprise Career Progression, Promotion Gap & Retention Opportunity Analytics
 
 > **Tagline:** Understand career stagnation. Unlock employee potential. Make retention proactive.  
+> **Release:** v3.1.0 Enterprise Production Release  
 > **Project Context:** Unified Mentor Data Science Capstone Project  
 > **Illustrative Enterprise Context:** Palo Alto Networks  
 
@@ -50,35 +51,52 @@ careerpath-intelligence/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py                     # FastAPI application entrypoint & SQLite DB setup
-│   │   ├── api/endpoints.py            # REST API endpoints (overview, clusters, gaps, CRUD)
-│   │   ├── database/connection.py      # SQLAlchemy 2.0 SQLite connection factory
-│   │   ├── models/entities.py          # Persistent Intervention & Metadata ORM models
+│   │   ├── api/
+│   │   │   ├── endpoints.py            # Core analytics, RRI, score explanation, counterfactuals
+│   │   │   ├── models.py               # Model registry, promote/rollback, PSI drift monitoring
+│   │   │   ├── manager.py              # Role-based team scoping, 1-on-1 talking points, follow-ups
+│   │   │   ├── snapshots.py            # Workforce monthly snapshots & longitudinal trends
+│   │   │   ├── validation.py           # Kaplan-Meier, Cox PH, calibration deciles & provenance
+│   │   │   ├── fairness.py             # Four-fifths disparate impact & EOD fairness audits
+│   │   │   └── succession.py           # 9-box grid, talent bench, succession planning
+│   │   ├── database/connection.py      # SQLAlchemy 2.0 connection factory
+│   │   ├── models/entities.py          # Multi-tenant ORM models (snapshots, models, followups)
 │   │   ├── schemas/domain.py           # Pydantic v2 schemas and validation models
-│   │   └── services/analytics_service.py # Core ML caching, aggregations, and insights engine
-│   └── tests/test_analytics.py         # Automated Pytest suite (feature engineering, zero division, CRUD)
+│   │   └── services/
+│   │       ├── analytics_service.py    # Core ML caching, aggregations, and insights engine
+│   │       ├── attrition_service.py    # Supervised GBDT, calibration, SHAP explainability
+│   │       ├── model_registry_service.py # Artifact serialization, lifecycle, and PSI drift
+│   │       ├── snapshot_service.py     # Workforce snapshotting & migration matrices
+│   │       └── validation_service.py   # Stratified backtest & bootstrap C-index validation
+│   └── tests/                          # 59 automated Pytest unit and integration tests
 ├── frontend/
 │   ├── src/
-│   │   ├── components/                 # Sidebar, TopNav with employee search, Navbar
-│   │   ├── views/                      # Dedicated analytical workspaces:
+│   │   ├── components/                 # Design system: Card, MetricCard, DataTable, Drawer, Modal
+│   │   ├── views/                      # 16 dedicated analytical workspaces:
 │   │   │   ├── OverviewView.tsx        # Executive Command Center & Dynamic Insight Feed
+│   │   │   ├── TrendsView.tsx          # Longitudinal workforce trends & tier migration matrix
+│   │   │   ├── MyTeamView.tsx          # Manager-scoped team risk, talking points & follow-ups
+│   │   │   ├── RetentionOpportunitiesView.tsx # Action-oriented intervention & Time Machine
 │   │   │   ├── ClustersView.tsx        # Unsupervised 2D PCA & Archetype Profiles
 │   │   │   ├── PromotionGapView.tsx    # Filterable analytical table & Role Latency rankings
-│   │   │   ├── RetentionOpportunitiesView.tsx # Action-oriented intervention management
+│   │   │   ├── FairnessAuditView.tsx   # Disparate impact & Equal Opportunity Difference
+│   │   │   ├── SuccessionView.tsx      # 9-Box talent matrix & succession bench strength
 │   │   │   ├── ManagerInsightsView.tsx # Supervisory continuity & privacy-guarded metrics
-│   │   │   ├── EmployeeExplorerView.tsx # Employee directory & Career Profile editor
+│   │   │   ├── EmployeeExplorerView.tsx # SHAP waterfall, counterfactuals & simulator
 │   │   │   ├── ReportsView.tsx         # Formal governance reports & CSV exports
 │   │   │   ├── DataManagementView.tsx  # CSV upload, schema validation & quality checks
-│   │   │   └── SettingsView.tsx        # Methodology, mathematical models & ethics
+│   │   │   └── SettingsView.tsx        # Methodology, Model Registry, PSI drift & validation
 │   │   ├── services/api.ts             # Typed REST API service client
 │   │   ├── types/index.ts              # TypeScript domain interfaces
 │   │   └── App.tsx                     # Top-level workspace layout and state routing
 ├── ml/
-│   ├── feature_engineering.py          # Promotion Gap Ratio, Role Stagnation, ROI formulas
+│   ├── attrition_model.py              # HistGradientBoostingClassifier, calibration, SHAP
+│   ├── feature_engineering.py          # Promotion Gap Ratio, Role Stagnation, RRI formulas
 │   ├── clustering.py                   # K-Means, Hierarchical (Ward), Silhouette & PCA
 │   └── recommendations.py              # Explainable, non-demographic recommendation engine
 ├── data/
 │   └── demo_workforce_data.csv         # 1,470-employee demonstration benchmark dataset
-├── research_paper.md                   # 21-section academic research paper with full derivations
+├── research_paper.md                   # Academic research paper with mathematical derivations
 ├── executive_summary.md                # High-impact briefing for leadership & governance
 └── README.md                           # Comprehensive product & technical documentation
 ```

@@ -122,7 +122,26 @@ Evaluated via stratified held-out split (75% train / 25% test cohort preserving 
 
 ---
 
-## 6. Honest Limitations & Operational Scope
+## 7. Model Registry, Artifact Governance & Reproducibility
+
+### 7.1 Schema & Version Lifecycle
+The `ModelVersion` entity enforces strict governance across model lifecycles:
+- **Identifier & Tenant Isolation:** Every model version is scoped by `workspace_id` to guarantee multi-tenant segregation.
+- **Model Types:** Tracks both supervised attrition classifiers (`hist_gbdt`) and survival hazard models (`cox`).
+- **Data Hash & Lineage:** Captures deterministic SHA-256 hash of training data (`training_data_hash`), row counts, JSON-serialized feature lists, hyperparameters, and cross-validated evaluation metrics.
+- **Artifact Persistence:** Serialized binary models are stored via `joblib` under `artifacts/models/{workspace_id}/` with unique timestamp and hash identifiers.
+- **Lifecycle States:** Versions transition deterministically across `candidate`, `active`, and `archived` states. Promoting a candidate atomically archives the currently active model. Rollback restores the previously active model with immutable audit trail logging.
+
+### 7.2 Population Stability Index (PSI) Drift Detection
+The registry continuously computes Population Stability Index (PSI) per feature between baseline training distributions and active inference cohorts:
+$$\text{PSI} = \sum_{k=1}^{B} \left( \text{Actual}_k - \text{Expected}_k \right) \times \ln\left(\frac{\text{Actual}_k}{\text{Expected}_k}\right)$$
+- **$\text{PSI} < 0.10$:** Negligible drift; inference population closely matches baseline training distribution.
+- **$0.10 \le \text{PSI} < 0.20$:** Moderate shift; talent partners are alerted to monitor demographic or tenure composition changes.
+- **$\text{PSI} \ge 0.20$:** Significant population drift; triggers an automated alert recommending model re-training and recalibration.
+
+### 7.3 Deterministic Training Reproducibility Guarantee
+- Fixed pseudorandom initialization (`random_state=42`) in GBDT, calibration cross-validation, and train/test splits.
+- Re-training on the identical data hash reproduces cross-validation ROC-AUC, PR-AUC, and Brier scores identically to four decimal places, as verified by automated regression test suites.
 
 1. **Synthetic Benchmark Calibration:** Models in this demonstration are calibrated on public benchmark distributions. Enterprise deployment requires recalibrating baseline hazard curves to company-specific level dwell times.
 2. **Unobserved External Factors:** Career progression models evaluate structural dwell and engagement; they do not observe macroeconomic shocks, competing private equity hiring surges, or personal relocations.

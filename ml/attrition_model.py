@@ -33,8 +33,9 @@ def validate_features_no_protected(columns: List[str]) -> None:
 
 
 class AttritionModelService:
-    def __init__(self, analytics_service=None):
+    def __init__(self, analytics_service=None, random_state: int = 42):
         self.analytics_service = analytics_service
+        self.random_state = random_state
         self.feature_columns: List[str] = [
             'YearsAtCompany',
             'YearsInCurrentRole',
@@ -56,18 +57,38 @@ class AttritionModelService:
         self.cached_X: Optional[pd.DataFrame] = None
         self.cached_emp_ids: Optional[List[str]] = None
 
+    @property
+    def is_fitted(self) -> bool:
+        return self.is_trained
+
+    @property
+    def features(self) -> List[str]:
+        return self.feature_columns
+
+    @property
+    def cv_metrics(self) -> Dict[str, Any]:
+        return self.train_metrics
+
+    @property
+    def model(self):
+        return self.calibrated_model or self.base_model
+
+    def train(self, df: Optional[pd.DataFrame] = None) -> Dict[str, Any]:
+        return self.train_or_update(force=True, df=df)
+
     def _get_df(self) -> pd.DataFrame:
         if self.analytics_service is not None and self.analytics_service.df_enriched is not None:
             return self.analytics_service.df_enriched.copy()
         return pd.DataFrame()
 
-    def train_or_update(self, force: bool = False) -> Dict[str, Any]:
+    def train_or_update(self, force: bool = False, df: Optional[pd.DataFrame] = None) -> Dict[str, Any]:
         """
         Trains or updates the supervised model on current dataset.
         Handles class imbalance, applies probability calibration, computes SHAP explainer,
         and evaluates ROC-AUC, PR-AUC, Brier score on held-out split.
         """
-        df = self._get_df()
+        if df is None:
+            df = self._get_df()
         if df.empty:
             self.is_trained = False
             self.has_exit_labels = False
@@ -117,7 +138,7 @@ class AttritionModelService:
         n = len(X)
 
         # Held-out stratified split (75% train / 25% test)
-        sss = StratifiedShuffleSplit(n_splits=1, test_size=0.25, random_state=42)
+        sss = StratifiedShuffleSplit(n_splits=1, test_size=0.25, random_state=self.random_state)
         train_idx, test_idx = next(sss.split(X, y))
         X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
         y_train, y_test = y[train_idx], y[test_idx]
@@ -128,7 +149,7 @@ class AttritionModelService:
             learning_rate=0.08,
             max_depth=5,
             class_weight='balanced',
-            random_state=42
+            random_state=self.random_state
         )
         base_clf.fit(X_train, y_train)
 
@@ -204,6 +225,11 @@ class AttritionModelService:
             "total_samples": n,
             "total_departures": int(np.sum(y)),
             "departure_rate": round(float(np.mean(y)), 4),
+            "roc_auc": roc_auc,
+            "pr_auc": pr_auc,
+            "brier_score": brier,
+            "cv_mean": round(float(np.mean(cv_roc_scores)), 4),
+            "cv_std": round(float(np.std(cv_roc_scores)), 4),
             "test_metrics": {
                 "roc_auc": roc_auc,
                 "pr_auc": pr_auc,

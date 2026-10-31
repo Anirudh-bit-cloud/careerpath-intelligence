@@ -55,10 +55,17 @@ This document describes the security controls, cryptography, data isolation, and
 
 | Role | Scope & Permissions |
 | :--- | :--- |
-| **`admin`** | Full workspace administration, user provisioning, custom scoring policy updates, audit trail exports, API key revocation, HRIS connector management, and fairness audits. |
+| **`admin`** | Full workspace administration, user provisioning, custom scoring policy updates, audit trail exports, API key revocation, HRIS connector management, model registry lifecycle, and fairness audits. |
 | **`hrbp`** | View analytics, create and edit retention interventions, view employee profiles, submit committee feedback, and access fairness audits. |
-| **`hr_analyst`** | View all executive analytics, clusters, promotion gap reports, run policy impact simulations, and view model validation panels. |
+| **`hr_analyst`** | View all executive analytics, clusters, promotion gap reports, run policy impact simulations, inspect model registry artifacts, and view model validation panels. |
+| **`manager`** | Scoped strictly to direct reports (`ManagerID == current_user.employee_id`). Access to non-team records returns `HTTP 403 Forbidden`. Can prepare 1-on-1 agendas, inspect top 3 drivers, schedule follow-ups, and review supportive talking points. |
 | **`talent_committee`** | Access **Talent Committee Mode**, view pseudonymized candidate dossiers, record calibration decisions, and review session minutes. |
+
+### Score View Audit Logging
+To prevent unmonitored surveillance or improper access, every individual employee profile, score explanation, and counterfactual accessed by any role (including managers reviewing direct reports) is automatically recorded in `AuditLog` with:
+- `action = "view_score_explanation"` or `"view_employee_profile"`
+- `purpose = "manager_direct_report_review"` or `"hrbp_calibration"`
+- Target `employee_id`, `workspace_id`, authenticated `user_id`, and `ip_address`.
 
 ---
 

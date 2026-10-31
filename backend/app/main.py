@@ -34,6 +34,7 @@ from backend.app.api.succession import router as succession_router
 from backend.app.api.notifications import router as notifications_router
 from backend.app.api.snapshots import router as snapshots_router
 from backend.app.api.manager import router as manager_router
+from backend.app.api.models import router as models_router
 from backend.app.services.scheduler_service import start_scheduler, stop_scheduler
 
 # Initialize Database Schema & Run Migrations
@@ -231,6 +232,7 @@ app.include_router(succession_router)
 app.include_router(notifications_router)
 app.include_router(snapshots_router)
 app.include_router(manager_router)
+app.include_router(models_router)
 
 if __name__ == "__main__":
     import uvicorn

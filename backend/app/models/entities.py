@@ -278,3 +278,22 @@ class ManagerFollowUp(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     completed_at = Column(DateTime, nullable=True)
 
+
+class ModelVersion(Base):
+    __tablename__ = "model_versions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    model_type = Column(String(32), nullable=False)  # 'cox', 'hist_gbdt'
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), default="system", nullable=False)
+    training_data_hash = Column(String(64), nullable=False)
+    row_count = Column(Integer, nullable=False)
+    feature_list_json = Column(Text, nullable=False)  # JSON array of feature names
+    hyperparameters_json = Column(Text, nullable=False)  # JSON dict of hyperparams
+    metrics_json = Column(Text, nullable=False)  # JSON dict of c_index/roc_auc, brier, cv_mean, cv_std, pr_auc
+    artifact_path = Column(String(256), nullable=False)  # disk path to joblib artifact
+    status = Column(String(32), default="candidate", index=True, nullable=False)  # 'active', 'candidate', 'archived'
+    notes = Column(Text, nullable=True)
+
+
