@@ -71,7 +71,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNav
   } = data;
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 max-w-7xl mx-auto w-full min-w-0 overflow-x-hidden">
       {/* ── Page Header / Context ── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cp-border pb-5">
         <div>

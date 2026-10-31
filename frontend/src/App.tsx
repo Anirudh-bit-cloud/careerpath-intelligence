@@ -54,6 +54,7 @@ function AppContent() {
   const { role, canAccessTab } = useAuth();
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+  const [pitchMode, setPitchMode] = useState<boolean>(false);
   const [metadata, setMetadata] = useState<DatasetMetadata | null>(null);
   const [overviewData, setOverviewData] = useState<ExecutiveOverview | null>(null);
   const [clustersData, setClustersData] = useState<CareerClustersData | null>(null);
@@ -194,6 +195,8 @@ function AppContent() {
         urgentCount={overviewData?.kpis.urgent_retention_opportunities || 0}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        pitchMode={pitchMode}
+        onTogglePitchMode={() => setPitchMode(!pitchMode)}
       />
 
       {/* Main App Layout */}

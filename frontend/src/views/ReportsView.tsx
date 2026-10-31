@@ -40,7 +40,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
 
   return (
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
-      {/* ── Header ── */}
+      {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cp-border pb-5">
         <div>
           <div className="text-xs uppercase font-bold tracking-wider text-cp-accent mb-1 flex items-center gap-1.5">
@@ -66,9 +66,31 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
         </div>
       </div>
 
-      {/* ── QUICK EXPORT ARTIFACT CARDS ── */}
+      {/* Section Header */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Phase 6: Monthly Executive Briefing (Live Computed) */}
         <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs flex flex-col justify-between hover:border-cp-accent/50 transition-colors">
+          <div>
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center mb-3">
+              <FileText className="w-4 h-4" />
+            </div>
+            <h3 className="text-sm font-bold text-cp-text-primary">Executive Workforce Briefing</h3>
+            <p className="text-xs text-cp-text-muted mt-1">
+              Live computed executive briefing: headcount, urgent retention risk, departmental risk concentration, and fairness status.
+            </p>
+          </div>
+          <div className="mt-4 flex items-center gap-2">
+            <a
+              href="/api/briefings/executive/download/md"
+              download="Executive_Workforce_Briefing.md"
+              className="flex-1 px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold text-center block transition-opacity shadow-xs"
+            >
+              Download Briefing (MD)
+            </a>
+          </div>
+        </div>
+
+<div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs flex flex-col justify-between hover:border-cp-accent/50 transition-colors">
           <div>
             <div className="w-8 h-8 rounded-lg bg-cp-accent/15 text-cp-accent flex items-center justify-center mb-3">
               <FileSpreadsheet className="w-4 h-4" />
@@ -122,7 +144,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
         </div>
       </div>
 
-      {/* ── PRINTABLE EXECUTIVE SUMMARY REPORT CARD ── */}
+      {/* Section Header */}
       <div className="p-8 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-6 print:border-none print:p-0">
         <div className="border-b border-cp-border pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -139,7 +161,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
           </div>
         </div>
 
-        {/* Narrative */}
+        {/* Section Header */}
         <div className="space-y-4 text-xs text-cp-text-secondary leading-relaxed">
           <p>
             <strong className="text-cp-text-primary">Executive Statement:</strong> This briefing provides a quantitative audit of career progression dynamics across the active workforce cohort. Rather than estimating downstream voluntary turnover probabilities, the analysis diagnoses upstream structural causes of disengagement: promotion latency, role tenure inertia, and training access.
@@ -208,7 +230,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
         </div>
       </div>
 
-      {/* ── EMPIRICAL MODEL VALIDATION & PROVENANCE ── */}
+      {/* Section Header */}
       <div className="rounded-xl border border-cp-border bg-cp-bg-surface p-5 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-cp-border pb-3">
           <div className="flex items-center gap-2">
@@ -310,7 +332,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ overviewData, metadata
         </div>
       </div>
 
-      {/* ── DATA DICTIONARY ── */}
+      {/* Section Header */}
       <div className="rounded-xl border border-cp-border bg-cp-bg-surface p-5 shadow-xs">
         <h2 className="text-sm font-semibold text-cp-text-primary mb-1">
           Career Metric Definitions & Data Dictionary

@@ -33,6 +33,8 @@ interface SidebarProps {
   urgentCount?: number;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
+  pitchMode?: boolean;
+  onTogglePitchMode?: () => void;
 }
 
 interface NavItem {
@@ -54,7 +56,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   metadata,
   urgentCount = 0,
   collapsed = false,
-  onToggleCollapse
+  onToggleCollapse,
+  pitchMode = false,
+  onTogglePitchMode
 }) => {
   const { user, role, setRole, canAccessTab } = useAuth();
   const [showRoleMenu, setShowRoleMenu] = useState(false);
@@ -117,11 +121,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   ];
 
-  // Filter groups and items based on signed-in role permissions
+  // Curated 7-view demo path matching PITCH_DEMO_SCRIPT.md
+  const PITCH_VIEWS = new Set([
+    'overview',
+    'clusters',
+    'promotion-gap',
+    'fairness-audit',
+    'settings',
+    'succession',
+    'trends'
+  ]);
+
+  // Filter groups and items based on signed-in role permissions and optional pitch mode
   const navGroups = rawNavGroups
     .map((group) => ({
       ...group,
-      items: group.items.filter((item) => canAccessTab(item.id))
+      items: group.items.filter((item) => {
+        if (!canAccessTab(item.id)) return false;
+        if (pitchMode && !PITCH_VIEWS.has(item.id)) return false;
+        return true;
+      })
     }))
     .filter((group) => group.items.length > 0);
 
@@ -284,6 +303,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
               )}
             </div>
+
+            {onTogglePitchMode && (
+              <button
+                onClick={onTogglePitchMode}
+                className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border transition-all ${
+                  pitchMode
+                    ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                    : 'bg-cp-bg-app text-cp-text-muted hover:text-cp-text-primary border-cp-border'
+                }`}
+                title="Curated 7-view walkthrough matching PITCH_DEMO_SCRIPT.md"
+              >
+                <span>🎯 Pitch Mode</span>
+                <span className="font-mono text-[9px] uppercase px-1 rounded bg-black/20">
+                  {pitchMode ? 'Active (7 Views)' : 'Off'}
+                </span>
+              </button>
+            )}
 
             <div className="text-[9px] text-cp-text-muted/80 leading-tight pt-1 border-t border-cp-border/40">
               Synthetic benchmark data. Academic prototype.
