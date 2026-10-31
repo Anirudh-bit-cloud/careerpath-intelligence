@@ -533,6 +533,56 @@ export const api = {
     return res.json();
   },
 
+  async getIntersectionalFairness(minSampleSize: number = 10): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/intersectional?min_sample_size=${minSampleSize}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch intersectional fairness audit');
+    return res.json();
+  },
+
+  async getLongitudinalFairness(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/longitudinal`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch longitudinal fairness drift');
+    return res.json();
+  },
+
+  async submitBiasSignoff(data: {
+    review_type: string;
+    target_id: string;
+    decision: string;
+    reviewer_notes: string;
+    acknowledged_flags?: number;
+  }): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/signoff`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to submit bias sign-off');
+    }
+    return res.json();
+  },
+
+  async listBiasSignoffs(limit: number = 20): Promise<any[]> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/signoffs?limit=${limit}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch bias review sign-offs');
+    return res.json();
+  },
+
   // ── Model Validation & Survival Analysis ───────────────────────────
   async getValidationOverview(): Promise<any> {
     const res = await authFetch(`${API_BASE}/validation/metrics`);
