@@ -104,5 +104,15 @@ Every HTTP response includes hardened security headers:
 
 ## 7. GDPR & Privacy Compliance
 
-- **Article 15 (Right of Access / DSAR):** Automated machine-readable JSON export of complete analytical footprints (`GET /api/governance/data-subject-export?employee_id=...`).
+- **Article 15 (Right of Access / DSAR):** Automated machine-readable JSON export of complete analytical footprints (`GET /api/governance/data-subject-export/{employee_id}`). Manager access is strictly bounded to verified direct reports (`HTTP 403` on non-team requests).
 - **Talent Committee Pseudonymization:** Live Presentation Mode masks identifiers (`CANDIDATE-9A4B`) to eliminate demographic and affinity bias during talent reviews.
+
+---
+
+## 8. Serialized Model Artifact Security & Deserialization Controls
+
+### Safe Artifact Loading & Canonical Path Validation
+- **Trusted Directory Confinement:** All serialized ML and survival artifacts (`.joblib` / `.pkl`) MUST only be loaded from the dedicated, application-controlled model artifact directory (`artifacts/models/<workspace_id>/`).
+- **Path Traversal Protection:** The system executes canonical path validation (`os.path.realpath`) before any deserialization, throwing a security exception if the resolved path falls outside `artifacts_base_dir`.
+- **Cryptographic Hash Verification:** Model version records store the deterministic SHA-256 data hash. The registry service optionally enforces byte-level checksum validation before unpickling/deserialization.
+- **Untrusted Deserialization Prohibition:** Arbitrary user-uploaded pickle or joblib files are strictly rejected at the API layer. All serialized model weights are generated exclusively by internal training pipelines.

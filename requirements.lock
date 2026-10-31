@@ -1,0 +1,25 @@
+# Pinned dependency lock file for CareerPath Intelligence v3.2.0
+# Generated for deterministic environment reproducibility
+alembic==1.20.1
+anyio==4.14.2
+APScheduler==3.11.3
+cryptography==50.0.2
+fastapi==0.141.1
+httpx==0.28.1
+joblib==1.5.3
+lifelines==0.30.3
+numpy==2.5.1
+pandas==2.3.3
+pydantic==2.13.4
+pydantic-settings==2.16.1
+PyJWT==2.15.1
+PyOTP==2.10.0
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+python-multipart==0.0.32
+scikit-learn==1.9.0
+scipy==1.18.0
+shap==0.54.1
+SQLAlchemy==2.0.52
+starlette==1.6.0
+uvicorn==0.52.1

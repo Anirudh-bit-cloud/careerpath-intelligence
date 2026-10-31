@@ -292,7 +292,7 @@ class AnalyticsService:
             return {}
 
         total_emp = len(df)
-        high_gap_cases = int((df['PromotionGapCategory'] == 'High').sum())
+        high_gap_cases = int(df['PromotionGapCategory'].isin(['Urgent', 'High']).sum())
         urgent_retention = int((df['RetentionPriority'] == 'Urgent').sum())
         stalled_cluster_emp = int((df['CareerCluster'] == 'Promotion-Stalled Talent').sum())
         median_role_tenure = float(df['YearsInCurrentRole'].median())
@@ -310,7 +310,7 @@ class AnalyticsService:
         # 3. Department Comparison
         dept_group = df.groupby('Department').agg(
             total=('EmployeeID', 'count'),
-            high_gap_count=('PromotionGapCategory', lambda x: (x == 'High').sum()),
+            high_gap_count=('PromotionGapCategory', lambda x: x.isin(['Urgent', 'High']).sum()),
             avg_promotion_gap=('YearsSinceLastPromotion', 'mean'),
             median_role_tenure=('YearsInCurrentRole', 'median'),
             avg_training=('TrainingTimesLastYear', 'mean'),
@@ -372,8 +372,8 @@ class AnalyticsService:
             })
 
         # Observation 2: Training deficit in stalled employees
-        stalled_train = df[df['PromotionGapCategory'] == 'High']['TrainingTimesLastYear'].mean()
-        normal_train = df[df['PromotionGapCategory'] == 'Low']['TrainingTimesLastYear'].mean()
+        stalled_train = df[df['PromotionGapCategory'].isin(['Urgent', 'High'])]['TrainingTimesLastYear'].mean()
+        normal_train = df[df['PromotionGapCategory'].isin(['Standard', 'Low'])]['TrainingTimesLastYear'].mean()
         if stalled_train < normal_train:
             insights.append({
                 "type": "Skill Growth Deficit",
@@ -437,7 +437,9 @@ class AnalyticsService:
         if job_level and job_level > 0:
             df = df[df['JobLevel'] == job_level]
         if category and category != "All":
-            df = df[df['PromotionGapCategory'] == category]
+            cat_norm_map = {"High": "Urgent", "Medium": "Moderate", "Low": "Standard"}
+            norm_target = cat_norm_map.get(category, category)
+            df = df[df['PromotionGapCategory'].replace(cat_norm_map) == norm_target]
         if cluster and cluster != "All":
             df = df[df['CareerCluster'] == cluster]
         if min_tenure is not None:
@@ -478,11 +480,15 @@ class AnalyticsService:
             "level_distribution": level_data
         }
 
-    def get_career_clusters(self) -> Dict[str, Any]:
+    def get_career_clusters(self, manager_id: Optional[str] = None) -> Dict[str, Any]:
         """Returns cluster profiles, evaluation metrics, and PCA coordinates for scatter visualization."""
         df = self.df_enriched
         if df is None:
             return {}
+
+        if manager_id:
+            team_ids = self.get_manager_team_ids(manager_id)
+            df = df[df['EmployeeID'].isin(team_ids)]
 
         pca_samples = df[[
             'EmployeeID', 'CareerCluster', 'Cluster_ID', 'PCA1', 'PCA2',
@@ -631,7 +637,7 @@ class AnalyticsService:
             avg_promotion_latency=('YearsSinceLastPromotion', 'mean'),
             avg_gap_ratio=('PromotionGapRatio', 'mean'),
             avg_satisfaction=('JobSatisfaction', 'mean'),
-            high_gap_cases=('PromotionGapCategory', lambda x: (x == 'High').sum())
+            high_gap_cases=('PromotionGapCategory', lambda x: x.isin(['Urgent', 'High']).sum())
         ).reset_index()
 
         mgr_data = mgr_summary.to_dict(orient='records')

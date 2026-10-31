@@ -169,9 +169,9 @@ export const PromotionGapView: React.FC<PromotionGapViewProps> = ({ onSelectEmpl
               className="bg-cp-bg-input border border-cp-border rounded-lg px-2.5 py-1.5 outline-none font-medium text-cp-text-primary"
             >
               <option value="All">All Risk Tiers</option>
-              <option value="High">High Gap (Stalled)</option>
-              <option value="Medium">Medium Gap</option>
-              <option value="Low">Low Gap (Progressing)</option>
+              <option value="Urgent">Urgent Tier (Stalled)</option>
+              <option value="Moderate">Moderate Tier</option>
+              <option value="Standard">Standard Tier (Progressing)</option>
             </select>
           </div>
 
@@ -253,11 +253,11 @@ export const PromotionGapView: React.FC<PromotionGapViewProps> = ({ onSelectEmpl
                 </tr>
               ) : (
                 data?.records.map((emp) => {
-                  const isHigh = emp.PromotionGapCategory === 'High';
-                  const isMed = emp.PromotionGapCategory === 'Medium';
-                  const badgeClass = isHigh
+                  const isUrgent = emp.PromotionGapCategory === 'Urgent' || emp.PromotionGapCategory === 'High';
+                  const isMod = emp.PromotionGapCategory === 'Moderate' || emp.PromotionGapCategory === 'Medium';
+                  const badgeClass = isUrgent
                     ? 'bg-rose-500/15 text-rose-400 border-rose-500/30'
-                    : isMed
+                    : isMod
                     ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
                     : 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
 
@@ -292,8 +292,8 @@ export const PromotionGapView: React.FC<PromotionGapViewProps> = ({ onSelectEmpl
                       </td>
                       <td className="py-2.5 px-3">
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9.5px] font-mono font-bold uppercase tracking-wider border ${badgeClass}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${isHigh ? 'bg-rose-400' : isMed ? 'bg-amber-400' : 'bg-emerald-400'}`} />
-                          <span>{emp.PromotionGapCategory}</span>
+                          <span className={`w-1.5 h-1.5 rounded-full ${isUrgent ? 'bg-rose-400' : isMod ? 'bg-amber-400' : 'bg-emerald-400'}`} />
+                          <span>{emp.PromotionGapCategory === 'High' ? 'Urgent' : emp.PromotionGapCategory === 'Medium' ? 'Moderate' : emp.PromotionGapCategory === 'Low' ? 'Standard' : emp.PromotionGapCategory}</span>
                         </span>
                       </td>
                       <td className="py-2.5 px-3 text-cp-text-secondary max-w-xs truncate" title={emp.RecommendedAction}>

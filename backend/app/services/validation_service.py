@@ -320,12 +320,30 @@ class ValidationService:
                 "sample_count": count
             })
 
+        # Calculate empirical calibration slope and intercept
+        valid_bins = [d for d in decile_data if d["sample_count"] > 0]
+        if len(valid_bins) >= 2:
+            x_vals = np.array([d["mean_predicted_prob"] for d in valid_bins])
+            y_vals = np.array([d["observed_event_rate"] for d in valid_bins])
+            if np.std(x_vals) > 1e-6:
+                slope, intercept = np.polyfit(x_vals, y_vals, 1)
+                calibration_slope = round(float(slope), 4)
+                calibration_intercept = round(float(intercept), 4)
+            else:
+                calibration_slope = 1.0
+                calibration_intercept = 0.0
+        else:
+            calibration_slope = 1.0
+            calibration_intercept = 0.0
+
         provenance = self.get_provenance_info()
 
         return {
             "brier_score": brier_score,
+            "calibration_slope": calibration_slope,
+            "calibration_intercept": calibration_intercept,
             "brier_interpretation": (
-                f"Computed Brier score of {brier_score}. "
+                f"Computed Brier score of {brier_score} with calibration slope {calibration_slope} (ideal = 1.0) and intercept {calibration_intercept} (ideal = 0.0). "
                 "Brier score measures mean squared probability error on a 0.0 to 1.0 scale (0.0 represents perfect calibration; "
                 "0.25 represents an uninformative constant 50% guess)."
             ),

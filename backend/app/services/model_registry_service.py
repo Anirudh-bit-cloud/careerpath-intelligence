@@ -33,6 +33,47 @@ class ModelRegistryService:
         os.makedirs(ws_dir, exist_ok=True)
         return ws_dir
 
+    def get_dependency_versions(self) -> Dict[str, str]:
+        """Returns pinned library versions for training reproducibility."""
+        import sklearn
+        import lifelines
+        return {
+            "python": sys.version.split()[0],
+            "scikit-learn": getattr(sklearn, "__version__", "1.6.0"),
+            "lifelines": getattr(lifelines, "__version__", "0.30.0"),
+            "pandas": pd.__version__,
+            "numpy": np.__version__
+        }
+
+    def safe_load_artifact(self, artifact_path: str, expected_hash: Optional[str] = None) -> Any:
+        """
+        Safely loads serialized ML model artifacts with:
+        1. Strict canonical path validation: must reside inside trusted `artifacts_base_dir`.
+           Prevents arbitrary file inclusion or path traversal attacks.
+        2. Optional SHA-256 integrity hash verification before deserialization.
+        """
+        real_path = os.path.realpath(artifact_path)
+        real_base = os.path.realpath(self.artifacts_base_dir)
+        if not real_path.startswith(real_base):
+            raise ValueError(
+                f"Security violation: Artifact path {artifact_path} is outside trusted directory {self.artifacts_base_dir}."
+            )
+        if not os.path.isfile(real_path):
+            raise FileNotFoundError(f"Model artifact not found at {real_path}")
+
+        if expected_hash:
+            hasher = hashlib.sha256()
+            with open(real_path, "rb") as f:
+                for chunk in iter(lambda: f.read(65536), b""):
+                    hasher.update(chunk)
+            file_hash = hasher.hexdigest()
+            if not file_hash.startswith(expected_hash) and not expected_hash.startswith(file_hash):
+                raise ValueError(
+                    f"Integrity check failed: Expected hash {expected_hash}, calculated {file_hash}."
+                )
+
+        return joblib.load(real_path)
+
     def compute_data_hash(self, df: pd.DataFrame) -> str:
         """Computes deterministic SHA-256 hash of dataset columns and values."""
         # Use column names and sorted head/tail values to produce a stable hash
@@ -139,6 +180,7 @@ class ModelRegistryService:
                 metrics_json=json.dumps(gbdt_metrics),
                 artifact_path=gbdt_artifact_path,
                 status="active",
+                dependency_versions_json=json.dumps(self.get_dependency_versions()),
                 notes="Initial active supervised attrition model calibrated with isotonic/sigmoid probability."
             )
             db.add(gbdt_version)
@@ -186,6 +228,7 @@ class ModelRegistryService:
                 metrics_json=json.dumps(cox_metrics),
                 artifact_path=cox_artifact_path,
                 status="active",
+                dependency_versions_json=json.dumps(self.get_dependency_versions()),
                 notes="Baseline Cox semi-parametric survival model with promotion latency hazard covariates."
             )
             db.add(cox_version)
@@ -228,6 +271,7 @@ class ModelRegistryService:
                 "hyperparameters": json.loads(r.hyperparameters_json) if r.hyperparameters_json else {},
                 "metrics": json.loads(r.metrics_json) if r.metrics_json else {},
                 "artifact_path": r.artifact_path,
+                "dependency_versions": json.loads(r.dependency_versions_json) if r.dependency_versions_json else self.get_dependency_versions(),
                 "notes": r.notes
             })
         return results

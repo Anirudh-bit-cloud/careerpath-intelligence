@@ -125,8 +125,8 @@ def get_public_roster(
 ):
     """External customer REST API endpoint to query prioritized retention roster."""
     scopes = json.loads(api_key.scopes_json) if api_key.scopes_json else []
-    if "read:roster" not in scopes:
-        raise HTTPException(status_code=403, detail="API key lacks 'read:roster' scope.")
+    if "read:roster" not in scopes or "role:manager" in scopes:
+        raise HTTPException(status_code=403, detail="Manager API keys cannot access organization-wide retention roster.")
 
     data = analytics_service.get_retention_opportunities(priority=priority, page_size=limit)
     return {

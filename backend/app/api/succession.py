@@ -3,7 +3,7 @@ Succession Planning and Intervention Outcomes API Router.
 Mounted under /api/succession
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from typing import Dict, Any, Optional
 from datetime import datetime
 from sqlalchemy.orm import Session
@@ -31,6 +31,8 @@ def get_nine_box_grid(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Returns 9-box talent matrix calibration with drilldown IDs."""
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot access organization-wide succession planning.")
     return succession_service.get_nine_box_grid()
 
 
@@ -39,6 +41,8 @@ def get_critical_roles(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Returns mission-critical roles, incumbent flight risks, bench strength, and SPOF flags."""
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot access organization-wide critical roles.")
     return succession_service.get_critical_roles()
 
 
@@ -48,6 +52,8 @@ def get_intervention_effectiveness(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Returns longitudinal effectiveness tracking by intervention category with sample size caveats."""
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot access succession effectiveness analytics.")
     workspace_id = current_user.get("workspace_id", "default")
     return succession_service.get_intervention_effectiveness(db, workspace_id=workspace_id)
 

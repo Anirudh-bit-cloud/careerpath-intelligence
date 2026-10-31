@@ -88,8 +88,9 @@ def get_overview():
 
 
 @router.get("/clusters")
-def get_clusters():
-    return analytics_service.get_career_clusters()
+def get_clusters(current_user: dict = Depends(get_current_user)):
+    mgr_id = current_user.get("employee_id") if current_user.get("role") == "manager" else None
+    return analytics_service.get_career_clusters(manager_id=mgr_id)
 
 
 @router.get("/clusters/elbow-curve")

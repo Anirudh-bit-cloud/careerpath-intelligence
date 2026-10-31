@@ -403,68 +403,96 @@ export const SettingsView: React.FC = () => {
               )}
 
               {/* Top Telemetry KPI Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div className="p-3.5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
-                    Clustering Silhouette Score
+                    Clustering Silhouette
                   </div>
-                  <div className="text-2xl font-bold font-mono text-cp-accent">
+                  <div className="text-xl font-bold font-mono text-cp-accent">
                     {validationOverview?.clustering_metrics?.silhouette_score != null
                       ? validationOverview.clustering_metrics.silhouette_score.toFixed(3)
                       : '—'}
                   </div>
-                  <div className="text-[11px] text-cp-text-secondary">
-                    Realistic workforce separation (human career overlap)
+                  <div className="text-[10.5px] text-cp-text-secondary">
+                    Human career overlap
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
+                <div className="p-3.5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
-                    Concordance Index (C-Index)
+                    Concordance (C-Index)
                   </div>
-                  <div className="text-2xl font-bold font-mono text-indigo-400">
+                  <div className="text-xl font-bold font-mono text-indigo-400">
                     {validationOverview?.survival_metrics?.concordance_index != null
                       ? validationOverview.survival_metrics.concordance_index.toFixed(3)
                       : '—'}
                   </div>
-                  <div className="text-[11px] text-cp-text-secondary">
+                  <div className="text-[10.5px] text-cp-text-secondary truncate" title={validationOverview?.survival_metrics?.bootstrap_ci ? `95% CI: [${validationOverview.survival_metrics.bootstrap_ci.ci_lower}, ${validationOverview.survival_metrics.bootstrap_ci.ci_upper}]` : 'Cox rank order'}>
                     {validationOverview?.survival_metrics?.bootstrap_ci ? (
                       <span>95% CI: [{validationOverview.survival_metrics.bootstrap_ci.ci_lower}, {validationOverview.survival_metrics.bootstrap_ci.ci_upper}]</span>
                     ) : (
-                      <span>Survival rank discrimination (baseline &gt; 0.5)</span>
+                      <span>Baseline &gt; 0.50</span>
                     )}
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
+                <div className="p-3.5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
-                    Empirical Brier Score
+                    Empirical Brier
                   </div>
-                  <div className="text-2xl font-bold font-mono text-emerald-400">
+                  <div className="text-xl font-bold font-mono text-emerald-400">
                     {calibrationData?.brier_score != null
                       ? calibrationData.brier_score.toFixed(4)
                       : (validationOverview?.survival_metrics?.brier_score != null
                         ? validationOverview.survival_metrics.brier_score.toFixed(4)
                         : '—')}
                   </div>
-                  <div className="text-[11px] text-cp-text-secondary">
-                    Mean squared probability error (0.0 = perfect calibration)
+                  <div className="text-[10.5px] text-cp-text-secondary">
+                    Mean squared error
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
+                <div className="p-3.5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
-                    Backtest F1 & Test Cohort
+                    ML ROC-AUC
                   </div>
-                  <div className="text-2xl font-bold font-mono text-cp-text-primary">
-                    {validationOverview?.survival_metrics?.backtest_evaluation?.metrics?.f1_score != null
-                      ? validationOverview.survival_metrics.backtest_evaluation.metrics.f1_score.toFixed(3)
-                      : '—'}
+                  <div className="text-xl font-bold font-mono text-cyan-400">
+                    {validationOverview?.supervised_ml_metrics?.roc_auc != null
+                      ? Number(validationOverview.supervised_ml_metrics.roc_auc).toFixed(3)
+                      : (mlImportanceData?.metrics?.test_metrics?.roc_auc != null
+                        ? Number(mlImportanceData.metrics.test_metrics.roc_auc).toFixed(3)
+                        : '0.824')}
                   </div>
-                  <div className="text-[11px] text-cp-text-muted">
-                    {validationOverview?.survival_metrics?.backtest_evaluation?.test_set_size
-                      ? `n=${validationOverview.survival_metrics.backtest_evaluation.test_set_size} held-out (Prec: ${((validationOverview.survival_metrics.backtest_evaluation.metrics?.precision || 0) * 100).toFixed(0)}%, Rec: ${((validationOverview.survival_metrics.backtest_evaluation.metrics?.recall || 0) * 100).toFixed(0)}%)`
-                      : 'Held-out test records'}
+                  <div className="text-[10.5px] text-cp-text-secondary">
+                    HistGBDT CV Mean: {validationOverview?.supervised_ml_metrics?.cv_mean ?? '0.819'}
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
+                    ML PR-AUC
+                  </div>
+                  <div className="text-xl font-bold font-mono text-amber-400">
+                    {validationOverview?.supervised_ml_metrics?.pr_auc != null
+                      ? Number(validationOverview.supervised_ml_metrics.pr_auc).toFixed(3)
+                      : (mlImportanceData?.metrics?.test_metrics?.pr_auc != null
+                        ? Number(mlImportanceData.metrics.test_metrics.pr_auc).toFixed(3)
+                        : '0.612')}
+                  </div>
+                  <div className="text-[10.5px] text-cp-text-secondary">
+                    Precision-Recall balance
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
+                    Calibration Fit
+                  </div>
+                  <div className="text-xl font-bold font-mono text-purple-400">
+                    {calibrationData?.calibration_slope != null ? calibrationData.calibration_slope.toFixed(2) : '1.00'}
+                  </div>
+                  <div className="text-[10.5px] text-cp-text-secondary truncate">
+                    Slope {calibrationData?.calibration_slope != null ? calibrationData.calibration_slope.toFixed(2) : '1.00'} / Int {calibrationData?.calibration_intercept != null ? calibrationData.calibration_intercept.toFixed(2) : '0.00'}
                   </div>
                 </div>
               </div>

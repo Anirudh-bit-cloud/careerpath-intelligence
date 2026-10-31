@@ -294,6 +294,7 @@ class ModelVersion(Base):
     metrics_json = Column(Text, nullable=False)  # JSON dict of c_index/roc_auc, brier, cv_mean, cv_std, pr_auc
     artifact_path = Column(String(256), nullable=False)  # disk path to joblib artifact
     status = Column(String(32), default="candidate", index=True, nullable=False)  # 'active', 'candidate', 'archived'
+    dependency_versions_json = Column(Text, nullable=True)  # JSON dict of pinned library versions
     notes = Column(Text, nullable=True)
 
 

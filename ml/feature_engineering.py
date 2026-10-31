@@ -75,7 +75,9 @@ def compute_career_features(df_input: pd.DataFrame) -> pd.DataFrame:
         (df['PromotionGapScore'] >= 30.0) & (df['PromotionGapScore'] < 55.0),
         df['PromotionGapScore'] < 30.0
     ]
-    df['PromotionGapCategory'] = np.select(conditions, ['High', 'Medium', 'Low'], default='Low')
+    # Standardized risk tier naming: Urgent, Moderate, Standard
+    df['PromotionGapCategory'] = np.select(conditions, ['Urgent', 'Moderate', 'Standard'], default='Standard')
+    df['PromotionGapRiskTier'] = df['PromotionGapCategory']
     
     # 7. Career Development Need Score (0 - 100)
     # Measures the structural urgency for career conversations, internal mobility, or skill refresh

@@ -45,9 +45,16 @@ class CommentCreateRequest(BaseModel):
 
 
 @router.get("/sessions")
-def list_sessions(workspace_id: str = "default", db: Session = Depends(get_db)):
+def list_sessions(
+    workspace_id: str = "default",
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot access Talent Committee reviews.")
+    ws_id = current_user.get("workspace_id") or workspace_id
     sessions = db.query(CommitteeSession).filter(
-        CommitteeSession.workspace_id == workspace_id
+        CommitteeSession.workspace_id == ws_id
     ).order_by(CommitteeSession.created_at.desc()).all()
     return [
         {
@@ -71,6 +78,8 @@ def create_session(
     current_user: Dict[str, Any] = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot create Talent Committee reviews.")
     ws_id = req.workspace_id or current_user.get("workspace_id", "default")
     sess_date = req.session_date or req.scheduled_date or datetime.utcnow().strftime("%Y-%m-%d")
     attendees = req.attendees if req.attendees is not None else ["Committee Chair", "HRBP Lead"]
@@ -90,7 +99,13 @@ def create_session(
 
 
 @router.get("/sessions/{session_id}")
-def get_session(session_id: int, db: Session = Depends(get_db)):
+def get_session(
+    session_id: int,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot view Talent Committee details.")
     s = db.query(CommitteeSession).filter(CommitteeSession.id == session_id).first()
     if not s:
         raise HTTPException(status_code=404, detail="Committee session not found.")

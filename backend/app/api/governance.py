@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from backend.app.database.connection import get_db
 from backend.app.models.entities import AuditLog, InterventionRecord, PlanComment
 from backend.app.api.auth import get_current_user
+from backend.app.api.endpoints import check_manager_employee_access
 from backend.app.services.analytics_service import analytics_service
 
 router = APIRouter(prefix="/api/governance", tags=["Governance & Compliance"])
@@ -111,6 +112,7 @@ def export_data_subject(
     """Exports all stored records for an employee for data privacy & subject access compliance."""
     if not employee_id:
         raise HTTPException(status_code=400, detail="Employee ID required.")
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_dsar_export")
     profile = analytics_service.get_employee_profile(employee_id)
     plans = db.query(InterventionRecord).filter(InterventionRecord.employee_id == employee_id).all()
 

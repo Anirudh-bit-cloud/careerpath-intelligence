@@ -799,11 +799,11 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
                         <td className="py-3 px-3 text-[11px] text-cp-text-muted">{emp.CareerCluster}</td>
                         <td className="py-3 px-3">
                           <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase tracking-wider ${
-                            emp.PromotionGapCategory === 'High'
+                            emp.PromotionGapCategory === 'Urgent' || emp.PromotionGapCategory === 'High'
                               ? 'bg-rose-500/15 text-rose-400 border border-rose-500/25'
                               : 'bg-cp-bg-elevated text-cp-text-muted border border-cp-border'
                           }`}>
-                            {emp.PromotionGapCategory}
+                            {emp.PromotionGapCategory === 'High' ? 'Urgent' : emp.PromotionGapCategory === 'Medium' ? 'Moderate' : emp.PromotionGapCategory === 'Low' ? 'Standard' : emp.PromotionGapCategory}
                           </span>
                         </td>
                         <td className="py-3 px-3 text-right">

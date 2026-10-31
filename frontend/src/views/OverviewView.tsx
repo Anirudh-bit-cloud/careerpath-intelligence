@@ -330,13 +330,15 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNav
 
             <div className="grid grid-cols-3 gap-3 pt-2">
               {promotion_gap_distribution.map((item) => {
-                const isHigh = item.category === 'High';
-                const isMed = item.category === 'Medium';
-                const colorClass = isHigh
+                const isUrgent = item.category === 'Urgent' || item.category === 'High';
+                const isMed = item.category === 'Moderate' || item.category === 'Medium';
+                const colorClass = isUrgent
                   ? 'text-rose-400 bg-rose-500/10 border-rose-500/30'
                   : isMed
                   ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
                   : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+
+                const displayCategory = item.category === 'High' ? 'Urgent' : item.category === 'Medium' ? 'Moderate' : item.category === 'Low' ? 'Standard' : item.category;
 
                 return (
                   <div
@@ -344,7 +346,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNav
                     className={`p-4 rounded-xl border flex flex-col items-center justify-center text-center ${colorClass}`}
                   >
                     <span className="text-xs font-bold uppercase tracking-wider mb-1">
-                      {item.category} Gap
+                      {displayCategory} Tier
                     </span>
                     <span className="text-2xl font-bold font-mono">{item.count}</span>
                     <span className="text-[11px] opacity-80 mt-1">
