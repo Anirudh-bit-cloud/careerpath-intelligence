@@ -138,3 +138,49 @@ def test_production_telemetry_metrics_and_request_id(alpha_headers):
     version_resp = client.get("/version")
     assert version_resp.status_code == 200
     assert version_resp.json()["version"] == "3.0.0"
+
+
+def test_tenant_isolation_oidc_and_scim_tables(alpha_headers, bravo_headers):
+    """Phase 5: verifies isolation on OIDCConfig and SCIMToken per workspace_id."""
+    # 1. OIDC isolation
+    r_alpha_oidc = client.post(
+        "/api/sso/config?workspace_id=tenant_alpha",
+        json={"issuer_url": "https://sso.alpha.corp", "client_id": "alpha-client"},
+        headers=alpha_headers
+    )
+    assert r_alpha_oidc.status_code == 200
+
+    r_bravo_oidc = client.get("/api/sso/config?workspace_id=tenant_bravo", headers=bravo_headers)
+    assert r_bravo_oidc.status_code == 200
+    assert r_bravo_oidc.json()["issuer_url"] != "https://sso.alpha.corp"
+
+    # 2. SCIM token isolation
+    r_alpha_tok = client.post(
+        "/scim/v2/tokens/generate?workspace_id=tenant_alpha",
+        json={"label": "Alpha Okta"},
+        headers=alpha_headers
+    )
+    assert r_alpha_tok.status_code == 200
+    tok_alpha = r_alpha_tok.json()["token"]
+
+    r_bravo_tok = client.post(
+        "/scim/v2/tokens/generate?workspace_id=tenant_bravo",
+        json={"label": "Bravo Okta"},
+        headers=bravo_headers
+    )
+    assert r_bravo_tok.status_code == 200
+    tok_bravo = r_bravo_tok.json()["token"]
+
+    assert tok_alpha != tok_bravo
+
+    # 3. BambooHR config isolation
+    r_alpha_bamboo = client.post(
+        "/api/connectors/bamboohr/config?workspace_id=tenant_alpha",
+        json={"subdomain": "alpha-subdomain", "api_key": "secret-alpha"},
+        headers=alpha_headers
+    )
+    assert r_alpha_bamboo.status_code == 200
+
+    r_bravo_bamboo = client.get("/api/connectors/bamboohr/config?workspace_id=tenant_bravo", headers=bravo_headers)
+    assert r_bravo_bamboo.status_code == 200
+    assert r_bravo_bamboo.json()["subdomain"] != "alpha-subdomain"

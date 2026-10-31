@@ -73,6 +73,38 @@ def test_backtest_endpoint(auth_headers):
     assert "f1_score" in data["metrics"]
     assert "confusion_matrix" in data
     assert "true_positives" in data["confusion_matrix"]
+    assert "brier_score" in data
+    assert "bootstrap_ci" in data
+    assert "ci_lower" in data["bootstrap_ci"]
+
+
+def test_calibration_plot_endpoint(auth_headers):
+    resp = client.get("/api/validation/calibration-plot?n_bins=10", headers=auth_headers)
+    assert resp.status_code == 200
+    data = resp.json()
+
+    assert "brier_score" in data
+    assert "deciles" in data
+    assert len(data["deciles"]) == 10
+    first_decile = data["deciles"][0]
+    assert "range_label" in first_decile
+    assert "mean_predicted_prob" in first_decile
+    assert "observed_event_rate" in first_decile
+    assert "provenance" in data
+    assert "provenance_badge" in data["provenance"]
+
+
+def test_cox_regression_cross_validation_and_bootstrap(auth_headers):
+    resp = client.get("/api/validation/cox-regression", headers=auth_headers)
+    assert resp.status_code == 200
+    data = resp.json()
+    if "cross_validation" in data:
+        assert "mean_c_index" in data["cross_validation"]
+        assert "fold_c_indices" in data["cross_validation"]
+    if "bootstrap_ci" in data:
+        assert "ci_lower" in data["bootstrap_ci"]
+        assert "ci_upper" in data["bootstrap_ci"]
+        assert data["bootstrap_ci"]["ci_lower"] <= data["bootstrap_ci"]["ci_upper"]
 
 
 def test_survival_service_empty_df():

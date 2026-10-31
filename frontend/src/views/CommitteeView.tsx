@@ -43,6 +43,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
   // Decision state
   const [decisionNotes, setDecisionNotes] = useState('');
   const [submittingDecision, setSubmittingDecision] = useState(false);
+  const [pendingDecision, setPendingDecision] = useState<'approved' | 'rejected' | 'deferred' | null>(null);
 
   // Minutes
   const [minutesText, setMinutesText] = useState('');
@@ -63,7 +64,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
       setSessions(sessionsData);
       if (sessionsData.length > 0) {
         setActiveSession(sessionsData[0]);
-        setMinutesText(sessionsData[0].meeting_minutes || '');
+        setMinutesText(sessionsData[0].minutes_text || sessionsData[0].meeting_minutes || '');
       }
       setCandidates(oppData.records || []);
       if (oppData.records?.length > 0) {
@@ -93,24 +94,50 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
 
   const handleRecordDecision = async (decision: 'approved' | 'rejected' | 'deferred') => {
     if (!activeSession || !selectedCandidate) return;
+
+    const empId = selectedCandidate.EmployeeID || selectedCandidate.employee_id;
+
+    // Snapshot state for rollback resilience
+    const prevSession = { ...activeSession };
+    const prevSessions = [...sessions];
+    const prevNotes = decisionNotes;
+
+    // Optimistically update candidate in active session
+    const optimisticDecision = {
+      employee_id: empId,
+      decision,
+      notes: decisionNotes,
+      decided_by: 'committee_chair',
+      timestamp: new Date().toISOString()
+    };
+    const updatedDecisions = [...(activeSession.decisions || []), optimisticDecision];
+    const updatedSession = { ...activeSession, decisions: updatedDecisions };
+
+    setActiveSession(updatedSession);
+    setSessions((prev) => prev.map((s) => (s.id === activeSession.id ? updatedSession : s)));
+    setDecisionNotes('');
     setSubmittingDecision(true);
+
     try {
       await api.logCommitteeDecision(activeSession.id, {
-        employee_id: selectedCandidate.employee_id,
+        employee_id: empId,
         decision,
-        notes: decisionNotes,
+        notes: prevNotes,
         decided_by: 'committee_chair'
       });
       addToast(`Candidate decision logged: ${decision.toUpperCase()}`, 'success');
-      setDecisionNotes('');
 
-      // Refresh active session
+      // Refresh in background
       const updatedSessions = await api.listCommitteeSessions();
       setSessions(updatedSessions);
       const cur = updatedSessions.find((s) => s.id === activeSession.id);
       if (cur) setActiveSession(cur);
     } catch (err: any) {
-      addToast(err.message || 'Failed to log decision', 'error');
+      // Rollback optimistic changes on failure
+      setActiveSession(prevSession);
+      setSessions(prevSessions);
+      setDecisionNotes(prevNotes);
+      addToast(err.message || 'Failed to log decision. Changes rolled back.', 'error');
     } finally {
       setSubmittingDecision(false);
     }
@@ -132,11 +159,10 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
   const filteredCandidates = candidates.filter((c) => {
     if (!searchTerm) return true;
     const term = searchTerm.toLowerCase();
-    return (
-      c.employee_id.toLowerCase().includes(term) ||
-      c.job_role?.toLowerCase().includes(term) ||
-      c.department?.toLowerCase().includes(term)
-    );
+    const id = (c.EmployeeID || c.employee_id || '').toLowerCase();
+    const role = (c.JobRole || c.job_role || '').toLowerCase();
+    const dept = (c.Department || c.department || '').toLowerCase();
+    return id.includes(term) || role.includes(term) || dept.includes(term);
   });
 
   return (
@@ -180,7 +206,7 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
             ) : (
               <>
                 <Eye className="w-3.5 h-3.5" />
-                <span>Mask Identifiers (Bias-Free)</span>
+                <span>Candidate Masking (Bias-Free)</span>
               </>
             )}
           </button>
@@ -196,24 +222,46 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
         </div>
       </div>
 
+      {/* Prominent Pseudonymization Active Banner */}
+      {presentationMode && (
+        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5">
+            <EyeOff className="w-4 h-4 text-amber-400 shrink-0" />
+            <div>
+              <span className="font-bold">Pseudonymization Active (Unconscious Bias Mitigation)</span>
+              <div className="text-[11px] text-amber-200/80 mt-0.5">
+                Candidate PII, raw employee IDs, and demographic identifiers are masked. Evaluation is objectively grounded in tenure, latency, and performance data.
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setPresentationMode(false)}
+            className="px-2.5 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 text-xs font-semibold shrink-0"
+          >
+            Exit Masking
+          </button>
+        </div>
+      )}
+
       {/* Session Selection Bar */}
       <div className="flex items-center justify-between p-3.5 rounded-xl bg-cp-bg-surface border border-cp-border">
         <div className="flex items-center gap-3">
           <Calendar className="w-4 h-4 text-cp-accent" />
           <span className="text-xs font-semibold text-cp-text-primary">Active Review Session:</span>
           <select
-            value={activeSession?.id || ''}
+            value={activeSession ? String(activeSession.id) : ''}
             onChange={(e) => {
-              const s = sessions.find((item) => item.id === Number(e.target.value));
+              const s = sessions.find((item) => String(item.id) === e.target.value);
               if (s) {
                 setActiveSession(s);
-                setMinutesText(s.meeting_minutes || '');
+                setMinutesText(s.minutes_text || s.meeting_minutes || '');
               }
             }}
             className="px-3 py-1.5 rounded-lg bg-cp-bg-app border border-cp-border text-xs text-cp-text-primary focus:outline-none focus:border-cp-accent"
           >
+            {sessions.length === 0 && <option value="" disabled>No sessions available</option>}
             {sessions.map((s) => (
-              <option key={s.id} value={s.id}>
+              <option key={s.id} value={String(s.id)}>
                 {s.title} ({new Date(s.scheduled_date || s.created_at).toLocaleDateString()}) — {s.status.toUpperCase()}
               </option>
             ))}
@@ -263,12 +311,19 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-cp-border/50">
-                  {filteredCandidates.map((c) => {
-                    const isSelected = selectedCandidate?.employee_id === c.employee_id;
-                    const maskedId = maskEmployeeId(c.employee_id, presentationMode);
+                  {filteredCandidates.map((c, idx) => {
+                    const empId = c.EmployeeID || c.employee_id || `cand-${idx}`;
+                    const isSelected = (selectedCandidate?.EmployeeID || selectedCandidate?.employee_id) === empId;
+                    const maskedId = maskEmployeeId(empId, presentationMode);
+                    const jobRole = c.JobRole || c.job_role || 'Specialist';
+                    const department = c.Department || c.department || 'General';
+                    const yearsSincePromotion = c.YearsSinceLastPromotion ?? c.years_since_last_promotion;
+                    const promotionGap = c.PromotionGapYears ?? c.promotion_gap_years ?? (c.PromotionGapRatio != null ? c.PromotionGapRatio : 0);
+                    const priorityTier = c.RetentionPriority || c.priority_tier || 'Standard';
+                    const interventionStatus = c.InterventionStatus || c.intervention_status || 'Pending';
                     return (
                       <tr
-                        key={c.employee_id}
+                        key={empId}
                         onClick={() => setSelectedCandidate(c)}
                         className={`cursor-pointer transition-colors ${
                           isSelected
@@ -281,32 +336,32 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                         </td>
                         <td className="py-2.5 px-2.5">
                           <div className="font-semibold text-cp-text-primary truncate max-w-[150px]">
-                            {presentationMode ? 'Technical Specialist' : c.job_role}
+                            {presentationMode ? 'Technical Specialist' : jobRole}
                           </div>
                           <div className="text-[10px] text-cp-text-muted truncate">
-                            {c.department}
+                            {department}
                           </div>
                         </td>
                         <td className="py-2.5 px-2.5 text-right font-mono">
-                          {c.years_since_last_promotion != null ? `${c.years_since_last_promotion.toFixed(1)}y` : '—'}
+                          {yearsSincePromotion != null ? `${Number(yearsSincePromotion).toFixed(1)}y` : '—'}
                         </td>
                         <td className="py-2.5 px-2.5 text-right font-mono font-semibold text-amber-400">
-                          +{c.promotion_gap_years ? c.promotion_gap_years.toFixed(1) : 0}y
+                          +{Number(promotionGap).toFixed(1)}y
                         </td>
                         <td className="py-2.5 px-2.5 text-center">
                           <span
                             className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                              c.priority_tier === 'Urgent'
+                              priorityTier === 'Urgent'
                                 ? 'bg-rose-500/15 text-rose-400 border border-rose-500/25'
                                 : 'bg-amber-500/15 text-amber-400 border border-amber-500/25'
                             }`}
                           >
-                            {c.priority_tier || 'Standard'}
+                            {priorityTier}
                           </span>
                         </td>
                         <td className="py-2.5 px-2.5 text-center">
                           <span className="text-[10px] text-cp-text-muted">
-                            {c.intervention_status || 'Pending'}
+                            {interventionStatus}
                           </span>
                         </td>
                       </tr>
@@ -328,12 +383,12 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                     Calibration Dossier
                   </div>
                   <h3 className="text-lg font-bold text-cp-accent font-mono">
-                    {maskEmployeeId(selectedCandidate.employee_id, presentationMode)}
+                    {maskEmployeeId(selectedCandidate.EmployeeID || selectedCandidate.employee_id || '', presentationMode)}
                   </h3>
                 </div>
                 {onSelectEmployee && (
                   <button
-                    onClick={() => onSelectEmployee(selectedCandidate.employee_id)}
+                    onClick={() => onSelectEmployee(selectedCandidate.EmployeeID || selectedCandidate.employee_id)}
                     className="text-xs text-cp-accent hover:underline font-medium"
                   >
                     View Deep Profile →
@@ -346,16 +401,20 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                 <div className="p-3 rounded-lg bg-cp-bg-app border border-cp-border/70">
                   <div className="text-[10px] text-cp-text-muted uppercase">Retention Opportunity Index</div>
                   <div className="text-xl font-black text-cp-accent font-mono mt-0.5">
-                    {selectedCandidate.retention_opportunity_score != null
-                      ? (selectedCandidate.retention_opportunity_score * 100).toFixed(0)
-                      : 0}
+                    {(() => {
+                      const score = selectedCandidate.RetentionRiskIndex ?? selectedCandidate.RetentionOpportunityIndex ?? selectedCandidate.retention_opportunity_score ?? 0;
+                      return (Number(score) * (score <= 1 ? 100 : 1)).toFixed(0);
+                    })()}
                     <span className="text-xs font-normal text-cp-text-muted">/100</span>
                   </div>
                 </div>
                 <div className="p-3 rounded-lg bg-cp-bg-app border border-cp-border/70">
                   <div className="text-[10px] text-cp-text-muted uppercase">Promotion Lag</div>
                   <div className="text-xl font-black text-amber-400 font-mono mt-0.5">
-                    +{selectedCandidate.promotion_gap_years ? selectedCandidate.promotion_gap_years.toFixed(1) : 0}
+                    +{(() => {
+                      const gap = selectedCandidate.PromotionGapYears ?? selectedCandidate.promotion_gap_years ?? (selectedCandidate.PromotionGapRatio != null ? selectedCandidate.PromotionGapRatio : 0);
+                      return Number(gap).toFixed(1);
+                    })()}
                     <span className="text-xs font-normal text-cp-text-muted"> yrs</span>
                   </div>
                 </div>
@@ -368,21 +427,30 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                   <span>Algorithm Recommendation</span>
                 </div>
                 <div className="text-xs font-semibold text-cp-text-primary">
-                  {selectedCandidate.recommended_action || 'Career Progression & Level Calibration Review'}
+                  {selectedCandidate.RecommendedAction || selectedCandidate.recommended_action || 'Career Progression & Level Calibration Review'}
                 </div>
                 <div className="text-[11px] text-cp-text-secondary leading-snug">
-                  {selectedCandidate.explanation || 'Employee has exceeded benchmark dwell time for their level.'}
+                  {selectedCandidate.RecommendationTriggers || selectedCandidate.explanation || 'Employee has exceeded benchmark dwell time for their level.'}
                 </div>
               </div>
 
               {/* Decision Recorder */}
               <div className="pt-2 space-y-3">
-                <label className="text-xs font-semibold text-cp-text-primary block">
-                  Committee Decision & Justification Notes
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-cp-text-primary block">
+                    Committee Decision & Justification Notes
+                  </label>
+                  <span
+                    className={`text-[10px] font-mono tabular-nums ${
+                      decisionNotes.trim().length < 15 ? 'text-amber-400' : 'text-emerald-400'
+                    }`}
+                  >
+                    {decisionNotes.trim().length}/15 min chars
+                  </span>
+                </div>
                 <textarea
                   rows={3}
-                  placeholder="Document formal justification, agreed salary band adjustment, or mentor assignment..."
+                  placeholder="Document formal justification, agreed promotion path, or mentoring assignment (min 15 chars)..."
                   value={decisionNotes}
                   onChange={(e) => setDecisionNotes(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg bg-cp-bg-app border border-cp-border text-xs text-cp-text-primary focus:outline-none focus:border-cp-accent resize-none"
@@ -390,7 +458,13 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
 
                 <div className="grid grid-cols-3 gap-2">
                   <button
-                    onClick={() => handleRecordDecision('approved')}
+                    onClick={() => {
+                      if (decisionNotes.trim().length < 15) {
+                        addToast('A formal justification of at least 15 characters is required for compliance audit.', 'error');
+                        return;
+                      }
+                      setPendingDecision('approved');
+                    }}
                     disabled={submittingDecision}
                     className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors"
                   >
@@ -398,7 +472,13 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                     <span>Approve</span>
                   </button>
                   <button
-                    onClick={() => handleRecordDecision('deferred')}
+                    onClick={() => {
+                      if (decisionNotes.trim().length < 15) {
+                        addToast('A formal justification of at least 15 characters is required for compliance audit.', 'error');
+                        return;
+                      }
+                      setPendingDecision('deferred');
+                    }}
                     disabled={submittingDecision}
                     className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition-colors"
                   >
@@ -406,7 +486,13 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                     <span>Defer</span>
                   </button>
                   <button
-                    onClick={() => handleRecordDecision('rejected')}
+                    onClick={() => {
+                      if (decisionNotes.trim().length < 15) {
+                        addToast('A formal justification of at least 15 characters is required for compliance audit.', 'error');
+                        return;
+                      }
+                      setPendingDecision('rejected');
+                    }}
                     disabled={submittingDecision}
                     className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30 transition-colors"
                   >
@@ -476,6 +562,77 @@ export const CommitteeView: React.FC<CommitteeViewProps> = ({ onSelectEmployee }
                 className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-cp-accent text-white hover:bg-cp-accent-hover"
               >
                 Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Decision Confirmation Modal */}
+      {pendingDecision && selectedCandidate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="w-full max-w-md bg-cp-bg-surface border border-cp-border rounded-xl shadow-2xl p-6 space-y-4 animate-in zoom-in-95 duration-150">
+            <div className="flex items-center gap-2.5">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                pendingDecision === 'approved' ? 'bg-emerald-500/20 text-emerald-400' :
+                pendingDecision === 'deferred' ? 'bg-amber-500/20 text-amber-400' :
+                'bg-rose-500/20 text-rose-400'
+              }`}>
+                {pendingDecision === 'approved' && <CheckCircle2 className="w-4 h-4" />}
+                {pendingDecision === 'deferred' && <Clock className="w-4 h-4" />}
+                {pendingDecision === 'rejected' && <XCircle className="w-4 h-4" />}
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-cp-text-primary capitalize">
+                  Confirm Committee Decision: {pendingDecision}
+                </h3>
+                <p className="text-[11px] text-cp-text-muted">
+                  Action will be permanently recorded in the calibration compliance audit log.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border space-y-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-cp-text-muted">Candidate:</span>
+                <span className="font-mono font-bold text-cp-text-primary">
+                  {maskEmployeeId(selectedCandidate.EmployeeID || selectedCandidate.employee_id || '', presentationMode)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-cp-text-muted">Decision:</span>
+                <span className="font-bold uppercase tracking-wider text-cp-accent">
+                  {pendingDecision}
+                </span>
+              </div>
+              <div className="pt-1 border-t border-cp-border/50">
+                <div className="text-[10px] uppercase font-bold text-cp-text-muted mb-0.5">Recorded Justification:</div>
+                <div className="text-[11px] text-cp-text-secondary italic bg-cp-bg-surface p-2 rounded border border-cp-border/60">
+                  "{decisionNotes}"
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                onClick={() => setPendingDecision(null)}
+                className="px-3.5 py-1.5 rounded-lg text-xs font-medium text-cp-text-muted hover:text-cp-text-primary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const dec = pendingDecision;
+                  setPendingDecision(null);
+                  handleRecordDecision(dec);
+                }}
+                disabled={submittingDecision}
+                className={`px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition-opacity ${
+                  pendingDecision === 'approved' ? 'bg-emerald-600 hover:bg-emerald-500' :
+                  pendingDecision === 'deferred' ? 'bg-amber-600 hover:bg-amber-500' :
+                  'bg-rose-600 hover:bg-rose-500'
+                }`}
+              >
+                {submittingDecision ? 'Logging...' : 'Confirm Decision'}
               </button>
             </div>
           </div>

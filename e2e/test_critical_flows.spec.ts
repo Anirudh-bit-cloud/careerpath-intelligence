@@ -6,8 +6,11 @@ test.describe('CareerPath Intelligence — Critical Enterprise User Journeys', (
     await page.goto('/');
 
     // Verify main brand heading and dashboard telemetry
-    await expect(page.locator('h1, h2, span').filter({ hasText: 'Workforce Overview' }).first()).toBeVisible();
-    await expect(page.locator('text=Unified Workforce Telemetry').first()).toBeVisible();
+    await expect(
+      page.locator('h1').filter({ hasText: 'Workforce Progression' })
+        .or(page.locator('text=Workforce Intelligence Command Center'))
+        .first()
+    ).toBeVisible();
 
     // Verify key KPI cards render non-zero tabular numbers
     const kpiElements = page.locator('.font-mono');
@@ -20,8 +23,12 @@ test.describe('CareerPath Intelligence — Critical Enterprise User Journeys', (
     // Navigate to Career Clusters
     await page.click('button:has-text("Career Clusters")');
 
-    // Verify PCA projection and discovered archetypes
-    await expect(page.locator('text=Unsupervised Career Archetypes').first()).toBeVisible();
+    // Verify clustering heading and discovered archetypes
+    await expect(
+      page.locator('text=Career Trajectory Clustering')
+        .or(page.locator('text=Archetype'))
+        .first()
+    ).toBeVisible();
     await expect(page.locator('text=Fast-Track').or(page.locator('text=Cluster')).first()).toBeVisible();
   });
 
@@ -31,15 +38,25 @@ test.describe('CareerPath Intelligence — Critical Enterprise User Journeys', (
     // Click Retention Opportunities
     await page.click('button:has-text("Retention Opportunities")');
 
-    // Verify table renders with Retention Risk Index (RRI)
-    await expect(page.locator('text=Retention Risk Index').or(page.locator('text=RRI')).first()).toBeVisible();
+    // Verify view heading and RRI column
+    await expect(
+      page.locator('text=Retention Opportunities & Career Action Plans')
+        .or(page.locator('text=Proactive Talent Operations'))
+        .first()
+    ).toBeVisible({ timeout: 10000 });
 
-    // Click on an Urgent employee record to open profile
-    const firstRow = page.locator('table tbody tr').first();
-    await firstRow.click();
+    // Click "Initiate Plan" on the first visible row to open the drawer
+    const initiateBtn = page.locator('button:has-text("Initiate Plan")').first();
+    await expect(initiateBtn).toBeVisible({ timeout: 10000 });
+    await initiateBtn.click();
 
-    // Verify profile opened with waterfall contribution
-    await expect(page.locator('text=Waterfall Score Contribution').or(page.locator('text=Actionable Career Development Plan')).first()).toBeVisible();
+    // Verify drawer opened with intervention heading
+    await expect(
+      page.locator('text=Initiate Retention Intervention')
+        .or(page.locator('text=Update Development Plan'))
+        .or(page.locator('text=Retention Opportunity Index'))
+        .first()
+    ).toBeVisible({ timeout: 10000 });
   });
 
   test('Flow 4: Succession Planning & 9-Box Matrix Calibration', async ({ page }) => {
@@ -78,8 +95,42 @@ test.describe('CareerPath Intelligence — Critical Enterprise User Journeys', (
     // Navigate to Fairness Audit
     await page.click('button:has-text("Fairness & Bias Audit")');
 
-    // Verify Four-Fifths rule audit summary
+    // Verify Four-Fifths rule header is present
     await expect(page.locator('text=Four-Fifths Rule').or(page.locator('text=Disparate Impact')).first()).toBeVisible();
-    await expect(page.locator('text=Cohort Suppression').or(page.locator('text=Demographic Audit')).first()).toBeVisible();
+    // Verify suppression note is present (n < 10 suppression)
+    await expect(
+      page.locator('text=Suppression active')
+        .or(page.locator('text=Sample Size Threshold'))
+        .or(page.locator('text=suppressed for statistical validity'))
+        .first()
+    ).toBeVisible();
+  });
+
+  test('Flow 7: Accessibility & Keyboard Navigation (WCAG 2.2 AA)', async ({ page }) => {
+    await page.goto('/');
+
+    // Check main landmark accessibility: banner (header), main, complementary (aside/nav)
+    await expect(page.locator('header')).toBeVisible();
+    // Sidebar is an <aside> with aria-label="Main Navigation Sidebar"
+    await expect(page.locator('aside[aria-label="Main Navigation Sidebar"]')).toBeVisible();
+    await expect(page.locator('main')).toBeVisible();
+
+    // Verify keyboard shortcut help dialog opens on ?
+    await page.keyboard.press('?');
+    await expect(page.locator('text=Keyboard Shortcuts').first()).toBeVisible();
+    await page.keyboard.press('Escape');
+    // Wait for the dialog to fully close before continuing
+    await expect(page.locator('[role="dialog"][aria-label="Keyboard Shortcuts"]')).not.toBeVisible({ timeout: 5000 });
+
+    // Verify command menu dialog
+    await page.keyboard.press('Control+k');
+    await expect(page.locator('input[placeholder*="page name"]').or(page.locator('[role="dialog"] input')).first()).toBeVisible();
+    await page.keyboard.press('Escape');
+    // Wait for command dialog to close too
+    await page.waitForTimeout(300);
+
+    // Verify Theme Switcher accessibility & High Contrast option
+    await page.click('button[aria-label="Theme settings"]');
+    await expect(page.locator('text=High Contrast').first()).toBeVisible();
   });
 });

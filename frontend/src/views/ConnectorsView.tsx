@@ -46,6 +46,15 @@ export const ConnectorsView: React.FC = () => {
   const [testingWebhookId, setTestingWebhookId] = useState<number | null>(null);
   const [webhookTestResult, setWebhookTestResult] = useState<any | null>(null);
 
+  // BambooHR Live Connector State (Phase 5)
+  const [bambooConfig, setBambooConfig] = useState<any | null>(null);
+  const [bambooSubdomain, setBambooSubdomain] = useState<string>('panw-demo');
+  const [bambooApiKey, setBambooApiKey] = useState<string>('');
+  const [bambooDryRunResult, setBambooDryRunResult] = useState<any | null>(null);
+  const [bambooRunning, setBambooRunning] = useState<boolean>(false);
+  const [bambooSyncing, setBambooSyncing] = useState<boolean>(false);
+  const [bambooSyncLogs, setBambooSyncLogs] = useState<any[]>([]);
+
   useEffect(() => {
     loadData();
   }, []);
@@ -53,18 +62,63 @@ export const ConnectorsView: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [connData, keysData, whData] = await Promise.all([
+      const [connData, keysData, whData, bConfig, bLogs] = await Promise.all([
         api.getConnectorsStatus(),
         api.listApiKeys(),
-        api.listWebhooks()
+        api.listWebhooks(),
+        api.getBambooHRConfig().catch(() => null),
+        api.getHRISSyncLogs().catch(() => [])
       ]);
       setConnectors(connData.connectors || []);
       setApiKeys(keysData || []);
       setWebhooks(whData || []);
+      if (bConfig) {
+        setBambooConfig(bConfig);
+        if (bConfig.subdomain) setBambooSubdomain(bConfig.subdomain);
+      }
+      setBambooSyncLogs(bLogs || []);
     } catch (e: any) {
       addToast('Failed to load integration data', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleBambooDryRun = async () => {
+    setBambooRunning(true);
+    try {
+      const res = await api.dryRunBambooHR({
+        subdomain: bambooSubdomain,
+        api_key: bambooApiKey || undefined
+      });
+      setBambooDryRunResult(res);
+      addToast(res.message, 'success');
+    } catch (e: any) {
+      addToast(e.message || 'BambooHR dry-run failed', 'error');
+    } finally {
+      setBambooRunning(false);
+    }
+  };
+
+  const handleBambooSaveAndSync = async () => {
+    setBambooSyncing(true);
+    try {
+      await api.saveBambooHRConfig({
+        subdomain: bambooSubdomain,
+        api_key: bambooApiKey || undefined,
+        enabled: true,
+        sync_schedule: 'daily'
+      });
+      const syncRes = await api.syncBambooHR();
+      addToast(syncRes.message, 'success');
+      const updatedLogs = await api.getHRISSyncLogs();
+      setBambooSyncLogs(updatedLogs);
+      const updatedCfg = await api.getBambooHRConfig();
+      setBambooConfig(updatedCfg);
+    } catch (e: any) {
+      addToast(e.message || 'BambooHR sync failed', 'error');
+    } finally {
+      setBambooSyncing(false);
     }
   };
 
@@ -221,6 +275,117 @@ export const ConnectorsView: React.FC = () => {
               </div>
               <div className="text-[11px] text-zinc-500">
                 Active Tenant: {hrisSyncResult.workspace_id} • Status: {hrisSyncResult.status}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Phase 5: BambooHR Live Cloud HRIS Connector */}
+        <div className="p-5 rounded-xl bg-cp-bg-surface border border-cp-border space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+                  <Database className="w-3.5 h-3.5" />
+                </div>
+                <h3 className="text-sm font-bold text-cp-text-primary">
+                  BambooHR Cloud Directory Integration (Live Adapter)
+                </h3>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  {bambooConfig?.has_api_key ? 'Configured & Encrypted' : 'Ready to Connect'}
+                </span>
+              </div>
+              <p className="text-xs text-cp-text-muted mt-1">
+                Automated employee roster sync via BambooHR REST API. Credentials are AES-256-GCM encrypted at rest.
+                Includes non-destructive dry-run preview and recorded offline fixtures.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-cp-text-secondary">Company Subdomain</label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  placeholder="e.g. panw-cyber"
+                  value={bambooSubdomain}
+                  onChange={(e) => setBambooSubdomain(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-cp-bg-app border border-cp-border text-xs text-cp-text-primary font-mono focus:outline-none focus:border-cp-accent"
+                />
+                <span className="text-[11px] text-cp-text-muted -ml-28 pr-2 pointer-events-none">.bamboohr.com</span>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-cp-text-secondary">
+                API Key {bambooConfig?.has_api_key && <span className="text-[10px] text-emerald-400 font-mono">(encrypted key stored)</span>}
+              </label>
+              <input
+                type="password"
+                placeholder={bambooConfig?.has_api_key ? "••••••••••••••••••••••••" : "Paste BambooHR API key..."}
+                value={bambooApiKey}
+                onChange={(e) => setBambooApiKey(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg bg-cp-bg-app border border-cp-border text-xs text-cp-text-primary font-mono focus:outline-none focus:border-cp-accent"
+              />
+            </div>
+
+            <div className="flex items-end gap-2">
+              <button
+                onClick={handleBambooDryRun}
+                disabled={bambooRunning}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-cp-bg-app border border-cp-border text-cp-text-primary hover:border-cp-accent/50 disabled:opacity-50 transition-colors"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${bambooRunning ? 'animate-spin' : ''}`} />
+                <span>{bambooRunning ? 'Previewing...' : 'Dry-Run Preview'}</span>
+              </button>
+
+              <button
+                onClick={handleBambooSaveAndSync}
+                disabled={bambooSyncing}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-500 disabled:opacity-50 transition-colors shadow-xs"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>{bambooSyncing ? 'Syncing...' : 'Save & Sync'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Dry Run Preview Terminal */}
+          {bambooDryRunResult && (
+            <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800 text-xs font-mono space-y-2">
+              <div className="flex items-center justify-between text-[11px] text-zinc-400 border-b border-zinc-800 pb-1.5">
+                <span className="text-emerald-400 font-semibold">
+                  ✓ Dry-Run Preview ({bambooDryRunResult.details.source}): {bambooDryRunResult.details.total_records_fetched} records fetched
+                </span>
+                <span>Subdomain: {bambooDryRunResult.details.subdomain}</span>
+              </div>
+              <div className="text-[11px] text-zinc-300">
+                Mapped Attributes: {bambooDryRunResult.details.fields_mapped.slice(0, 6).join(', ')}...
+              </div>
+              <div className="text-[10px] text-zinc-500">
+                Sample Employee ID: {bambooDryRunResult.details.sample_records[0]?.EmployeeID} — {bambooDryRunResult.details.sample_records[0]?.JobRole} (Gap: {bambooDryRunResult.details.sample_records[0]?.PromotionGapRatio})
+              </div>
+            </div>
+          )}
+
+          {/* Sync History Logs */}
+          {bambooSyncLogs.length > 0 && (
+            <div className="space-y-1.5 pt-2 border-t border-cp-border/50">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-cp-text-muted">
+                Recent BambooHR Sync Runs
+              </div>
+              <div className="space-y-1">
+                {bambooSyncLogs.slice(0, 3).map((log: any) => (
+                  <div key={log.id} className="flex items-center justify-between text-[11px] p-2 rounded bg-cp-bg-app border border-cp-border/50 font-mono">
+                    <span className="text-cp-text-primary">
+                      Sync #{log.id} — <strong className="text-emerald-400">{log.status}</strong> ({log.rows_matched || 0} rows matched)
+                    </span>
+                    <span className="text-cp-text-muted">
+                      {new Date(log.started_at).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           )}

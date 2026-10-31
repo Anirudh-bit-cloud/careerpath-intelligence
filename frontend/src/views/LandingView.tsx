@@ -30,6 +30,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ onEnterApp, onLaunchTo
     type === 'error' ? toast.error(msg) : toast.success(msg);
   const [pilotModalOpen, setPilotModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [pilotSubmitted, setPilotSubmitted] = useState(false);
 
   // Pilot Lead Form State
   const [formData, setFormData] = useState({
@@ -52,15 +53,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ onEnterApp, onLaunchTo
     try {
       await api.submitPilotLead(formData);
       addToast('Pilot request received! Our enterprise team will follow up within 24 hours.', 'success');
-      setPilotModalOpen(false);
-      setFormData({
-        full_name: '',
-        work_email: '',
-        company_name: '',
-        company_size: '500 - 2,500',
-        primary_interest: 'Mitigate quiet quitting & promotion stagnation',
-        notes: ''
-      });
+      setPilotSubmitted(true);
     } catch (err: any) {
       addToast(err.message || 'Submission failed. Please try again.', 'error');
     } finally {
@@ -221,6 +214,32 @@ export const LandingView: React.FC<LandingViewProps> = ({ onEnterApp, onLaunchTo
               </button>
             </div>
 
+            {pilotSubmitted ? (
+              <div className="py-6 text-center space-y-4 animate-in fade-in duration-200">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-cp-text-primary">Enterprise Pilot Request Confirmed</h3>
+                  <p className="text-xs text-cp-text-secondary max-w-sm mx-auto leading-relaxed">
+                    Thank you, <strong>{formData.full_name}</strong>. Our enterprise engineering team will provision an isolated sandbox workspace for <strong>{formData.company_name}</strong> within 24 hours.
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-cp-bg-app border border-cp-border text-[11px] text-cp-text-muted font-mono">
+                  {formData.work_email} · {formData.company_size}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPilotModalOpen(false);
+                    setPilotSubmitted(false);
+                  }}
+                  className="px-4 py-2 rounded-lg bg-cp-accent text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Close & Continue Demo
+                </button>
+              </div>
+            ) : (
             <form onSubmit={handleSubmitLead} className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-cp-text-secondary">Full Name *</label>
@@ -316,6 +335,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ onEnterApp, onLaunchTo
                 </button>
               </div>
             </form>
+            )}
           </div>
         </div>
       )}

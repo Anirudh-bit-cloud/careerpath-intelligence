@@ -19,8 +19,9 @@ router = APIRouter(prefix="/api/committee", tags=["Committee Reviews & Collabora
 
 class SessionCreateRequest(BaseModel):
     title: str
-    session_date: str
-    attendees: List[str]
+    session_date: Optional[str] = None
+    scheduled_date: Optional[str] = None
+    attendees: Optional[List[str]] = None
     department_scope: Optional[str] = "All"
     workspace_id: Optional[str] = "default"
 
@@ -28,12 +29,14 @@ class SessionCreateRequest(BaseModel):
 class DecisionLogRequest(BaseModel):
     employee_id: str
     decision: str  # Accelerated Promotion, Approved Lateral Rotation, Targeted L&D, Monitor
-    rationale: str
+    rationale: Optional[str] = None
+    notes: Optional[str] = None
     assigned_owner: Optional[str] = "Talent Lead"
 
 
 class MinutesUpdateRequest(BaseModel):
-    minutes_text: str
+    minutes_text: Optional[str] = None
+    minutes: Optional[str] = None
     status: Optional[str] = "Completed"
 
 
@@ -42,9 +45,16 @@ class CommentCreateRequest(BaseModel):
 
 
 @router.get("/sessions")
-def list_sessions(workspace_id: str = "default", db: Session = Depends(get_db)):
+def list_sessions(
+    workspace_id: str = "default",
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot access Talent Committee reviews.")
+    ws_id = current_user.get("workspace_id") or workspace_id
     sessions = db.query(CommitteeSession).filter(
-        CommitteeSession.workspace_id == workspace_id
+        CommitteeSession.workspace_id == ws_id
     ).order_by(CommitteeSession.created_at.desc()).all()
     return [
         {
@@ -68,12 +78,16 @@ def create_session(
     current_user: Dict[str, Any] = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot create Talent Committee reviews.")
     ws_id = req.workspace_id or current_user.get("workspace_id", "default")
+    sess_date = req.session_date or req.scheduled_date or datetime.utcnow().strftime("%Y-%m-%d")
+    attendees = req.attendees if req.attendees is not None else ["Committee Chair", "HRBP Lead"]
     session = CommitteeSession(
         workspace_id=ws_id,
         title=req.title,
-        session_date=req.session_date,
-        attendees_json=json.dumps(req.attendees),
+        session_date=sess_date,
+        attendees_json=json.dumps(attendees),
         department_scope=req.department_scope or "All",
         status="Scheduled",
         decisions_json="[]"
@@ -81,11 +95,17 @@ def create_session(
     db.add(session)
     db.commit()
     db.refresh(session)
-    return {"message": "Committee session scheduled.", "session_id": session.id}
+    return {"message": "Committee session scheduled.", "session_id": session.id, "id": session.id}
 
 
 @router.get("/sessions/{session_id}")
-def get_session(session_id: int, db: Session = Depends(get_db)):
+def get_session(
+    session_id: int,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if current_user.get("role") == "manager":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied: managers cannot view Talent Committee details.")
     s = db.query(CommitteeSession).filter(CommitteeSession.id == session_id).first()
     if not s:
         raise HTTPException(status_code=404, detail="Committee session not found.")
@@ -114,10 +134,11 @@ def log_decision(
         raise HTTPException(status_code=404, detail="Session not found.")
 
     decisions = json.loads(s.decisions_json) if s.decisions_json else []
+    rationale_text = req.rationale or req.notes or ""
     new_dec = {
         "employee_id": req.employee_id,
         "decision": req.decision,
-        "rationale": req.rationale,
+        "rationale": rationale_text,
         "assigned_owner": req.assigned_owner,
         "recorded_by": current_user.get("full_name", current_user.get("email")),
         "timestamp": datetime.utcnow().isoformat()
@@ -133,7 +154,7 @@ def log_decision(
     ).first()
     if intervention:
         intervention.committee_review_status = "Approved" if "Approved" in req.decision or "Accelerate" in req.decision else "Reviewed"
-        intervention.committee_notes = f"Decision: {req.decision} ({req.rationale})"
+        intervention.committee_notes = f"Decision: {req.decision} ({rationale_text})"
 
     audit = AuditLog(
         workspace_id=s.workspace_id,
@@ -150,6 +171,7 @@ def log_decision(
 
 
 @router.put("/sessions/{session_id}/minutes")
+@router.patch("/sessions/{session_id}/minutes")
 def update_minutes(
     session_id: int,
     req: MinutesUpdateRequest,
@@ -159,7 +181,7 @@ def update_minutes(
     s = db.query(CommitteeSession).filter(CommitteeSession.id == session_id).first()
     if not s:
         raise HTTPException(status_code=404, detail="Session not found.")
-    s.minutes_text = req.minutes_text
+    s.minutes_text = req.minutes_text or req.minutes or ""
     if req.status:
         s.status = req.status
     db.commit()

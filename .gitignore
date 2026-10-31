@@ -8,3 +8,5 @@ dist/
 backend/careerpath.db
 *.log
 .DS_Store
+playwright-report/
+test-results/

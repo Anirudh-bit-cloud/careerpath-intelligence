@@ -16,7 +16,11 @@ import {
   FileEdit,
   ArrowLeft,
   RotateCcw,
-  Zap
+  Zap,
+  ShieldAlert,
+  Scale,
+  TrendingUp,
+  TrendingDown
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EmployeeRecord, Intervention } from '../types';
@@ -41,6 +45,7 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [scoreExplanation, setScoreExplanation] = useState<any | null>(null);
+  const [mlExplanation, setMlExplanation] = useState<any | null>(null);
   const [loadingExplanation, setLoadingExplanation] = useState<boolean>(false);
 
   // Development Plan Editor State
@@ -118,12 +123,14 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
       setLoadingProfile(true);
       setSaveSuccess(false);
       try {
-        const [p, exp] = await Promise.all([
+        const [p, exp, mlExp] = await Promise.all([
           api.getEmployeeProfile(selectedId),
-          api.getScoreExplanation(selectedId).catch(() => null)
+          api.getScoreExplanation(selectedId).catch(() => null),
+          api.getEmployeeMlExplanation(selectedId).catch(() => null)
         ]);
         setProfileData(p);
         setScoreExplanation(exp);
+        setMlExplanation(mlExp);
 
         // Prepopulate plan editor
         setDevGoal(`Resolve ${p.PromotionGapCategory} Promotion Stagnation & Elevate Capability`);
@@ -196,6 +203,17 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Employee Directory</span>
           </button>
+
+          {/* Decision Support Only Notice */}
+          <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-300 flex items-start gap-2.5 text-xs shadow-2xs">
+            <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="space-y-0.5 leading-relaxed">
+              <span className="font-bold">Human-in-the-Loop Decision Support Notice:</span>
+              <p className="text-[11px] text-amber-200/90">
+                This dossier and all analytical metrics are strictly for managerial coaching, retention planning, and career development support. No automated employment decisions, adverse actions, or compensation reductions may be taken based solely on algorithmic indices.
+              </p>
+            </div>
+          </div>
 
           {/* Profile Header Card */}
           <div className="p-6 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs">
@@ -378,6 +396,104 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
                 </div>
               )}
             </div>
+
+            {/* Supervised ML Attrition Model & SHAP Feature Drivers */}
+            {mlExplanation && !mlExplanation.error && (
+              <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Scale className="w-4 h-4 text-cp-accent" />
+                    <h2 className="text-sm font-semibold text-cp-text-primary">
+                      Supervised ML Model & SHAP Drivers
+                    </h2>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cp-accent/15 text-cp-accent border border-cp-accent/30">
+                      P(Exit): {mlExplanation.ml_probability_percent}%
+                    </span>
+                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded border ${
+                      mlExplanation.ml_risk_tier === 'Urgent'
+                        ? 'bg-rose-500/15 text-rose-400 border-rose-500/30'
+                        : mlExplanation.ml_risk_tier === 'Moderate'
+                        ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+                        : 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                    }`}>
+                      {mlExplanation.ml_risk_tier} Tier
+                    </span>
+                  </div>
+                </div>
+
+                {/* Agreement Indicator */}
+                <div className={`p-3 rounded-lg border text-xs flex items-start gap-2.5 ${
+                  mlExplanation.agreement
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                    : 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+                }`}>
+                  {mlExplanation.agreement ? (
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
+                  ) : (
+                    <ShieldAlert className="w-4 h-4 shrink-0 text-amber-400 mt-0.5" />
+                  )}
+                  <div className="space-y-0.5">
+                    <div className="font-bold flex items-center gap-1.5">
+                      <span>{mlExplanation.agreement ? 'Methodology Concurrence' : 'Methodology Disagreement — Human Review Recommended'}</span>
+                      <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/30 border border-white/10">
+                        RRI: {mlExplanation.rri_tier} | ML: {mlExplanation.ml_risk_tier}
+                      </span>
+                    </div>
+                    <p className="text-[11px] opacity-90 leading-relaxed">
+                      {mlExplanation.disagreement_note}
+                    </p>
+                  </div>
+                </div>
+
+                {/* SHAP Drivers Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                  {/* Top Positive Drivers (Risk Factors) */}
+                  <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border space-y-2">
+                    <div className="text-[11px] font-bold text-rose-400 flex items-center gap-1.5">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      <span>Top Risk Drivers (SHAP +)</span>
+                    </div>
+                    <div className="space-y-1.5">
+                      {mlExplanation.top_positive_drivers?.map((d: any, idx: number) => (
+                        <div key={idx} className="flex justify-between items-center text-xs">
+                          <span className="text-cp-text-secondary truncate max-w-[140px]">{d.feature}</span>
+                          <span className="font-mono text-rose-400 font-semibold">+{d.shap_impact}</span>
+                        </div>
+                      ))}
+                      {(!mlExplanation.top_positive_drivers || mlExplanation.top_positive_drivers.length === 0) && (
+                        <div className="text-[10.5px] text-cp-text-muted italic">No strong positive risk drivers</div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Top Protective Drivers (Mitigating Factors) */}
+                  <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border space-y-2">
+                    <div className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5">
+                      <TrendingDown className="w-3.5 h-3.5" />
+                      <span>Top Protective Factors (SHAP -)</span>
+                    </div>
+                    <div className="space-y-1.5">
+                      {mlExplanation.top_negative_drivers?.map((d: any, idx: number) => (
+                        <div key={idx} className="flex justify-between items-center text-xs">
+                          <span className="text-cp-text-secondary truncate max-w-[140px]">{d.feature}</span>
+                          <span className="font-mono text-emerald-400 font-semibold">{d.shap_impact}</span>
+                        </div>
+                      ))}
+                      {(!mlExplanation.top_negative_drivers || mlExplanation.top_negative_drivers.length === 0) && (
+                        <div className="text-[10.5px] text-cp-text-muted italic">No strong protective factors</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Governance Notice */}
+                <div className="text-[10px] text-cp-text-muted border-t border-cp-border pt-2 italic">
+                  {mlExplanation.governance_disclosure}
+                </div>
+              </div>
+            )}
 
             {/* Development Plan Editor */}
             <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs">
@@ -683,11 +799,11 @@ export const EmployeeExplorerView: React.FC<EmployeeExplorerViewProps> = ({
                         <td className="py-3 px-3 text-[11px] text-cp-text-muted">{emp.CareerCluster}</td>
                         <td className="py-3 px-3">
                           <span className={`px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase tracking-wider ${
-                            emp.PromotionGapCategory === 'High'
+                            emp.PromotionGapCategory === 'Urgent' || emp.PromotionGapCategory === 'High'
                               ? 'bg-rose-500/15 text-rose-400 border border-rose-500/25'
                               : 'bg-cp-bg-elevated text-cp-text-muted border border-cp-border'
                           }`}>
-                            {emp.PromotionGapCategory}
+                            {emp.PromotionGapCategory === 'High' ? 'Urgent' : emp.PromotionGapCategory === 'Medium' ? 'Moderate' : emp.PromotionGapCategory === 'Low' ? 'Standard' : emp.PromotionGapCategory}
                           </span>
                         </td>
                         <td className="py-3 px-3 text-right">

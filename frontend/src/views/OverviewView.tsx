@@ -18,19 +18,45 @@ interface OverviewViewProps {
   data: ExecutiveOverview | null;
   loading: boolean;
   onNavigateTab: (tab: string) => void;
+  onRetry?: () => void;
 }
 
-export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNavigateTab }) => {
-  if (loading || !data) {
+export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNavigateTab, onRetry }) => {
+  if (loading) {
     return (
-      <div className="p-8 space-y-6 max-w-7xl mx-auto">
-        <div className="h-8 bg-cp-bg-elevated rounded-lg w-1/3 animate-pulse"></div>
+      <div className="p-8 space-y-6 max-w-7xl mx-auto animate-pulse">
+        <div className="h-8 bg-cp-bg-elevated rounded-lg w-1/3"></div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-24 bg-cp-bg-elevated rounded-xl animate-pulse"></div>
+            <div key={i} className="h-24 bg-cp-bg-elevated rounded-xl"></div>
           ))}
         </div>
-        <div className="h-96 bg-cp-bg-elevated rounded-xl animate-pulse"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="h-80 bg-cp-bg-elevated rounded-xl"></div>
+          <div className="h-80 bg-cp-bg-elevated rounded-xl"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="p-12 max-w-md mx-auto text-center space-y-4">
+        <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 flex items-center justify-center mx-auto">
+          <ClockAlert className="w-6 h-6" />
+        </div>
+        <h2 className="text-base font-bold text-cp-text-primary">Executive Telemetry Unavailable</h2>
+        <p className="text-xs text-cp-text-muted">
+          Could not load workforce telemetry from the analytics service.
+        </p>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="px-4 py-2 rounded-lg bg-cp-accent text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+          >
+            Retry Connection
+          </button>
+        )}
       </div>
     );
   }
@@ -45,7 +71,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNav
   } = data;
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 max-w-7xl mx-auto w-full min-w-0 overflow-x-hidden">
       {/* ── Page Header / Context ── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cp-border pb-5">
         <div>
@@ -304,13 +330,15 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNav
 
             <div className="grid grid-cols-3 gap-3 pt-2">
               {promotion_gap_distribution.map((item) => {
-                const isHigh = item.category === 'High';
-                const isMed = item.category === 'Medium';
-                const colorClass = isHigh
+                const isUrgent = item.category === 'Urgent' || item.category === 'High';
+                const isMed = item.category === 'Moderate' || item.category === 'Medium';
+                const colorClass = isUrgent
                   ? 'text-rose-400 bg-rose-500/10 border-rose-500/30'
                   : isMed
                   ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
                   : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+
+                const displayCategory = item.category === 'High' ? 'Urgent' : item.category === 'Medium' ? 'Moderate' : item.category === 'Low' ? 'Standard' : item.category;
 
                 return (
                   <div
@@ -318,7 +346,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ data, loading, onNav
                     className={`p-4 rounded-xl border flex flex-col items-center justify-center text-center ${colorClass}`}
                   >
                     <span className="text-xs font-bold uppercase tracking-wider mb-1">
-                      {item.category} Gap
+                      {displayCategory} Tier
                     </span>
                     <span className="text-2xl font-bold font-mono">{item.count}</span>
                     <span className="text-[11px] opacity-80 mt-1">

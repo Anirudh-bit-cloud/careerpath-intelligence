@@ -62,6 +62,8 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
   const [minTenure, setMinTenure] = useState<number>(0);
   const [minGapScore, setMinGapScore] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [asOfDate, setAsOfDate] = useState<string>('latest');
+  const [snapshotDates, setSnapshotDates] = useState<any[]>([]);
 
   // Sorting & Pagination
   const [sortBy, setSortBy] = useState<string>('RetentionOpportunityIndex');
@@ -108,27 +110,74 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
   const fetchData = async () => {
     setLoading(true);
     try {
-      const params: Record<string, any> = {
-        priority: priorityFilter,
-        department: deptFilter,
-        job_role: roleFilter,
-        job_level: levelFilter,
-        cluster: clusterFilter,
-        search: searchQuery,
-        sort_by: sortBy,
-        sort_dir: sortDir,
-        page,
-        page_size: pageSize
-      };
-      if (minTenure > 0) params.min_tenure = minTenure;
-      if (minGapScore > 0) params.min_gap_score = minGapScore;
+      if (asOfDate !== 'latest') {
+        const [asOfRecords, intRes] = await Promise.all([
+          api.getAsOfSnapshots(asOfDate, priorityFilter),
+          api.getInterventions(plansStatusFilter)
+        ]);
+        const formattedRecords = asOfRecords.map((r: any) => ({
+          ...r,
+          RetentionOpportunityIndex: r.RetentionRiskIndex,
+          YearsAtCompany: 0,
+          YearsInCurrentRole: 0,
+          YearsWithCurrManager: 0,
+          TrainingTimesLastYear: 0,
+          JobRole: r.JobRole || 'Team Member',
+          RecommendedCategory: 'Historical Review',
+          RecommendedAction: `Snapshot as of ${asOfDate}`
+        }));
+        const urgentCount = formattedRecords.filter((r: any) => r.RetentionPriority === 'Urgent').length;
+        const moderateCount = formattedRecords.filter((r: any) => r.RetentionPriority === 'Moderate').length;
+        const standardCount = formattedRecords.filter((r: any) => r.RetentionPriority === 'Standard').length;
 
-      const [oppRes, intRes] = await Promise.all([
-        api.getRetentionOpportunities(params),
-        api.getInterventions(plansStatusFilter)
-      ]);
-      setData(oppRes);
-      setInterventions(intRes);
+        setData({
+          total_count: formattedRecords.length,
+          unfiltered_total: formattedRecords.length,
+          page,
+          page_size: pageSize,
+          total_pages: Math.ceil(formattedRecords.length / pageSize) || 1,
+          summary: {
+            Urgent: urgentCount,
+            Moderate: moderateCount,
+            Standard: standardCount
+          },
+          urgent_category_breakdown: {},
+          records: formattedRecords.slice((page - 1) * pageSize, page * pageSize),
+          filter_options: data?.filter_options || { departments: [], roles: [], clusters: [] },
+          filtered_summary: {
+            filtered_count: formattedRecords.length,
+            urgent_count: urgentCount,
+            moderate_count: moderateCount,
+            standard_count: standardCount,
+            median_promotion_gap: 0,
+            avg_opportunity_index: 0,
+            avg_tenure: 0
+          }
+        });
+        setInterventions(intRes);
+      } else {
+        const params: Record<string, any> = {
+          priority: priorityFilter,
+          department: deptFilter,
+          job_role: roleFilter,
+          job_level: levelFilter,
+          cluster: clusterFilter,
+          search: searchQuery,
+          sort_by: sortBy,
+          sort_dir: sortDir,
+          page,
+          page_size: pageSize
+        };
+        if (minTenure > 0) params.min_tenure = minTenure;
+        if (minGapScore > 0) params.min_gap_score = minGapScore;
+
+        const [oppRes, intRes] = await Promise.all([
+          api.getRetentionOpportunities(params),
+          api.getInterventions(plansStatusFilter)
+        ]);
+        setData(oppRes);
+        setInterventions(intRes);
+      }
     } catch (err: any) {
       console.error(err);
       toast.error('Data Fetch Error', err.message || 'Could not load retention opportunities');
@@ -138,8 +187,13 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
   };
 
   useEffect(() => {
+    api.getSnapshotDates().then(setSnapshotDates).catch(() => []);
+  }, []);
+
+  useEffect(() => {
     fetchData();
   }, [
+    asOfDate,
     priorityFilter,
     deptFilter,
     roleFilter,
@@ -477,6 +531,24 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
       {/* ── TAB 1: RETENTION CANDIDATES WORKSPACE ── */}
       {activeTab === 'candidates' && (
         <div className="space-y-4">
+          {/* Historical As-Of Date Warning Banner */}
+          {asOfDate !== 'latest' && (
+            <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between text-xs text-amber-300">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  Viewing historical workforce snapshot as of <strong>{asOfDate}</strong>. Risk scores and priorities reflect past captured state.
+                </span>
+              </div>
+              <button
+                onClick={() => setAsOfDate('latest')}
+                className="px-2.5 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-semibold"
+              >
+                Reset to Live Roster
+              </button>
+            </div>
+          )}
+
           {/* ── FILTER TOOLBAR ── */}
           <div className="p-4 rounded-xl bg-cp-bg-surface border border-cp-border shadow-xs space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-2.5 text-xs">
@@ -490,6 +562,23 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
                   placeholder="Search ID, role, category, action..."
                   className="w-full pl-9 pr-3 py-2 rounded-lg bg-cp-bg-input border border-cp-border text-cp-text-primary placeholder:text-cp-text-muted text-xs outline-none focus:border-cp-accent"
                 />
+              </div>
+
+              {/* As-Of Date Selector (Phase 3) */}
+              <div>
+                <select
+                  value={asOfDate}
+                  onChange={(e) => setAsOfDate(e.target.value)}
+                  className="w-full px-2.5 py-2 rounded-lg bg-cp-bg-input border border-cp-border text-cp-text-primary text-xs outline-none focus:border-cp-accent font-mono"
+                  title="View point-in-time retention risk scores from historical snapshots"
+                >
+                  <option value="latest">As-Of: Current Live Roster</option>
+                  {snapshotDates.map((d: any) => (
+                    <option key={d.snapshot_date} value={d.snapshot_date}>
+                      As-Of: {d.snapshot_date} {d.is_synthetic ? '(Synth)' : ''}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Priority */}
@@ -710,7 +799,7 @@ export const RetentionOpportunitiesView: React.FC<RetentionOpportunitiesViewProp
                     <th className="py-2.5 px-3 w-8">
                       <input
                         type="checkbox"
-                        checked={data?.records && data.records.length > 0 && selectedIds.size === data.records.length}
+                        checked={Boolean(data?.records && data.records.length > 0 && selectedIds.size === data.records.length)}
                         onChange={handleToggleSelectAll}
                         className="rounded border-cp-border text-cp-accent"
                       />

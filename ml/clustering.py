@@ -194,7 +194,7 @@ def perform_career_clustering(
             'MedianTrainingLastYear': round(float(c_sub['TrainingTimesLastYear'].median()), 1),
             'MedianJobLevel': int(round(float(c_sub['JobLevel'].median()))),
             'AvgRetentionOpportunityIndex': round(float(c_sub['RetentionOpportunityIndex'].mean()), 1),
-            'HighPromotionGapCount': int((c_sub['PromotionGapCategory'] == 'High').sum()),
+            'HighPromotionGapCount': int(c_sub['PromotionGapCategory'].isin(['Urgent', 'High']).sum()),
             'AnomalousStagnationCount': anomaly_count,
             'AvgGMMConfidence': round(float(c_sub['GMM_Confidence'].mean()), 3),
             'PrimaryCharacteristics': get_cluster_narrative(name, c_sub)

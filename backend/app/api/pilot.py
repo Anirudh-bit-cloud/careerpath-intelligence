@@ -26,7 +26,8 @@ class PilotLeadCreate(BaseModel):
 
 
 class PresetRequest(BaseModel):
-    preset_key: str  # 'cyber', 'healthcare', 'finance'
+    preset_key: Optional[str] = None
+    industry: Optional[str] = None
 
 
 @router.post("/pilot/leads")
@@ -76,8 +77,9 @@ def list_pilot_leads(current_user: Dict[str, Any] = Depends(get_current_user), d
 @router.post("/dataset/preset")
 def switch_industry_preset(payload: PresetRequest):
     """Switches the active synthetic dataset across 3 seeded industry benchmarks."""
-    meta = analytics_service.load_industry_preset(payload.preset_key)
+    key = payload.preset_key or payload.industry or "cyber"
+    meta = analytics_service.load_industry_preset(key)
     return {
-        "message": f"Switched active dataset to {payload.preset_key} benchmark.",
+        "message": f"Switched active dataset to {key} benchmark.",
         "metadata": meta
     }

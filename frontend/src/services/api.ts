@@ -10,33 +10,58 @@ import {
 
 const API_BASE = '/api';
 
+export async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
+  const token = localStorage.getItem('cp_session_token');
+  const headers = new Headers(options.headers || {});
+  if (token && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+  const res = await fetch(url, { ...options, headers });
+  if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cp:auth:expired', { detail: { status: 401, url } }));
+    }
+  } else if (res.status === 423) {
+    if (typeof window !== 'undefined') {
+      const clone = res.clone();
+      clone.json().then(body => {
+        window.dispatchEvent(new CustomEvent('cp:auth:lockout', { detail: { status: 423, detail: body.detail } }));
+      }).catch(() => {
+        window.dispatchEvent(new CustomEvent('cp:auth:lockout', { detail: { status: 423, detail: 'Account temporarily locked out.' } }));
+      });
+    }
+  }
+  return res;
+}
+
+
 export const api = {
   async getMetadata(): Promise<DatasetMetadata> {
-    const res = await fetch(`${API_BASE}/metadata`);
+    const res = await authFetch(`${API_BASE}/metadata`);
     if (!res.ok) throw new Error('Failed to fetch dataset metadata');
     return res.json();
   },
 
   async getOverview(): Promise<ExecutiveOverview> {
-    const res = await fetch(`${API_BASE}/overview`);
+    const res = await authFetch(`${API_BASE}/overview`);
     if (!res.ok) throw new Error('Failed to fetch executive overview');
     return res.json();
   },
 
   async getClusters(): Promise<CareerClustersData> {
-    const res = await fetch(`${API_BASE}/clusters`);
+    const res = await authFetch(`${API_BASE}/clusters`);
     if (!res.ok) throw new Error('Failed to fetch career clusters');
     return res.json();
   },
 
   async getElbowCurve(): Promise<{ elbow_curve: Array<{ k: number; inertia: number; silhouette_score: number }> }> {
-    const res = await fetch(`${API_BASE}/clusters/elbow-curve`);
+    const res = await authFetch(`${API_BASE}/clusters/elbow-curve`);
     if (!res.ok) throw new Error('Failed to fetch elbow curve');
     return res.json();
   },
 
   async recluster(params: { n_clusters?: number; auto_select_k?: boolean; algorithm?: string } = {}): Promise<any> {
-    const res = await fetch(`${API_BASE}/rerun-clustering`, {
+    const res = await authFetch(`${API_BASE}/rerun-clustering`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params)
@@ -55,7 +80,7 @@ export const api = {
         query.append(k, String(v));
       }
     });
-    const res = await fetch(`${API_BASE}/promotion-gap?${query.toString()}`);
+    const res = await authFetch(`${API_BASE}/promotion-gap?${query.toString()}`);
     if (!res.ok) throw new Error('Failed to fetch promotion gap records');
     return res.json();
   },
@@ -67,31 +92,37 @@ export const api = {
         query.append(k, String(v));
       }
     });
-    const res = await fetch(`${API_BASE}/retention-opportunities?${query.toString()}`);
+    const res = await authFetch(`${API_BASE}/retention-opportunities?${query.toString()}`);
     if (!res.ok) throw new Error('Failed to fetch retention opportunities');
     return res.json();
   },
 
   async getManagerInsights(): Promise<ManagerInsightsResponse> {
-    const res = await fetch(`${API_BASE}/manager-insights`);
+    const res = await authFetch(`${API_BASE}/manager-insights`);
     if (!res.ok) throw new Error('Failed to fetch manager insights');
     return res.json();
   },
 
   async getEmployeeProfile(employeeId: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/employees/${employeeId}`);
+    const res = await authFetch(`${API_BASE}/employees/${employeeId}`);
     if (!res.ok) throw new Error(`Failed to fetch profile for ${employeeId}`);
     return res.json();
   },
 
   async getScoreExplanation(employeeId: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/employees/${employeeId}/score-explanation`);
+    const res = await authFetch(`${API_BASE}/employees/${employeeId}/score-explanation`);
     if (!res.ok) throw new Error(`Failed to fetch score explanation for ${employeeId}`);
     return res.json();
   },
 
+  async getEmployeeMlExplanation(employeeId: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/employees/${employeeId}/ml-explanation`);
+    if (!res.ok) throw new Error(`Failed to fetch ML explanation for ${employeeId}`);
+    return res.json();
+  },
+
   async searchEmployees(query: string = ''): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/employees?query=${encodeURIComponent(query)}`);
+    const res = await authFetch(`${API_BASE}/employees?query=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error('Failed to search employees');
     return res.json();
   },
@@ -99,13 +130,13 @@ export const api = {
   // Interventions Workflow
   async getInterventions(statusFilter: string = 'All'): Promise<Intervention[]> {
     const query = statusFilter !== 'All' ? `?status_filter=${statusFilter}` : '';
-    const res = await fetch(`${API_BASE}/interventions${query}`);
+    const res = await authFetch(`${API_BASE}/interventions${query}`);
     if (!res.ok) throw new Error('Failed to fetch interventions');
     return res.json();
   },
 
   async createIntervention(data: Intervention): Promise<Intervention> {
-    const res = await fetch(`${API_BASE}/interventions`, {
+    const res = await authFetch(`${API_BASE}/interventions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -115,7 +146,7 @@ export const api = {
   },
 
   async updateIntervention(id: number, data: Partial<Intervention>): Promise<Intervention> {
-    const res = await fetch(`${API_BASE}/interventions/${id}`, {
+    const res = await authFetch(`${API_BASE}/interventions/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -125,7 +156,7 @@ export const api = {
   },
 
   async deleteIntervention(id: number): Promise<void> {
-    const res = await fetch(`${API_BASE}/interventions/${id}`, {
+    const res = await authFetch(`${API_BASE}/interventions/${id}`, {
       method: 'DELETE'
     });
     if (!res.ok) throw new Error('Failed to delete intervention');
@@ -143,7 +174,7 @@ export const api = {
   }> {
     const formData = new FormData();
     formData.append('file', file);
-    const res = await fetch(`${API_BASE}/dataset/upload`, {
+    const res = await authFetch(`${API_BASE}/dataset/upload`, {
       method: 'POST',
       body: formData
     });
@@ -155,13 +186,13 @@ export const api = {
   },
 
   async resetToDemo(): Promise<any> {
-    const res = await fetch(`${API_BASE}/dataset/reset`, { method: 'POST' });
+    const res = await authFetch(`${API_BASE}/dataset/reset`, { method: 'POST' });
     if (!res.ok) throw new Error('Failed to reset dataset');
     return res.json();
   },
 
   async getDataQuality(): Promise<any> {
-    const res = await fetch(`${API_BASE}/dataset/data-quality`);
+    const res = await authFetch(`${API_BASE}/dataset/data-quality`);
     if (!res.ok) throw new Error('Failed to fetch data quality report');
     return res.json();
   },
@@ -172,7 +203,7 @@ export const api = {
     lateral_move?: boolean;
     add_trainings?: number;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/simulate-career`, {
+    const res = await authFetch(`${API_BASE}/simulate-career`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -183,7 +214,7 @@ export const api = {
 
   // ── Authentication & RBAC ───────────────────────────────────────────
   async login(email: string, role: string = 'admin'): Promise<{ user: any; token: string }> {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await authFetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, role })
@@ -197,7 +228,7 @@ export const api = {
 
   async getProfile(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/auth/me`, {
+    const res = await authFetch(`${API_BASE}/auth/me`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to get user profile');
@@ -205,14 +236,14 @@ export const api = {
   },
 
   async listUsers(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/auth/users`);
+    const res = await authFetch(`${API_BASE}/auth/users`);
     if (!res.ok) throw new Error('Failed to list users');
     return res.json();
   },
 
   // ── Multi-Tenant Workspaces ─────────────────────────────────────────
   async listWorkspaces(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/workspaces`);
+    const res = await authFetch(`${API_BASE}/workspaces`);
     if (!res.ok) throw new Error('Failed to list workspaces');
     return res.json();
   },
@@ -223,7 +254,7 @@ export const api = {
     logo_svg_url?: string;
     custom_domain?: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/workspaces/${workspaceId}/branding`, {
+    const res = await authFetch(`${API_BASE}/workspaces/${workspaceId}/branding`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(branding)
@@ -239,7 +270,7 @@ export const api = {
     records: number;
     metadata: DatasetMetadata;
   }> {
-    const res = await fetch(`${API_BASE}/dataset/preset`, {
+    const res = await authFetch(`${API_BASE}/dataset/preset`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ industry })
@@ -253,7 +284,7 @@ export const api = {
 
   // ── Scoring Policy Engine & Tier Simulator ──────────────────────────
   async getActivePolicy(): Promise<any> {
-    const res = await fetch(`${API_BASE}/policy`);
+    const res = await authFetch(`${API_BASE}/policy`);
     if (!res.ok) throw new Error('Failed to fetch active policy');
     return res.json();
   },
@@ -276,7 +307,7 @@ export const api = {
       unchanged: number;
     };
   }> {
-    const res = await fetch(`${API_BASE}/policy/preview`, {
+    const res = await authFetch(`${API_BASE}/policy/preview`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(weights)
@@ -286,7 +317,7 @@ export const api = {
   },
 
   async updatePolicy(policyData: any): Promise<any> {
-    const res = await fetch(`${API_BASE}/policy/update`, {
+    const res = await authFetch(`${API_BASE}/policy/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(policyData)
@@ -296,20 +327,26 @@ export const api = {
   },
 
   async getPolicyHistory(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/policy/history`);
+    const res = await authFetch(`${API_BASE}/policy/history`);
     if (!res.ok) throw new Error('Failed to fetch policy history');
+    return res.json();
+  },
+
+  async getPolicySensitivity(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/policy/sensitivity`);
+    if (!res.ok) throw new Error('Failed to fetch policy sensitivity');
     return res.json();
   },
 
   // ── Talent Committee Review Mode ────────────────────────────────────
   async listCommitteeSessions(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/committee/sessions`);
+    const res = await authFetch(`${API_BASE}/committee/sessions`);
     if (!res.ok) throw new Error('Failed to list committee sessions');
     return res.json();
   },
 
   async createCommitteeSession(title: string, scheduledDate?: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/sessions`, {
+    const res = await authFetch(`${API_BASE}/committee/sessions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, scheduled_date: scheduledDate })
@@ -325,7 +362,7 @@ export const api = {
     notes?: string;
     decided_by?: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/sessions/${sessionId}/decisions`, {
+    const res = await authFetch(`${API_BASE}/committee/sessions/${sessionId}/decisions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(decision)
@@ -335,7 +372,7 @@ export const api = {
   },
 
   async updateCommitteeMinutes(sessionId: number, minutes: string, status?: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/sessions/${sessionId}/minutes`, {
+    const res = await authFetch(`${API_BASE}/committee/sessions/${sessionId}/minutes`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ minutes, status })
@@ -345,13 +382,13 @@ export const api = {
   },
 
   async getPlanComments(planId: number): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/committee/plans/${planId}/comments`);
+    const res = await authFetch(`${API_BASE}/committee/plans/${planId}/comments`);
     if (!res.ok) throw new Error('Failed to get plan comments');
     return res.json();
   },
 
   async addPlanComment(planId: number, authorEmail: string, authorName: string, commentText: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/committee/plans/${planId}/comments`, {
+    const res = await authFetch(`${API_BASE}/committee/plans/${planId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -373,7 +410,7 @@ export const api = {
     primary_interest?: string;
     notes?: string;
   }): Promise<any> {
-    const res = await fetch(`${API_BASE}/pilot/leads`, {
+    const res = await authFetch(`${API_BASE}/pilot/leads`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(lead)
@@ -383,20 +420,20 @@ export const api = {
   },
 
   async listPilotLeads(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/pilot/leads`);
+    const res = await authFetch(`${API_BASE}/pilot/leads`);
     if (!res.ok) throw new Error('Failed to list pilot leads');
     return res.json();
   },
 
   // ── HRIS Connectors & Integration Adapter ──────────────────────────
   async getConnectorsStatus(): Promise<any> {
-    const res = await fetch(`${API_BASE}/connectors/status`);
+    const res = await authFetch(`${API_BASE}/connectors/status`);
     if (!res.ok) throw new Error('Failed to fetch connectors status');
     return res.json();
   },
 
   async testMockHris(syncCount: number = 25): Promise<any> {
-    const res = await fetch(`${API_BASE}/connectors/test-hris?sync_count=${syncCount}`, {
+    const res = await authFetch(`${API_BASE}/connectors/test-hris?sync_count=${syncCount}`, {
       method: 'POST'
     });
     if (!res.ok) throw new Error('HRIS adapter test failed');
@@ -405,13 +442,13 @@ export const api = {
 
   // ── Public API Keys & Webhooks ──────────────────────────────────────
   async listApiKeys(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/keys`);
+    const res = await authFetch(`${API_BASE}/keys`);
     if (!res.ok) throw new Error('Failed to list API keys');
     return res.json();
   },
 
   async createApiKey(name: string, role: string = 'hr_analyst'): Promise<any> {
-    const res = await fetch(`${API_BASE}/keys`, {
+    const res = await authFetch(`${API_BASE}/keys`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, role })
@@ -421,18 +458,18 @@ export const api = {
   },
 
   async revokeApiKey(keyId: number): Promise<void> {
-    const res = await fetch(`${API_BASE}/keys/${keyId}`, { method: 'DELETE' });
+    const res = await authFetch(`${API_BASE}/keys/${keyId}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Failed to revoke API key');
   },
 
   async listWebhooks(): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/webhooks`);
+    const res = await authFetch(`${API_BASE}/webhooks`);
     if (!res.ok) throw new Error('Failed to list webhooks');
     return res.json();
   },
 
   async createWebhook(endpointUrl: string, secretToken: string, subscribedEvents: string[]): Promise<any> {
-    const res = await fetch(`${API_BASE}/webhooks`, {
+    const res = await authFetch(`${API_BASE}/webhooks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -446,7 +483,7 @@ export const api = {
   },
 
   async testWebhook(endpointId: number, testPayload?: any): Promise<any> {
-    const res = await fetch(`${API_BASE}/webhooks/test?endpoint_id=${endpointId}`, {
+    const res = await authFetch(`${API_BASE}/webhooks/test?endpoint_id=${endpointId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(testPayload || { test: true })
@@ -457,19 +494,19 @@ export const api = {
 
   // ── Security, Audit Logs & Privacy Compliance ───────────────────────
   async getAuditLogs(limit: number = 50): Promise<any[]> {
-    const res = await fetch(`${API_BASE}/governance/audit-logs?limit=${limit}`);
+    const res = await authFetch(`${API_BASE}/governance/audit-logs?limit=${limit}`);
     if (!res.ok) throw new Error('Failed to fetch audit logs');
     return res.json();
   },
 
   async previewRetention(retentionDays: number = 365): Promise<any> {
-    const res = await fetch(`${API_BASE}/governance/retention-preview?retention_days=${retentionDays}`);
+    const res = await authFetch(`${API_BASE}/governance/retention-preview?retention_days=${retentionDays}`);
     if (!res.ok) throw new Error('Failed to preview retention cleanup');
     return res.json();
   },
 
   async exportDataSubject(employeeId: string): Promise<any> {
-    const res = await fetch(`${API_BASE}/governance/data-subject-export?employee_id=${encodeURIComponent(employeeId)}`);
+    const res = await authFetch(`${API_BASE}/governance/data-subject-export?employee_id=${encodeURIComponent(employeeId)}`);
     if (!res.ok) throw new Error(`Failed to export data subject ${employeeId}`);
     return res.json();
   },
@@ -477,7 +514,7 @@ export const api = {
   // ── Fairness & Algorithmic Bias Audit ──────────────────────────────
   async getFairnessSummary(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/fairness/summary`, {
+    const res = await authFetch(`${API_BASE}/fairness/summary`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) {
@@ -489,34 +526,96 @@ export const api = {
 
   async getFairnessAttribute(attributeName: string): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/fairness/attribute/${attributeName}`, {
+    const res = await authFetch(`${API_BASE}/fairness/attribute/${attributeName}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error(`Failed to fetch fairness data for ${attributeName}`);
     return res.json();
   },
 
+  async getIntersectionalFairness(minSampleSize: number = 10): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/intersectional?min_sample_size=${minSampleSize}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch intersectional fairness audit');
+    return res.json();
+  },
+
+  async getLongitudinalFairness(): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/longitudinal`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch longitudinal fairness drift');
+    return res.json();
+  },
+
+  async submitBiasSignoff(data: {
+    review_type: string;
+    target_id: string;
+    decision: string;
+    reviewer_notes: string;
+    acknowledged_flags?: number;
+  }): Promise<any> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/signoff`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to submit bias sign-off');
+    }
+    return res.json();
+  },
+
+  async listBiasSignoffs(limit: number = 20): Promise<any[]> {
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/fairness/signoffs?limit=${limit}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) throw new Error('Failed to fetch bias review sign-offs');
+    return res.json();
+  },
+
   // ── Model Validation & Survival Analysis ───────────────────────────
   async getValidationOverview(): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/metrics`);
+    const res = await authFetch(`${API_BASE}/validation/metrics`);
     if (!res.ok) throw new Error('Failed to fetch validation telemetry');
     return res.json();
   },
 
   async getSurvivalCurves(): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/survival-curves`);
+    const res = await authFetch(`${API_BASE}/validation/survival-curves`);
     if (!res.ok) throw new Error('Failed to fetch survival curves');
     return res.json();
   },
 
   async getCoxRegression(): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/cox-regression`);
+    const res = await authFetch(`${API_BASE}/validation/cox-regression`);
     if (!res.ok) throw new Error('Failed to fetch Cox regression');
     return res.json();
   },
 
+  async getCalibrationPlot(nBins: number = 10): Promise<any> {
+    const res = await authFetch(`${API_BASE}/validation/calibration-plot?n_bins=${nBins}`);
+    if (!res.ok) throw new Error('Failed to fetch calibration plot');
+    return res.json();
+  },
+
+  async getMlImportance(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/validation/ml-importance`);
+    if (!res.ok) throw new Error('Failed to fetch ML feature importance');
+    return res.json();
+  },
+
   async getBacktest(trainFraction: number = 0.75): Promise<any> {
-    const res = await fetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
+    const res = await authFetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
     if (!res.ok) throw new Error('Failed to run backtest');
     return res.json();
   },
@@ -524,7 +623,7 @@ export const api = {
   // ── Succession Planning & Outcome Tracking ─────────────────────────
   async getNineBoxGrid(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/9-box`, {
+    const res = await authFetch(`${API_BASE}/succession/9-box`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch 9-box talent grid');
@@ -533,7 +632,7 @@ export const api = {
 
   async getCriticalRoles(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/critical-roles`, {
+    const res = await authFetch(`${API_BASE}/succession/critical-roles`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch critical roles');
@@ -542,7 +641,7 @@ export const api = {
 
   async getInterventionEffectiveness(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/effectiveness`, {
+    const res = await authFetch(`${API_BASE}/succession/effectiveness`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch intervention effectiveness');
@@ -556,7 +655,7 @@ export const api = {
     notes?: string;
   }): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/succession/outcomes/${interventionId}`, {
+    const res = await authFetch(`${API_BASE}/succession/outcomes/${interventionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -571,7 +670,7 @@ export const api = {
   // ── Proactive Notification Channels ───────────────────────────────
   async getNotificationPreferences(): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/preferences`, {
+    const res = await authFetch(`${API_BASE}/notifications/preferences`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch notification preferences');
@@ -580,7 +679,7 @@ export const api = {
 
   async updateNotificationPreferences(payload: any): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/preferences`, {
+    const res = await authFetch(`${API_BASE}/notifications/preferences`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -597,7 +696,7 @@ export const api = {
 
   async testNotificationChannel(channel: 'email' | 'slack', target: string, message?: string): Promise<any> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/test`, {
+    const res = await authFetch(`${API_BASE}/notifications/test`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -614,10 +713,381 @@ export const api = {
 
   async getNotificationDeliveries(limit: number = 20): Promise<any[]> {
     const token = localStorage.getItem('cp_session_token');
-    const res = await fetch(`${API_BASE}/notifications/deliveries?limit=${limit}`, {
+    const res = await authFetch(`${API_BASE}/notifications/deliveries?limit=${limit}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
     if (!res.ok) throw new Error('Failed to fetch notification deliveries');
+    return res.json();
+  },
+
+  // ── Multi-Factor Authentication & Profile ───────────────────────────
+  async setupMFA(): Promise<{ secret: string; otpauth_uri: string; recovery_codes: string[]; message: string }> {
+    const res = await authFetch(`${API_BASE}/auth/mfa/setup`, {
+      method: 'POST'
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to initiate MFA setup');
+    }
+    return res.json();
+  },
+
+  async verifyMFAEnrollment(totp_code: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/auth/mfa/verify-enrollment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ totp_code })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to verify MFA enrollment code');
+    }
+    return res.json();
+  },
+
+  async disableMFA(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/auth/mfa/disable`, {
+      method: 'POST'
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to disable MFA');
+    }
+    return res.json();
+  },
+
+  // ── Historical Snapshots & Workforce Trends (Phase 3) ───────────────
+  async getTrendsOverview(range: string = '12m'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/overview?range=${range}`);
+    if (!res.ok) throw new Error('Failed to fetch workforce trends overview');
+    return res.json();
+  },
+
+  async getTrendsDepartments(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/departments`);
+    if (!res.ok) throw new Error('Failed to fetch department trends');
+    return res.json();
+  },
+
+  async getTrendsEmployee(employeeId: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/employee/${encodeURIComponent(employeeId)}`);
+    if (!res.ok) throw new Error(`Failed to fetch trends for employee ${employeeId}`);
+    return res.json();
+  },
+
+  async getTierMovement(fromDate: string, toDate: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/trends/tier-movement?from_date=${fromDate}&to_date=${toDate}`);
+    if (!res.ok) throw new Error('Failed to fetch tier movement matrix');
+    return res.json();
+  },
+
+  async getSnapshotDates(): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/snapshots/dates`);
+    if (!res.ok) throw new Error('Failed to fetch snapshot dates');
+    return res.json();
+  },
+
+  async getAsOfSnapshots(asOfDate: string, priority: string = 'All'): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/snapshots/as-of?as_of_date=${asOfDate}&priority=${priority}`);
+    if (!res.ok) throw new Error(`Failed to fetch as-of snapshot records for ${asOfDate}`);
+    return res.json();
+  },
+
+  async createSnapshot(snapshotDate?: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/snapshots`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ snapshot_date: snapshotDate })
+    });
+    if (!res.ok) throw new Error('Failed to trigger workforce snapshot');
+    return res.json();
+  },
+
+  async seedDemoSnapshots(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/snapshots/seed-demo`, {
+      method: 'POST'
+    });
+    if (!res.ok) throw new Error('Failed to seed historical snapshots');
+    return res.json();
+  },
+
+  // ── Role-Based Manager Experience & Follow-ups ──────────────────────
+  async getMyTeam(managerId?: string): Promise<any> {
+    const url = managerId ? `${API_BASE}/manager/my-team?manager_id=${encodeURIComponent(managerId)}` : `${API_BASE}/manager/my-team`;
+    const res = await authFetch(url);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to fetch manager team data');
+    }
+    return res.json();
+  },
+
+  async recordManagerAcknowledgement(statement?: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/manager/acknowledgement`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        acknowledged: true,
+        statement: statement || 'I understand these indicators are meant to support employee growth and retention, not to evaluate performance or justify discipline.'
+      })
+    });
+    if (!res.ok) throw new Error('Failed to record diagnostic acknowledgement');
+    return res.json();
+  },
+
+  async listFollowUps(): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/manager/follow-ups`);
+    if (!res.ok) throw new Error('Failed to list 1-on-1 follow-ups');
+    return res.json();
+  },
+
+  async createFollowUp(data: {
+    employee_id: string;
+    planned_date: string;
+    topic: string;
+    talking_points_discussed?: string;
+    notes?: string;
+    create_hr_intervention?: boolean;
+  }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/manager/follow-ups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to create follow-up');
+    }
+    return res.json();
+  },
+
+  async updateFollowUp(id: number, data: {
+    status?: string;
+    notes?: string;
+    talking_points_discussed?: string;
+  }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/manager/follow-ups/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to update follow-up');
+    }
+    return res.json();
+  },
+
+  // ── Model Registry & Drift Governance ────────────────────────────────
+  async listModels(modelType?: string): Promise<any[]> {
+    const url = modelType ? `${API_BASE}/models?model_type=${modelType}` : `${API_BASE}/models`;
+    const res = await authFetch(url);
+    if (!res.ok) throw new Error('Failed to fetch registered models');
+    return res.json();
+  },
+
+  async getModel(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}`);
+    if (!res.ok) throw new Error(`Failed to fetch model version ${id}`);
+    return res.json();
+  },
+
+  async promoteModel(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}/promote`, { method: 'POST' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to promote model');
+    }
+    return res.json();
+  },
+
+  async rollbackModel(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}/rollback`, { method: 'POST' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to rollback model');
+    }
+    return res.json();
+  },
+
+  async getModelDrift(id: number): Promise<any> {
+    const res = await authFetch(`${API_BASE}/models/${id}/drift`);
+    if (!res.ok) throw new Error(`Failed to compute drift for model ${id}`);
+    return res.json();
+  },
+
+  // ── Temporal Backtesting & Historical Exits (Phase 2) ───────────────
+  async getTemporalBacktest(horizonMonths: number = 6): Promise<any> {
+    const res = await authFetch(`${API_BASE}/validation/temporal-backtest?horizon_months=${horizonMonths}`);
+    if (!res.ok) throw new Error('Failed to fetch temporal backtest telemetry');
+    return res.json();
+  },
+
+  async uploadHistoricalExits(file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/dataset/upload-exits`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: formData
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Historical exits upload failed');
+    }
+    return res.json();
+  },
+
+  // ── Compliance & Regulatory Mapping (Phase 4) ──────────────────────────────
+  async getComplianceMapping(regulation?: string, statusFilter?: string): Promise<any> {
+    const params = new URLSearchParams();
+    if (regulation) params.set('regulation', regulation);
+    if (statusFilter) params.set('status', statusFilter);
+    const url = params.toString() ? `${API_BASE}/compliance/mapping?${params}` : `${API_BASE}/compliance/mapping`;
+    const res = await authFetch(url);
+    if (!res.ok) throw new Error('Failed to fetch compliance mapping');
+    return res.json();
+  },
+
+  async getBiasAuditSummary(): Promise<any> {
+    const res = await authFetch(`${API_BASE}/compliance/bias-audit-summary`);
+    if (!res.ok) throw new Error('Failed to fetch bias audit summary');
+    return res.json();
+  },
+
+  downloadComplianceMappingCsv(): string {
+    return `${API_BASE}/compliance/mapping/export/csv`;
+  },
+
+  downloadBiasAuditCsv(): string {
+    return `${API_BASE}/compliance/bias-audit-summary/export/csv`;
+  },
+
+  downloadModelCard(): string {
+    return `${API_BASE}/compliance/model-card`;
+  },
+
+  downloadDpiaTemplate(): string {
+    return `${API_BASE}/compliance/dpia-template`;
+  },
+
+  downloadComplianceMappingDoc(): string {
+    return `${API_BASE}/compliance/compliance-mapping-doc`;
+  },
+
+  // ── SSO, SCIM 2.0 & BambooHR Connector (Phase 5) ──────────────────────────
+  async getOIDCConfig(workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/config?workspace_id=${workspaceId}`);
+    if (!res.ok) throw new Error('Failed to fetch OIDC configuration');
+    return res.json();
+  },
+
+  async updateOIDCConfig(data: any, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/config?workspace_id=${workspaceId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to update OIDC configuration');
+    }
+    return res.json();
+  },
+
+  async getOIDCAuthorizeUrl(redirectUri: string, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/authorize-url?workspace_id=${workspaceId}&redirect_uri=${encodeURIComponent(redirectUri)}`);
+    if (!res.ok) throw new Error('Failed to get OIDC authorize URL');
+    return res.json();
+  },
+
+  async handleOIDCCallback(payload: { code: string; state: string; code_verifier?: string; workspace_id?: string }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/sso/callback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'OIDC callback failed');
+    }
+    return res.json();
+  },
+
+  async listSCIMTokens(workspaceId: string = 'default'): Promise<any[]> {
+    const res = await authFetch(`/scim/v2/tokens?workspace_id=${workspaceId}`);
+    if (!res.ok) throw new Error('Failed to list SCIM tokens');
+    return res.json();
+  },
+
+  async generateSCIMToken(label: string, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`/scim/v2/tokens/generate?workspace_id=${workspaceId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ label })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to generate SCIM token');
+    }
+    return res.json();
+  },
+
+  async revokeSCIMToken(tokenId: number, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`/scim/v2/tokens/${tokenId}?workspace_id=${workspaceId}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) throw new Error('Failed to revoke SCIM token');
+    return res.json();
+  },
+
+  async getBambooHRConfig(workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/config?workspace_id=${workspaceId}`);
+    if (!res.ok) throw new Error('Failed to fetch BambooHR config');
+    return res.json();
+  },
+
+  async saveBambooHRConfig(data: any, workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/config?workspace_id=${workspaceId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to save BambooHR config');
+    }
+    return res.json();
+  },
+
+  async dryRunBambooHR(data: { subdomain: string; api_key?: string; field_mapping?: any }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/dry-run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'BambooHR dry-run failed');
+    }
+    return res.json();
+  },
+
+  async syncBambooHR(workspaceId: string = 'default'): Promise<any> {
+    const res = await authFetch(`${API_BASE}/connectors/bamboohr/sync?workspace_id=${workspaceId}`, {
+      method: 'POST'
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'BambooHR sync failed');
+    }
+    return res.json();
+  },
+
+  async getHRISSyncLogs(workspaceId: string = 'default', limit: number = 10): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/connectors/sync-logs?workspace_id=${workspaceId}&limit=${limit}`);
+    if (!res.ok) throw new Error('Failed to fetch HRIS sync logs');
     return res.json();
   }
 };

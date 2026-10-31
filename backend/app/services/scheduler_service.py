@@ -36,6 +36,24 @@ def job_committee_reminders():
         logger.error(f"[Scheduler] Failed job_committee_reminders: {e}")
 
 
+def job_monthly_snapshot():
+    try:
+        from backend.app.database.connection import SessionLocal
+        from backend.app.services.snapshot_service import snapshot_service
+        db = SessionLocal()
+        try:
+            snapshot_service.create_snapshot(
+                db=db,
+                workspace_id="default",
+                trigger_type="scheduled_monthly",
+                is_synthetic=False
+            )
+        finally:
+            db.close()
+    except Exception as e:
+        logger.error(f"[Scheduler] Failed job_monthly_snapshot: {e}")
+
+
 def start_scheduler():
     """Configures scheduled recurring jobs and boots the background worker thread."""
     if not scheduler.running:
@@ -44,6 +62,8 @@ def start_scheduler():
         # Daily
         scheduler.add_job(job_overdue_interventions, 'interval', hours=24, id='daily_overdue_interventions', replace_existing=True)
         scheduler.add_job(job_committee_reminders, 'interval', hours=24, id='daily_committee_reminders', replace_existing=True)
+        # Monthly Snapshot (every 30 days)
+        scheduler.add_job(job_monthly_snapshot, 'interval', days=30, id='monthly_workforce_snapshot', replace_existing=True)
         
         try:
             scheduler.start()

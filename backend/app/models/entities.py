@@ -33,7 +33,8 @@ class User(Base):
     email = Column(String(128), unique=True, index=True, nullable=False)
     password_hash = Column(String(256), nullable=False)
     full_name = Column(String(128), nullable=False)
-    role = Column(String(32), nullable=False, default="hrbp")  # admin, hr_analyst, hrbp, talent_committee
+    role = Column(String(32), nullable=False, default="hrbp")  # admin, hr_analyst, hrbp, talent_committee, manager
+    employee_id = Column(String(64), nullable=True, index=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login = Column(DateTime, nullable=True)
@@ -224,3 +225,163 @@ class NotificationDelivery(Base):
     payload_json = Column(Text, nullable=True)
     error_message = Column(Text, nullable=True)
     sent_at = Column(DateTime, default=datetime.utcnow)
+
+
+class WorkforceSnapshot(Base):
+    __tablename__ = "workforce_snapshots"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    snapshot_date = Column(String(10), index=True, nullable=False)  # YYYY-MM-DD
+    employee_id = Column(String(64), index=True, nullable=False)
+    rri = Column(Float, nullable=False)
+    rri_tier = Column(String(32), nullable=False)  # Urgent, Moderate, Standard
+    ml_probability = Column(Float, nullable=True)
+    cluster_id = Column(Integer, nullable=True)
+    job_level = Column(Integer, nullable=True)
+    department = Column(String(128), nullable=True)
+    promotion_gap_years = Column(Float, nullable=True)
+    satisfaction = Column(Float, nullable=True)
+    is_synthetic = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class SnapshotRun(Base):
+    __tablename__ = "snapshot_runs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    snapshot_date = Column(String(10), index=True, nullable=False)  # YYYY-MM-DD
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), nullable=False, default="system")
+    trigger_type = Column(String(64), default="manual")  # manual, roster_upload, scheduled, synthetic_seed
+    row_count = Column(Integer, nullable=False)
+    model_version = Column(String(64), nullable=True, default="v3.1.0")
+    policy_version = Column(Integer, nullable=True, default=1)
+    is_synthetic = Column(Boolean, default=False)
+
+
+class ManagerFollowUp(Base):
+    __tablename__ = "manager_followups"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    manager_id = Column(String(64), index=True, nullable=False)
+    employee_id = Column(String(64), index=True, nullable=False)
+    planned_date = Column(String(10), nullable=False)  # YYYY-MM-DD
+    topic = Column(String(256), nullable=False)
+    talking_points_discussed = Column(Text, nullable=True)
+    notes = Column(Text, nullable=True)
+    status = Column(String(32), default="Planned")  # Planned, Completed, Cancelled
+    baseline_rri = Column(Float, nullable=True)
+    followup_rri = Column(Float, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
+
+
+class ModelVersion(Base):
+    __tablename__ = "model_versions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    model_type = Column(String(32), nullable=False)  # 'cox', 'hist_gbdt'
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), default="system", nullable=False)
+    training_data_hash = Column(String(64), nullable=False)
+    row_count = Column(Integer, nullable=False)
+    feature_list_json = Column(Text, nullable=False)  # JSON array of feature names
+    hyperparameters_json = Column(Text, nullable=False)  # JSON dict of hyperparams
+    metrics_json = Column(Text, nullable=False)  # JSON dict of c_index/roc_auc, brier, cv_mean, cv_std, pr_auc
+    artifact_path = Column(String(256), nullable=False)  # disk path to joblib artifact
+    status = Column(String(32), default="candidate", index=True, nullable=False)  # 'active', 'candidate', 'archived'
+    dependency_versions_json = Column(Text, nullable=True)  # JSON dict of pinned library versions
+    notes = Column(Text, nullable=True)
+
+
+class HistoricalExit(Base):
+    __tablename__ = "historical_exits"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    employee_id = Column(String(64), index=True, nullable=False)
+    exit_date = Column(String(10), index=True, nullable=False)  # YYYY-MM-DD
+    exit_reason = Column(String(128), nullable=True)  # Voluntary, Involuntary, Career Progression, etc.
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), nullable=False, default="system")
+
+
+# ── Phase 5: SSO/OIDC Configuration per Workspace ──────────────────────────
+
+class OIDCConfig(Base):
+    """Per-workspace OIDC/SSO configuration (encrypted secrets at rest)."""
+    __tablename__ = "oidc_configs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False, unique=True)
+    enabled = Column(Boolean, default=False, nullable=False)
+    issuer_url = Column(String(512), nullable=False)
+    client_id = Column(String(256), nullable=False)
+    # client_secret and other secrets are stored AES-256-encrypted
+    client_secret_enc = Column(Text, nullable=True)          # encrypted
+    allowed_email_domains = Column(Text, nullable=True)      # JSON list of domains
+    role_mapping_json = Column(Text, nullable=True)          # JSON: claim value → platform role
+    jit_default_role = Column(String(32), default="hrbp")   # JIT-provisioned user role
+    pkce_required = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_by = Column(String(128), default="system")
+
+
+class SCIMToken(Base):
+    """Per-workspace SCIM 2.0 bearer tokens (hashed)."""
+    __tablename__ = "scim_tokens"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False)
+    token_hash = Column(String(128), nullable=False)  # SHA-256 hash of the bearer token
+    label = Column(String(128), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_used_at = Column(DateTime, nullable=True)
+    revoked = Column(Boolean, default=False)
+
+
+class HRISConnectorConfig(Base):
+    """Per-workspace HRIS connector configuration (encrypted credentials)."""
+    __tablename__ = "hris_connector_configs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False)
+    connector_type = Column(String(64), nullable=False)  # 'bamboohr', 'sftp_csv', 'mock'
+    enabled = Column(Boolean, default=False)
+    # Connector-specific config stored as encrypted JSON
+    config_enc = Column(Text, nullable=True)             # encrypted JSON: api_key, subdomain, etc.
+    field_mapping_json = Column(Text, nullable=True)     # JSON: HRIS field → platform field
+    sync_schedule = Column(String(64), default="manual") # 'manual', 'daily', 'weekly'
+    last_sync_at = Column(DateTime, nullable=True)
+    last_sync_status = Column(String(32), nullable=True)  # 'success', 'partial', 'failed'
+    last_sync_rows = Column(Integer, nullable=True)
+    last_sync_error = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), default="system")
+
+
+class HRISSyncLog(Base):
+    """Per-sync run log for HRIS connectors."""
+    __tablename__ = "hris_sync_logs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), index=True, nullable=False)
+    connector_type = Column(String(64), nullable=False)
+    started_at = Column(DateTime, default=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
+    status = Column(String(32), default="running")  # 'running', 'success', 'partial', 'failed'
+    rows_fetched = Column(Integer, nullable=True)
+    rows_matched = Column(Integer, nullable=True)
+    rows_skipped = Column(Integer, nullable=True)
+    error_message = Column(Text, nullable=True)
+    dry_run = Column(Boolean, default=False)
+    triggered_by = Column(String(128), default="system")
+
+
+

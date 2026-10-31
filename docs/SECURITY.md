@@ -55,10 +55,17 @@ This document describes the security controls, cryptography, data isolation, and
 
 | Role | Scope & Permissions |
 | :--- | :--- |
-| **`admin`** | Full workspace administration, user provisioning, custom scoring policy updates, audit trail exports, API key revocation, HRIS connector management, and fairness audits. |
+| **`admin`** | Full workspace administration, user provisioning, custom scoring policy updates, audit trail exports, API key revocation, HRIS connector management, model registry lifecycle, and fairness audits. |
 | **`hrbp`** | View analytics, create and edit retention interventions, view employee profiles, submit committee feedback, and access fairness audits. |
-| **`hr_analyst`** | View all executive analytics, clusters, promotion gap reports, run policy impact simulations, and view model validation panels. |
+| **`hr_analyst`** | View all executive analytics, clusters, promotion gap reports, run policy impact simulations, inspect model registry artifacts, and view model validation panels. |
+| **`manager`** | Scoped strictly to direct reports (`ManagerID == current_user.employee_id`). Access to non-team records returns `HTTP 403 Forbidden`. Can prepare 1-on-1 agendas, inspect top 3 drivers, schedule follow-ups, and review supportive talking points. |
 | **`talent_committee`** | Access **Talent Committee Mode**, view pseudonymized candidate dossiers, record calibration decisions, and review session minutes. |
+
+### Score View Audit Logging
+To prevent unmonitored surveillance or improper access, every individual employee profile, score explanation, and counterfactual accessed by any role (including managers reviewing direct reports) is automatically recorded in `AuditLog` with:
+- `action = "view_score_explanation"` or `"view_employee_profile"`
+- `purpose = "manager_direct_report_review"` or `"hrbp_calibration"`
+- Target `employee_id`, `workspace_id`, authenticated `user_id`, and `ip_address`.
 
 ---
 
@@ -97,5 +104,34 @@ Every HTTP response includes hardened security headers:
 
 ## 7. GDPR & Privacy Compliance
 
-- **Article 15 (Right of Access / DSAR):** Automated machine-readable JSON export of complete analytical footprints (`GET /api/governance/data-subject-export?employee_id=...`).
+- **Article 15 (Right of Access / DSAR):** Automated machine-readable JSON export of complete analytical footprints (`GET /api/governance/data-subject-export/{employee_id}`). Manager access is strictly bounded to verified direct reports (`HTTP 403` on non-team requests).
 - **Talent Committee Pseudonymization:** Live Presentation Mode masks identifiers (`CANDIDATE-9A4B`) to eliminate demographic and affinity bias during talent reviews.
+
+---
+
+## 8. Serialized Model Artifact Security & Deserialization Controls
+
+### Safe Artifact Loading & Canonical Path Validation
+- **Trusted Directory Confinement:** All serialized ML and survival artifacts (`.joblib` / `.pkl`) MUST only be loaded from the dedicated, application-controlled model artifact directory (`artifacts/models/<workspace_id>/`).
+- **Path Traversal Protection:** The system executes canonical path validation (`os.path.realpath`) before any deserialization, throwing a security exception if the resolved path falls outside `artifacts_base_dir`.
+- **Cryptographic Hash Verification:** Model version records store the deterministic SHA-256 data hash. The registry service enforces byte-level checksum validation before unpickling/deserialization.
+- **Untrusted Deserialization Prohibition:** Arbitrary user-uploaded pickle or joblib files are strictly rejected at the API layer. All serialized model weights are generated exclusively by internal training pipelines.
+
+---
+
+## 9. Enterprise SSO, SCIM 2.0 & Field-Level AES-256-GCM Encryption
+
+### 9.1 Enterprise OIDC PKCE Code Flow
+- Enterprise Single Sign-On conforms to **OpenID Connect (OIDC)** utilizing **Proof Key for Code Exchange (PKCE, RFC 7636)**.
+- Prevents authorization code interception attacks by verifying the SHA-256 `code_challenge` against the client's `code_verifier`.
+- Features Just-In-Time (JIT) user account provisioning, role mapping from IdP claims, and offline mock IdP support for air-gapped deployments.
+
+### 9.2 RFC 7644 SCIM 2.0 User Lifecycle Management
+- Automated user provisioning, profile updates, and instant de-provisioning (`active = false`) via SCIM 2.0 protocol (`/scim/v2/Users`).
+- Authenticated via cryptographically random Bearer tokens stored with SHA-256 hashing in `scim_tokens`.
+
+### 9.3 Field-Level AES-256-GCM Credential Encryption
+- Sensitive third-party HRIS credentials (e.g. BambooHR API keys, webhooks secrets) are encrypted at rest using **AES-256-GCM** authenticated encryption (`cryptography.hazmat.primitives.ciphers.aead.AESGCM`).
+- Each encrypted value utilizes a unique 96-bit cryptographic nonce and produces an authentication tag preventing ciphertext tampering.
+- Encryption keys are derived via PBKDF2-HMAC-SHA256 from the master secret (`ENCRYPTION_MASTER_KEY`).
+- Includes a dedicated key rotation utility (`scripts/rotate_encryption_key.py`) enabling re-encryption of all stored secrets with zero downtime.

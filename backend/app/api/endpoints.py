@@ -5,20 +5,72 @@ FastAPI Route Handlers for CareerPath Intelligence.
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
 import os
 import shutil
+import json
+from datetime import datetime
 
 from backend.app.database.connection import get_db
-from backend.app.models.entities import InterventionRecord
+from backend.app.models.entities import InterventionRecord, AuditLog
 from backend.app.schemas.domain import (
     InterventionCreate, InterventionUpdate, InterventionResponse
 )
 from backend.app.services.analytics_service import analytics_service
+from backend.app.services.attrition_service import attrition_model_service
+from backend.app.services.backtest_service import backtest_service
 from backend.app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api")
+
+
+def check_manager_employee_access(
+    current_user: Dict[str, Any],
+    employee_id: str,
+    db: Optional[Session] = None,
+    purpose: str = "manager_direct_report_review"
+):
+    """Enforces manager team scoping and audit logs individual employee score lookups."""
+    clean_id = str(employee_id).strip()
+    if current_user.get("role") == "manager":
+        mgr_id = str(current_user.get("employee_id") or "").strip()
+        team_ids = analytics_service.get_manager_team_ids(mgr_id)
+        # Check direct team membership
+        allowed = (
+            clean_id in team_ids or
+            clean_id == mgr_id or
+            f"PANW-{clean_id}" in team_ids or
+            clean_id.replace("PANW-", "") in team_ids or
+            (mgr_id and (f"PANW-{mgr_id}" == clean_id or mgr_id.replace("PANW-", "") == clean_id))
+        )
+        if not allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied: employee {employee_id} is not on your direct team"
+            )
+
+    # Audit log the individual employee view
+    if db is not None:
+        try:
+            audit = AuditLog(
+                workspace_id=current_user.get("workspace_id", "default"),
+                user_email=current_user.get("email", "system"),
+                action="employee_score.viewed",
+                entity_type="employee",
+                entity_id=clean_id,
+                details_json=json.dumps({
+                    "viewer_id": current_user.get("employee_id") or current_user.get("email"),
+                    "target_employee_id": clean_id,
+                    "purpose": purpose if current_user.get("role") == "manager" else "talent_analytics_review",
+                    "timestamp": datetime.utcnow().isoformat()
+                })
+            )
+            db.add(audit)
+            db.commit()
+        except Exception:
+            pass
+
 
 
 @router.get("/health")
@@ -37,8 +89,9 @@ def get_overview():
 
 
 @router.get("/clusters")
-def get_clusters():
-    return analytics_service.get_career_clusters()
+def get_clusters(current_user: dict = Depends(get_current_user)):
+    mgr_id = current_user.get("employee_id") if current_user.get("role") == "manager" else None
+    return analytics_service.get_career_clusters(manager_id=mgr_id)
 
 
 @router.get("/clusters/elbow-curve")
@@ -81,8 +134,10 @@ def get_promotion_gap(
     min_tenure: Optional[float] = None,
     search: Optional[str] = None,
     page: int = Query(1, ge=1),
-    page_size: int = Query(25, ge=1, le=100)
+    page_size: int = Query(25, ge=1, le=100),
+    current_user: dict = Depends(get_current_user)
 ):
+    mgr_id = current_user.get("employee_id") if current_user.get("role") == "manager" else None
     return analytics_service.get_promotion_gap_monitor(
         department=department,
         job_role=job_role,
@@ -91,6 +146,7 @@ def get_promotion_gap(
         cluster=cluster,
         min_tenure=min_tenure,
         search=search,
+        manager_id=mgr_id,
         page=page,
         page_size=page_size
     )
@@ -109,8 +165,10 @@ def get_retention_opportunities(
     sort_by: Optional[str] = "RetentionOpportunityIndex",
     sort_dir: Optional[str] = "desc",
     page: int = Query(1, ge=1),
-    page_size: int = Query(25, ge=1, le=100)
+    page_size: int = Query(25, ge=1, le=100),
+    current_user: dict = Depends(get_current_user)
 ):
+    mgr_id = current_user.get("employee_id") if current_user.get("role") == "manager" else None
     return analytics_service.get_retention_opportunities(
         priority=priority,
         department=department,
@@ -122,6 +180,7 @@ def get_retention_opportunities(
         search=search,
         sort_by=sort_by,
         sort_dir=sort_dir,
+        manager_id=mgr_id,
         page=page,
         page_size=page_size
     )
@@ -133,12 +192,25 @@ def get_manager_insights():
 
 
 @router.get("/employees")
-def search_employees(query: Optional[str] = "", limit: int = Query(20, ge=1, le=100)):
-    return analytics_service.search_employees(query=query, limit=limit)
+def search_employees(
+    query: Optional[str] = "",
+    limit: int = Query(20, ge=1, le=100),
+    current_user: dict = Depends(get_current_user)
+):
+    res = analytics_service.search_employees(query=query, limit=limit)
+    if current_user.get("role") == "manager":
+        team_ids = set(analytics_service.get_manager_team_ids(current_user.get("employee_id")))
+        res = [e for e in res if e.get("EmployeeID") in team_ids]
+    return res
 
 
 @router.get("/employees/{employee_id}")
-def get_employee_profile(employee_id: str, db: Session = Depends(get_db)):
+def get_employee_profile(
+    employee_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_direct_report_review")
     profile = analytics_service.get_employee_profile(employee_id)
     if not profile:
         raise HTTPException(status_code=404, detail=f"Employee {employee_id} not found")
@@ -165,15 +237,38 @@ def get_employee_profile(employee_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/employees/{employee_id}/score-explanation")
-def get_employee_score_explanation(employee_id: str):
+def get_employee_score_explanation(
+    employee_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     """
     Returns explainable component points waterfall and counterfactual analysis
     showing how the employee can transition down one retention risk tier.
     """
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_score_explanation_review")
     explanation = analytics_service.explain_score(employee_id)
     if not explanation:
         raise HTTPException(status_code=404, detail=f"Score explanation for employee {employee_id} not found")
     return explanation
+
+
+@router.get("/employees/{employee_id}/ml-explanation")
+def get_employee_ml_explanation(
+    employee_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Returns supervised ML attrition probability, calibrated risk tier,
+    concurrence/disagreement with RRI, and top positive/protective SHAP feature drivers.
+    Decision support only — never automates adverse employment decisions.
+    """
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_ml_explanation_review")
+    res = attrition_model_service.get_employee_ml_explanation(employee_id)
+    if "error" in res:
+        raise HTTPException(status_code=404, detail=res["error"])
+    return res
 
 
 # ==============================================================================
@@ -281,6 +376,24 @@ async def upload_dataset(file: UploadFile = File(...)):
 
     try:
         analytics_service.reload_dataset(temp_path, dataset_name=file.filename)
+
+        # Automated snapshot trigger on roster upload (Phase 3)
+        try:
+            from backend.app.services.snapshot_service import snapshot_service
+            db_session = next(get_db())
+            try:
+                snapshot_service.create_snapshot(
+                    db=db_session,
+                    workspace_id="default",
+                    created_by="roster_upload",
+                    trigger_type="roster_upload",
+                    is_synthetic=False
+                )
+            finally:
+                db_session.close()
+        except Exception:
+            pass
+
         meta = analytics_service.get_metadata()
         return {
             "message": "Dataset uploaded and processed successfully",
@@ -325,6 +438,77 @@ def get_sample_template():
     )
 
 
+@router.post("/dataset/upload-exits")
+async def upload_historical_exits(
+    file: UploadFile = File(...),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Ingests a CSV of historical exits for temporal backtesting.
+    Restricted to admin and hrbp roles. Multi-tenant isolated by workspace_id.
+    """
+    if current_user.get("role") not in ["admin", "hrbp"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admin and hrbp roles may upload historical exit logs."
+        )
+
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="Only CSV files are supported.")
+
+    content = await file.read()
+    try:
+        csv_text = content.decode('utf-8')
+    except UnicodeDecodeError:
+        csv_text = content.decode('latin-1')
+
+    ws_id = current_user.get("workspace_id", "default")
+    result = backtest_service.upload_exits_csv(
+        db=db,
+        workspace_id=ws_id,
+        csv_text=csv_text,
+        created_by=current_user.get("email", "system")
+    )
+
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    db.add(AuditLog(
+        workspace_id=ws_id,
+        user_email=current_user.get("email", "system"),
+        action="dataset.historical_exits_uploaded",
+        entity_type="historical_exits",
+        details_json=json.dumps({
+            "filename": file.filename,
+            "created_count": result.get("created_count", 0),
+            "matched_employees": result.get("matched_employees", 0),
+            "unmatched_employees": result.get("unmatched_employees", 0)
+        })
+    ))
+    db.commit()
+
+    return result
+
+
+@router.get("/dataset/sample-exits-template")
+def get_sample_exits_template():
+    """Returns sample CSV template for historical exit ingestion."""
+    sample_csv = (
+        "employee_id,exit_date,exit_reason\n"
+        "EMP-101,2026-03-15,Voluntary - Career Progression\n"
+        "EMP-102,2026-05-20,Voluntary - Compensation\n"
+        "EMP-103,2026-07-10,Involuntary - Restructuring\n"
+        "EMP-104,2026-08-01,Voluntary - Relocation\n"
+        "EMP-105,2026-09-12,Retirement\n"
+    )
+    return PlainTextResponse(
+        content=sample_csv,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=template_historical_exits.csv"}
+    )
+
+
 class CareerSimulationPayload(BaseModel):
     employee_id: str
     promote_now: bool = False
@@ -333,7 +517,12 @@ class CareerSimulationPayload(BaseModel):
 
 
 @router.post("/simulate-career")
-def simulate_career(payload: CareerSimulationPayload):
+def simulate_career(
+    payload: CareerSimulationPayload,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    check_manager_employee_access(current_user, payload.employee_id, db, purpose="manager_career_simulation")
     result = analytics_service.simulate_career_intervention(
         employee_id=payload.employee_id,
         promote_now=payload.promote_now,
