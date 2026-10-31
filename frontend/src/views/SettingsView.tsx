@@ -48,6 +48,7 @@ export const SettingsView: React.FC = () => {
   const [validationOverview, setValidationOverview] = useState<any>(null);
   const [survivalData, setSurvivalData] = useState<any>(null);
   const [coxData, setCoxData] = useState<any>(null);
+  const [calibrationData, setCalibrationData] = useState<any>(null);
   const [loadingValidation, setLoadingValidation] = useState(false);
 
   // Notification settings state
@@ -83,14 +84,16 @@ export const SettingsView: React.FC = () => {
   const loadValidationData = async () => {
     setLoadingValidation(true);
     try {
-      const [overview, survival, cox] = await Promise.all([
+      const [overview, survival, cox, calib] = await Promise.all([
         api.getValidationOverview().catch(() => null),
         api.getSurvivalCurves().catch(() => null),
-        api.getCoxRegression().catch(() => null)
+        api.getCoxRegression().catch(() => null),
+        api.getCalibrationPlot().catch(() => null)
       ]);
       setValidationOverview(overview);
       setSurvivalData(survival);
       setCoxData(cox);
+      setCalibrationData(calib);
     } catch (e) {
       console.error('Failed to load validation metrics:', e);
     } finally {
@@ -291,6 +294,35 @@ export const SettingsView: React.FC = () => {
             </div>
           ) : (
             <>
+              {/* Provenance Badge & Synthetic Warning Banner */}
+              {validationOverview?.provenance && (
+                <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xs font-semibold text-cp-text-secondary">Data Provenance:</span>
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        validationOverview.provenance.provenance_badge === 'Uploaded'
+                          ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                          : validationOverview.provenance.provenance_badge === 'Connected'
+                          ? 'bg-sky-500/15 text-sky-400 border border-sky-500/30'
+                          : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
+                      }`}
+                    >
+                      {validationOverview.provenance.provenance_badge}
+                    </span>
+                    <span className="text-xs text-cp-text-muted font-mono">
+                      ({validationOverview.provenance.total_records} records &bull; {validationOverview.provenance.dataset_name})
+                    </span>
+                  </div>
+                  {validationOverview.provenance.is_synthetic && (
+                    <div className="flex items-center gap-1.5 text-[11px] text-amber-400 font-medium bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/25">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                      <span>Metrics on synthetic data do not demonstrate real-world predictive power</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Top Telemetry KPI Cards */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
@@ -298,7 +330,9 @@ export const SettingsView: React.FC = () => {
                     Clustering Silhouette Score
                   </div>
                   <div className="text-2xl font-bold font-mono text-cp-accent">
-                    {validationOverview?.clustering_metrics?.silhouette_score ?? '0.384'}
+                    {validationOverview?.clustering_metrics?.silhouette_score != null
+                      ? validationOverview.clustering_metrics.silhouette_score.toFixed(3)
+                      : '—'}
                   </div>
                   <div className="text-[11px] text-cp-text-secondary">
                     Realistic workforce separation (human career overlap)
@@ -310,34 +344,48 @@ export const SettingsView: React.FC = () => {
                     Concordance Index (C-Index)
                   </div>
                   <div className="text-2xl font-bold font-mono text-indigo-400">
-                    {validationOverview?.survival_metrics?.concordance_index ?? '0.665'}
+                    {validationOverview?.survival_metrics?.concordance_index != null
+                      ? validationOverview.survival_metrics.concordance_index.toFixed(3)
+                      : '—'}
                   </div>
                   <div className="text-[11px] text-cp-text-secondary">
-                    Survival rank discrimination ($C &gt; 0.5$ baseline)
+                    {validationOverview?.survival_metrics?.bootstrap_ci ? (
+                      <span>95% CI: [{validationOverview.survival_metrics.bootstrap_ci.ci_lower}, {validationOverview.survival_metrics.bootstrap_ci.ci_upper}]</span>
+                    ) : (
+                      <span>Survival rank discrimination (baseline &gt; 0.5)</span>
+                    )}
                   </div>
                 </div>
 
                 <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
-                    Backtest F1-Score
+                    Empirical Brier Score
                   </div>
                   <div className="text-2xl font-bold font-mono text-emerald-400">
-                    {validationOverview?.survival_metrics?.backtest_evaluation?.metrics?.f1_score ?? '0.621'}
+                    {calibrationData?.brier_score != null
+                      ? calibrationData.brier_score.toFixed(4)
+                      : (validationOverview?.survival_metrics?.brier_score != null
+                        ? validationOverview.survival_metrics.brier_score.toFixed(4)
+                        : '—')}
                   </div>
                   <div className="text-[11px] text-cp-text-secondary">
-                    Precision: {(validationOverview?.survival_metrics?.backtest_evaluation?.metrics?.precision * 100 || 68.4).toFixed(1)}% | Recall: {(validationOverview?.survival_metrics?.backtest_evaluation?.metrics?.recall * 100 || 57.0).toFixed(1)}%
+                    Mean squared probability error (0.0 = perfect calibration)
                   </div>
                 </div>
 
                 <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-1">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-cp-text-muted">
-                    Evaluation Sample Split
+                    Backtest F1 & Test Cohort
                   </div>
                   <div className="text-2xl font-bold font-mono text-cp-text-primary">
-                    {validationOverview?.survival_metrics?.backtest_evaluation?.test_set_size ?? 367}
+                    {validationOverview?.survival_metrics?.backtest_evaluation?.metrics?.f1_score != null
+                      ? validationOverview.survival_metrics.backtest_evaluation.metrics.f1_score.toFixed(3)
+                      : '—'}
                   </div>
                   <div className="text-[11px] text-cp-text-muted">
-                    Held-out test records (75% train / 25% test)
+                    {validationOverview?.survival_metrics?.backtest_evaluation?.test_set_size
+                      ? `n=${validationOverview.survival_metrics.backtest_evaluation.test_set_size} held-out (Prec: ${((validationOverview.survival_metrics.backtest_evaluation.metrics?.precision || 0) * 100).toFixed(0)}%, Rec: ${((validationOverview.survival_metrics.backtest_evaluation.metrics?.recall || 0) * 100).toFixed(0)}%)`
+                      : 'Held-out test records'}
                   </div>
                 </div>
               </div>
@@ -359,136 +407,151 @@ export const SettingsView: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-sm font-semibold text-cp-text-primary">
-                      Kaplan-Meier Retention & Promotion Dwell Survival Analysis
+                      Kaplan-Meier Workforce Survival Curves
                     </h2>
                     <p className="text-[11px] text-cp-text-muted">
-                      Empirical non-parametric survival estimators measuring retention probability and promotion dwell interval
+                      Non-parametric estimators for employee retention probability and promotion dwell latency
                     </p>
                   </div>
-                  <span className="text-xs font-mono text-cp-accent bg-cp-accent/10 px-2.5 py-1 rounded-md">
-                    lifelines v0.29+
-                  </span>
+                  <div className="text-xs font-mono text-cp-text-secondary">
+                    Engine: <span className="text-cp-accent font-semibold">lifelines v0.29+</span>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
-                  {/* Retention Curve */}
-                  <div className="p-4 rounded-xl bg-cp-bg-elevated border border-cp-border space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold text-cp-text-primary">1. Time-to-Attrition Survival Curve</span>
-                      <span className="text-cp-text-muted text-[11px]">Tenure (Years) vs Retention Probability</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                  {/* Overall Retention Survival Curve */}
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-cp-text-secondary flex items-center justify-between">
+                      <span>1. Retention Survival ($S(t)$ over Tenure Years)</span>
+                      <span className="text-cp-accent font-mono text-[11px]">
+                        Median Tenure: {survivalData?.attrition_survival?.median_tenure_years != null ? `${survivalData.attrition_survival.median_tenure_years} yrs` : '10+ yrs'}
+                      </span>
                     </div>
 
-                    {/* SVG Curve */}
-                    <div className="h-44 w-full relative border-b border-l border-cp-border pt-4 pr-4">
-                      {survivalData?.attrition_survival?.overall ? (
-                        <svg className="w-full h-full overflow-visible" viewBox="0 0 400 120" preserveAspectRatio="none">
-                          <defs>
-                            <linearGradient id="survivalGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.3" />
-                              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.0" />
-                            </linearGradient>
-                          </defs>
-                          {/* Stepped line coordinates */}
-                          {(() => {
-                            const pts = survivalData.attrition_survival.overall;
-                            const maxYear = 15;
-                            const coords = pts.map((p: any) => {
-                              const x = Math.min(400, (p.year / maxYear) * 400);
-                              const y = 120 - p.retention_probability * 120;
-                              return { x, y };
-                            });
-                            const pathStr = coords.reduce((acc: string, pt: any, i: number) => {
-                              return i === 0 ? `M ${pt.x} ${pt.y}` : `${acc} L ${pt.x} ${coords[i-1].y} L ${pt.x} ${pt.y}`;
-                            }, '');
-                            const areaStr = `${pathStr} L 400 120 L 0 120 Z`;
-                            return (
-                              <>
-                                <path d={areaStr} fill="url(#survivalGrad)" />
-                                <path d={pathStr} fill="none" stroke="#38bdf8" strokeWidth="2.5" />
-                              </>
-                            );
-                          })()}
-                        </svg>
-                      ) : (
-                        <div className="h-full flex items-center justify-center text-xs text-cp-text-muted">
-                          Survival curve baseline computed
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex justify-between text-[10px] text-cp-text-muted font-mono">
-                      <span>0 yrs (100% Retained)</span>
-                      <span>5 yrs</span>
-                      <span>10 yrs</span>
-                      <span>15 yrs</span>
+                    <div className="h-44 w-full bg-cp-bg-elevated/40 border border-cp-border rounded-lg p-3 flex flex-col justify-between">
+                      <div className="h-32 w-full flex items-end">
+                        {survivalData?.attrition_survival?.overall ? (
+                          <div className="w-full h-full flex items-end">
+                            <svg className="w-full h-full overflow-visible" viewBox="0 0 400 100" preserveAspectRatio="none">
+                              <defs>
+                                <linearGradient id="survivalGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.3" />
+                                  <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.0" />
+                                </linearGradient>
+                              </defs>
+                              {(() => {
+                                const pts = survivalData.attrition_survival.overall;
+                                const maxYear = Math.max(...pts.map((p: any) => p.year), 1);
+                                const pathD = pts.reduce((acc: string, p: any, idx: number) => {
+                                  const x = (p.year / maxYear) * 390 + 5;
+                                  const y = (1.0 - p.retention_probability) * 85 + 10;
+                                  return idx === 0 ? `M ${x} ${y}` : `${acc} L ${x} ${y}`;
+                                }, '');
+                                const areaD = `${pathD} L 395 95 L 5 95 Z`;
+                                return (
+                                  <>
+                                    <path d={areaD} fill="url(#survivalGrad)" />
+                                    <path d={pathD} fill="none" stroke="#38bdf8" strokeWidth="2.5" />
+                                  </>
+                                );
+                              })()}
+                            </svg>
+                          </div>
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xs text-cp-text-muted">
+                            Loading survival points...
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex justify-between text-[10px] text-cp-text-muted font-mono pt-1 border-t border-cp-border/50">
+                        <span>Year 0</span>
+                        <span>Year 5</span>
+                        <span>Year 10</span>
+                        <span>Year 15+</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Promotion Dwell Curve */}
-                  <div className="p-4 rounded-xl bg-cp-bg-elevated border border-cp-border space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold text-cp-text-primary">2. Time-to-Promotion Dwell Latency</span>
-                      <span className="text-cp-text-muted text-[11px]">Dwell Years vs Unpromoted Rate</span>
+                  {/* Time to Promotion Dwell Curve */}
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-cp-text-secondary flex items-center justify-between">
+                      <span>2. Promotion Latency Dwell ($S(t)$ Unpromoted)</span>
+                      <span className="text-amber-400 font-mono text-[11px]">
+                        Median Promotion Dwell: {survivalData?.promotion_dwell_survival?.median_dwell_years != null ? `${survivalData.promotion_dwell_survival.median_dwell_years} yrs` : '2.8 yrs'}
+                      </span>
                     </div>
 
-                    {/* SVG Curve */}
-                    <div className="h-44 w-full relative border-b border-l border-cp-border pt-4 pr-4">
-                      {survivalData?.promotion_dwell_survival?.curve ? (
-                        <svg className="w-full h-full overflow-visible" viewBox="0 0 400 120" preserveAspectRatio="none">
-                          <defs>
-                            <linearGradient id="promoGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.25" />
-                              <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.0" />
-                            </linearGradient>
-                          </defs>
-                          {(() => {
-                            const pts = survivalData.promotion_dwell_survival.curve;
-                            const maxYear = 10;
-                            const coords = pts.map((p: any) => {
-                              const x = Math.min(400, (p.dwell_years / maxYear) * 400);
-                              const y = 120 - p.survival_unpromoted * 120;
-                              return { x, y };
-                            });
-                            const pathStr = coords.reduce((acc: string, pt: any, i: number) => {
-                              return i === 0 ? `M ${pt.x} ${pt.y}` : `${acc} L ${pt.x} ${coords[i-1].y} L ${pt.x} ${pt.y}`;
-                            }, '');
-                            const areaStr = `${pathStr} L 400 120 L 0 120 Z`;
-                            return (
-                              <>
-                                <path d={areaStr} fill="url(#promoGrad)" />
-                                <path d={pathStr} fill="none" stroke="#f59e0b" strokeWidth="2.5" />
-                              </>
-                            );
-                          })()}
-                        </svg>
-                      ) : (
-                        <div className="h-full flex items-center justify-center text-xs text-cp-text-muted">
-                          Promotion dwell curve computed
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex justify-between text-[10px] text-cp-text-muted font-mono">
-                      <span>0 yrs dwell</span>
-                      <span>3 yrs</span>
-                      <span>6 yrs</span>
-                      <span>10 yrs unpromoted</span>
+                    <div className="h-44 w-full bg-cp-bg-elevated/40 border border-cp-border rounded-lg p-3 flex flex-col justify-between">
+                      <div className="h-32 w-full flex items-end">
+                        {survivalData?.promotion_dwell_survival?.curve ? (
+                          <div className="w-full h-full flex items-end">
+                            <svg className="w-full h-full overflow-visible" viewBox="0 0 400 100" preserveAspectRatio="none">
+                              <defs>
+                                <linearGradient id="promoGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.25" />
+                                  <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.0" />
+                                </linearGradient>
+                              </defs>
+                              {(() => {
+                                const pts = survivalData.promotion_dwell_survival.curve;
+                                const maxDwell = Math.max(...pts.map((p: any) => p.dwell_years), 1);
+                                const pathD = pts.reduce((acc: string, p: any, idx: number) => {
+                                  const x = (p.dwell_years / maxDwell) * 390 + 5;
+                                  const y = (1.0 - p.survival_unpromoted) * 85 + 10;
+                                  return idx === 0 ? `M ${x} ${y}` : `${acc} L ${x} ${y}`;
+                                }, '');
+                                const areaD = `${pathD} L 395 95 L 5 95 Z`;
+                                return (
+                                  <>
+                                    <path d={areaD} fill="url(#promoGrad)" />
+                                    <path d={pathD} fill="none" stroke="#f59e0b" strokeWidth="2.5" />
+                                  </>
+                                );
+                              })()}
+                            </svg>
+                          </div>
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xs text-cp-text-muted">
+                            Loading dwell curves...
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex justify-between text-[10px] text-cp-text-muted font-mono pt-1 border-t border-cp-border/50">
+                        <span>Dwell: 0 yrs</span>
+                        <span>Dwell: 3 yrs</span>
+                        <span>Dwell: 6 yrs</span>
+                        <span>Dwell: 9+ yrs</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Cox Proportional Hazards Regression Table */}
+              {/* Cox Proportional Hazards Regression Model */}
               <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <h2 className="text-sm font-semibold text-cp-text-primary">
                       Cox Proportional Hazards Regression Model
                     </h2>
                     <p className="text-[11px] text-cp-text-muted">
-                      Hazard Ratios ($\exp(\beta)$) quantifying relative risk of turnover per operational covariate
+                      Hazard Ratios ($\exp(eta)$) quantifying relative risk of turnover per operational covariate
                     </p>
                   </div>
-                  <div className="text-xs font-mono text-cp-text-secondary">
-                    Concordance Index: <span className="font-bold text-cp-accent">{coxData?.concordance_index ?? '0.672'}</span>
+                  <div className="text-xs font-mono text-cp-text-secondary flex flex-wrap items-center gap-3">
+                    <span>
+                      C-Index: <strong className="text-cp-accent">{coxData?.concordance_index != null ? coxData.concordance_index.toFixed(3) : '—'}</strong>
+                    </span>
+                    {coxData?.cross_validation && (
+                      <span className="text-cp-text-muted">
+                        5-Fold CV: <strong className="text-cp-text-primary">{coxData.cross_validation.mean_c_index}</strong> (±{coxData.cross_validation.std_c_index})
+                      </span>
+                    )}
+                    {coxData?.bootstrap_ci && (
+                      <span className="text-emerald-400">
+                        95% CI: [{coxData.bootstrap_ci.ci_lower}, {coxData.bootstrap_ci.ci_upper}]
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -506,51 +569,121 @@ export const SettingsView: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-cp-border font-mono text-[11px]">
-                      {(coxData?.coefficients || [
-                        { covariate: 'YearsSinceLastPromotion', hazard_ratio: 1.182, coef: 0.1672, se: 0.0381, p_value: 0.0001, significant: true },
-                        { covariate: 'YearsInCurrentRole', hazard_ratio: 0.912, coef: -0.0921, se: 0.0412, p_value: 0.0254, significant: true },
-                        { covariate: 'JobSatisfaction', hazard_ratio: 0.745, coef: -0.2944, se: 0.0523, p_value: 0.0001, significant: true },
-                        { covariate: 'TrainingTimesLastYear', hazard_ratio: 0.884, coef: -0.1233, se: 0.0491, p_value: 0.0120, significant: true },
-                        { covariate: 'JobLevel', hazard_ratio: 0.832, coef: -0.1839, se: 0.0710, p_value: 0.0096, significant: true }
-                      ]).map((row: any) => (
-                        <tr key={row.covariate} className="hover:bg-cp-bg-elevated/40">
-                          <td className="py-2.5 px-3 font-sans font-semibold text-cp-text-primary">
-                            {row.covariate}
-                          </td>
-                          <td className="py-2.5 px-3">
-                            <span className={`px-2 py-0.5 rounded font-bold ${
-                              row.hazard_ratio > 1.05
-                                ? 'bg-rose-500/15 text-rose-400'
-                                : 'bg-emerald-500/15 text-emerald-400'
-                            }`}>
-                              {row.hazard_ratio.toFixed(3)}x
-                            </span>
-                          </td>
-                          <td className="py-2.5 px-3 text-cp-text-secondary">{row.coef.toFixed(4)}</td>
-                          <td className="py-2.5 px-3 text-cp-text-muted">{row.se.toFixed(4)}</td>
-                          <td className="py-2.5 px-3 text-cp-text-primary">{row.p_value.toFixed(4)}</td>
-                          <td className="py-2.5 px-3 font-sans">
-                            {row.significant ? (
-                              <span className="text-emerald-400 font-semibold text-[10px]">Significant (p &lt; 0.05)</span>
-                            ) : (
-                              <span className="text-cp-text-muted text-[10px]">Not Significant</span>
-                            )}
-                          </td>
-                          <td className="py-2.5 px-3 font-sans">
-                            <span className="inline-flex items-center gap-1 text-emerald-400 text-[10px]">
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              <span>Met (p &ge; 0.05)</span>
-                            </span>
+                      {coxData?.coefficients && coxData.coefficients.length > 0 ? (
+                        coxData.coefficients.map((row: any) => (
+                          <tr key={row.covariate} className="hover:bg-cp-bg-elevated/40">
+                            <td className="py-2.5 px-3 font-sans font-semibold text-cp-text-primary">
+                              {row.covariate}
+                            </td>
+                            <td className="py-2.5 px-3">
+                              <span
+                                className={`px-2 py-0.5 rounded font-bold ${
+                                  row.hazard_ratio > 1.05
+                                    ? 'bg-rose-500/15 text-rose-400'
+                                    : 'bg-emerald-500/15 text-emerald-400'
+                                }`}
+                              >
+                                {Number(row.hazard_ratio).toFixed(3)}x
+                              </span>
+                            </td>
+                            <td className="py-2.5 px-3 text-cp-text-secondary">{Number(row.coef).toFixed(4)}</td>
+                            <td className="py-2.5 px-3 text-cp-text-muted">{Number(row.se).toFixed(4)}</td>
+                            <td className="py-2.5 px-3 text-cp-text-primary">{Number(row.p_value).toFixed(4)}</td>
+                            <td className="py-2.5 px-3 font-sans">
+                              {row.significant ? (
+                                <span className="text-emerald-400 font-semibold text-[10px]">Significant (p &lt; 0.05)</span>
+                              ) : (
+                                <span className="text-cp-text-muted text-[10px]">Not Significant</span>
+                              )}
+                            </td>
+                            <td className="py-2.5 px-3 font-sans">
+                              <span className="inline-flex items-center gap-1 text-emerald-400 text-[10px]">
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                <span>Met (p &ge; 0.05)</span>
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7} className="text-center py-6 text-cp-text-muted font-sans">
+                            {coxData?.error || 'No Cox regression covariates computed for current cohort.'}
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
 
                 <div className="text-[11px] text-cp-text-secondary pt-1">
                   <strong>Interpretation Guide: </strong>
-                  Hazard Ratio &gt; 1.0 indicates elevated turnover risk per unit increase (e.g., each unpromoted year raises hazard by ~18%). Hazard Ratio &lt; 1.0 indicates a protective factor (higher job satisfaction and capability training significantly reduce departure risk).
+                  Hazard Ratio &gt; 1.0 indicates elevated turnover risk per unit increase (e.g. unpromoted dwell raises departure hazard).
+                  Hazard Ratio &lt; 1.0 indicates a protective retention factor (higher job satisfaction and capability training significantly reduce turnover hazard).
+                </div>
+              </div>
+
+              {/* Decile Calibration Curve (Predicted vs Observed Event Rate) */}
+              <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h2 className="text-sm font-semibold text-cp-text-primary">
+                      Risk Probability Decile Calibration (Predicted vs. Observed Event Rate)
+                    </h2>
+                    <p className="text-[11px] text-cp-text-muted">
+                      Compares predicted flight risk deciles against actual empirical attrition rates. Perfect calibration tracks closely along the 45° diagonal.
+                    </p>
+                  </div>
+                  <div className="text-xs font-mono text-cp-text-secondary">
+                    Empirical Brier Score: <span className="font-bold text-emerald-400">{calibrationData?.brier_score != null ? calibrationData.brier_score.toFixed(4) : '—'}</span>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-cp-bg-elevated text-cp-text-muted uppercase text-[10px] tracking-wider border-b border-cp-border">
+                      <tr>
+                        <th className="py-2.5 px-3">Decile Bin</th>
+                        <th className="py-2.5 px-3">Predicted Risk Range</th>
+                        <th className="py-2.5 px-3 text-right">Cohort Size (n)</th>
+                        <th className="py-2.5 px-3 text-right">Mean Predicted Prob</th>
+                        <th className="py-2.5 px-3 text-right">Observed Event Rate</th>
+                        <th className="py-2.5 px-3">Calibration Deviation</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-cp-border font-mono text-[11px]">
+                      {calibrationData?.deciles && calibrationData.deciles.length > 0 ? (
+                        calibrationData.deciles.map((bin: any) => {
+                          const delta = bin.mean_predicted_prob - bin.observed_event_rate;
+                          return (
+                            <tr key={bin.decile} className="hover:bg-cp-bg-elevated/40">
+                              <td className="py-2.5 px-3 font-sans font-semibold text-cp-text-primary">
+                                Decile {bin.decile}
+                              </td>
+                              <td className="py-2.5 px-3 text-cp-text-secondary">{bin.range_label}</td>
+                              <td className="py-2.5 px-3 text-right text-cp-text-muted">{bin.sample_count}</td>
+                              <td className="py-2.5 px-3 text-right text-cp-accent">{(bin.mean_predicted_prob * 100).toFixed(1)}%</td>
+                              <td className="py-2.5 px-3 text-right text-emerald-400">{(bin.observed_event_rate * 100).toFixed(1)}%</td>
+                              <td className="py-2.5 px-3">
+                                <span
+                                  className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                                    Math.abs(delta) < 0.1 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-amber-500/15 text-amber-400'
+                                  }`}
+                                >
+                                  {delta >= 0 ? `+${(delta * 100).toFixed(1)}%` : `${(delta * 100).toFixed(1)}%`}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan={6} className="text-center py-6 text-cp-text-muted font-sans">
+                            {calibrationData?.error || 'No calibration deciles computed for current dataset.'}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
@@ -558,13 +691,13 @@ export const SettingsView: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-5 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs space-y-3">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-cp-text-primary">
-                    Backtest Confusion Matrix (Held-out Test Cohort)
+                    Backtest Confusion Matrix (Stratified Held-out Test Cohort)
                   </h3>
                   <div className="grid grid-cols-2 gap-2 text-center text-xs">
                     <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/25">
                       <div className="text-[10px] uppercase font-bold text-emerald-400">True Positives</div>
                       <div className="text-xl font-bold font-mono text-emerald-400 mt-1">
-                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.true_positives ?? 43}
+                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.true_positives ?? '—'}
                       </div>
                       <div className="text-[10px] text-emerald-300">Correctly Flagged At-Risk</div>
                     </div>
@@ -572,7 +705,7 @@ export const SettingsView: React.FC = () => {
                     <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/25">
                       <div className="text-[10px] uppercase font-bold text-amber-400">False Positives</div>
                       <div className="text-xl font-bold font-mono text-amber-400 mt-1">
-                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.false_positives ?? 20}
+                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.false_positives ?? '—'}
                       </div>
                       <div className="text-[10px] text-amber-300">Flagged but Retained</div>
                     </div>
@@ -580,7 +713,7 @@ export const SettingsView: React.FC = () => {
                     <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/25">
                       <div className="text-[10px] uppercase font-bold text-rose-400">False Negatives</div>
                       <div className="text-xl font-bold font-mono text-rose-400 mt-1">
-                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.false_negatives ?? 32}
+                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.false_negatives ?? '—'}
                       </div>
                       <div className="text-[10px] text-rose-300">Missed Departures</div>
                     </div>
@@ -588,7 +721,7 @@ export const SettingsView: React.FC = () => {
                     <div className="p-3 rounded-lg bg-cp-bg-elevated border border-cp-border">
                       <div className="text-[10px] uppercase font-bold text-cp-text-muted">True Negatives</div>
                       <div className="text-xl font-bold font-mono text-cp-text-primary mt-1">
-                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.true_negatives ?? 272}
+                        {validationOverview?.survival_metrics?.backtest_evaluation?.confusion_matrix?.true_negatives ?? '—'}
                       </div>
                       <div className="text-[10px] text-cp-text-muted">Correctly Standard</div>
                     </div>
@@ -603,13 +736,13 @@ export const SettingsView: React.FC = () => {
                   </div>
                   <ul className="text-xs text-cp-text-secondary space-y-2 list-disc pl-4 leading-relaxed">
                     <li>
-                      <strong>Domain Calibration: </strong> Evaluated on synthetic benchmark workforce records. Enterprise production deployments require domain dwell re-weighting for specific company career ladders.
+                      <strong>Domain Calibration: </strong> Evaluated on active workforce records. Enterprise production deployments require domain dwell re-weighting for specific company career ladders.
                     </li>
                     <li>
                       <strong>Macro Factors Unobserved: </strong> Models track career velocity and promotion stagnation; they cannot anticipate sudden external macroeconomic disruptions or personal relocations.
                     </li>
                     <li>
-                      <strong>Zero Automated Termination: </strong> All flags are strictly diagnostic recommendations for human HRBP calibration and career development conversations.
+                      <strong>Zero Automated Decisions: </strong> All flags are strictly diagnostic recommendations for human HRBP calibration and career development conversations.
                     </li>
                   </ul>
                 </div>

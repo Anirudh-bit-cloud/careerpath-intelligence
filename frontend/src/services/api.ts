@@ -540,6 +540,12 @@ export const api = {
     return res.json();
   },
 
+  async getCalibrationPlot(nBins: number = 10): Promise<any> {
+    const res = await authFetch(`${API_BASE}/validation/calibration-plot?n_bins=${nBins}`);
+    if (!res.ok) throw new Error('Failed to fetch calibration plot');
+    return res.json();
+  },
+
   async getBacktest(trainFraction: number = 0.75): Promise<any> {
     const res = await authFetch(`${API_BASE}/validation/backtest?train_fraction=${trainFraction}`);
     if (!res.ok) throw new Error('Failed to run backtest');

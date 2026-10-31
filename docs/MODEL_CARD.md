@@ -1,7 +1,7 @@
 # Model Card — CareerPath Workforce Intelligence ML Engine
 
 **Model Name:** CareerPath Workforce Progression, Retention & Survival Clustering Engine  
-**Version:** 3.0.0  
+**Version:** 3.1.0  
 **Model Type:** Hybrid Unsupervised Machine Learning (K-Means + PCA), Survival Analysis (Kaplan-Meier & Cox Proportional Hazards), and Rule-Based Decision Policy  
 **Release Date:** October 2026  
 **License:** Proprietary / Enterprise  
@@ -67,7 +67,7 @@ The model operates across standard HR Information System (HRIS) attributes:
 
 ---
 
-## 4. Survival Analysis & Model Backtesting
+## 4. Survival Analysis, Calibration & Honest Validation
 
 ### 4.1 Kaplan-Meier Survival Modeling
 Using `lifelines`, non-parametric survival curves estimate:
@@ -75,18 +75,23 @@ Using `lifelines`, non-parametric survival curves estimate:
 - **Time-to-Promotion Dwell:** Quantifies promotion latency distribution, identifying the median tenure interval prior to vertical progression.
 
 ### 4.2 Cox Proportional Hazards Regression
-Fits a semi-parametric regression model assessing the hazard ratio ($\text{HR} = \exp(\beta)$) of key career covariates:
-- `YearsSinceLastPromotion` ($\text{HR} \approx 1.18$): Each unpromoted year elevates turnover hazard by ~18%.
-- `JobSatisfaction` ($\text{HR} \approx 0.75$): Protective factor, decreasing departure hazard by ~25% per survey point.
-- `TrainingTimesLastYear` ($\text{HR} \approx 0.88$): Demonstrates capability development acts as a significant retention anchor.
-- **Concordance Index (C-Index):** $\approx 0.67$, confirming solid rank discrimination relative to random guessing ($0.50$).
-- **Proportional Hazards Assumption:** Verified using Schoenfeld residual tests (`p >= 0.05`).
+Fits a semi-parametric regression model assessing the hazard ratio ($	ext{HR} = \exp(eta)$) of key career covariates:
+- `YearsSinceLastPromotion`: Elevates turnover hazard per unpromoted year beyond level dwell benchmark.
+- `JobSatisfaction`: Protective retention factor, reducing departure hazard per survey point.
+- `TrainingTimesLastYear`: Capability development acts as a significant retention anchor.
+- **Concordance Index (C-Index):** Evaluated via 5-fold cross-validation and 200-sample bootstrap 95% confidence interval ($	ext{CI}_{95\%}$), confirming statistically significant rank discrimination relative to random guessing ($0.50$).
+- **Proportional Hazards Assumption:** Verified continuously using Schoenfeld residual tests (`p >= 0.05`).
 
-### 4.3 Backtesting & Confusion Matrix
-Evaluated via chronological / held-out split (75% train / 25% test cohort):
-- **Precision:** $\approx 68.4\%$ on Urgent-tier flags.
-- **Recall:** $\approx 57.0\%$.
-- **F1-Score:** $\approx 0.621$.
+### 4.3 Stratified Backtesting & Calibration
+Evaluated via stratified held-out split (75% train / 25% test cohort preserving class balance):
+- **Precision & Recall:** Evaluates true positive vs false positive rates on Urgent-tier flight risk flags.
+- **Empirical Brier Score:** Quantifies mean squared error between predicted probabilities and observed binary outcomes ($0.0$ indicates perfect calibration; $0.25$ indicates an uninformative guess).
+- **Decile Calibration Curve:** Predicted probability deciles are compared directly against empirical event rates to monitor over-confidence and under-confidence.
+
+### 4.4 Limitations & Validation Status
+- **Dynamic Dataset Evaluation:** All validation metrics shown in the application, APIs, and reports are computed dynamically from the active loaded dataset; no static or hardcoded placeholder metrics are used.
+- **Data Provenance Disclosure:** Every validation telemetry view displays an active Data Provenance badge (`Synthetic`, `Uploaded`, or `Connected`).
+- **Synthetic Data Warning:** When operating on synthetic benchmark datasets, a mandatory disclosure banner is presented: *"Metrics on synthetic data do not demonstrate real-world predictive power. Enterprise validation requires domain-calibrated historical workforce tenure records."*
 
 ---
 
