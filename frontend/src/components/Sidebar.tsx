@@ -80,6 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       group: 'Decisions',
       items: [
+        { id: 'my-team', label: 'My Team & 1-on-1s', icon: Users2 },
         {
           id: 'retention-opportunities',
           label: 'Retention Opportunities',

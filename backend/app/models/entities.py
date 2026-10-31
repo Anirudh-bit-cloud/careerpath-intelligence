@@ -33,7 +33,8 @@ class User(Base):
     email = Column(String(128), unique=True, index=True, nullable=False)
     password_hash = Column(String(256), nullable=False)
     full_name = Column(String(128), nullable=False)
-    role = Column(String(32), nullable=False, default="hrbp")  # admin, hr_analyst, hrbp, talent_committee
+    role = Column(String(32), nullable=False, default="hrbp")  # admin, hr_analyst, hrbp, talent_committee, manager
+    employee_id = Column(String(64), nullable=True, index=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login = Column(DateTime, nullable=True)
@@ -258,3 +259,22 @@ class SnapshotRun(Base):
     model_version = Column(String(64), nullable=True, default="v3.1.0")
     policy_version = Column(Integer, nullable=True, default=1)
     is_synthetic = Column(Boolean, default=False)
+
+
+class ManagerFollowUp(Base):
+    __tablename__ = "manager_followups"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    manager_id = Column(String(64), index=True, nullable=False)
+    employee_id = Column(String(64), index=True, nullable=False)
+    planned_date = Column(String(10), nullable=False)  # YYYY-MM-DD
+    topic = Column(String(256), nullable=False)
+    talking_points_discussed = Column(Text, nullable=True)
+    notes = Column(Text, nullable=True)
+    status = Column(String(32), default="Planned")  # Planned, Completed, Cancelled
+    baseline_rri = Column(Float, nullable=True)
+    followup_rri = Column(Float, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
+

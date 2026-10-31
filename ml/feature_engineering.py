@@ -124,4 +124,37 @@ def compute_career_features(df_input: pd.DataFrame) -> pd.DataFrame:
     if 'EmployeeID' not in df.columns:
         df['EmployeeID'] = [f"PANW-{1001 + i}" for i in range(len(df))]
         
+    # 10. Manager Hierarchy & Assignment
+    if 'ManagerID' not in df.columns:
+        if 'Department' not in df.columns:
+            df['Department'] = 'Research & Development'
+        if 'JobRole' not in df.columns:
+            df['JobRole'] = 'Team Member'
+        manager_ids_by_dept = {}
+        for dept in df['Department'].dropna().unique():
+            dept_df = df[df['Department'] == dept]
+            mgr_candidates = dept_df[dept_df['JobRole'] == 'Manager']['EmployeeID'].tolist() if 'JobRole' in dept_df.columns else []
+            if not mgr_candidates and 'JobLevel' in dept_df.columns:
+                mgr_candidates = dept_df[dept_df['JobLevel'] >= 4]['EmployeeID'].tolist()
+            if not mgr_candidates:
+                mgr_candidates = dept_df['EmployeeID'].head(3).tolist()
+            if dept == 'Research & Development' and 'PANW-1044' in dept_df['EmployeeID'].values and 'PANW-1044' not in mgr_candidates:
+                mgr_candidates.insert(0, 'PANW-1044')
+            manager_ids_by_dept[dept] = mgr_candidates
+
+        assigned_managers = []
+        dept_counters = {d: 0 for d in manager_ids_by_dept}
+        for _, row in df.iterrows():
+            emp_id = row['EmployeeID']
+            dept = row.get('Department', 'Research & Development')
+            mgr_list = manager_ids_by_dept.get(dept, ['PANW-1044'])
+            if emp_id in mgr_list:
+                director_id = mgr_list[0] if mgr_list[0] != emp_id else (mgr_list[1] if len(mgr_list) > 1 else 'PANW-EXEC-01')
+                assigned_managers.append(director_id)
+            else:
+                idx = dept_counters[dept] % len(mgr_list)
+                assigned_managers.append(mgr_list[idx])
+                dept_counters[dept] += 1
+        df['ManagerID'] = assigned_managers
+
     return df

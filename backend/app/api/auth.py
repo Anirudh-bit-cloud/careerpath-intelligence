@@ -54,6 +54,7 @@ class UserCreateRequest(BaseModel):
     password: str
     full_name: str
     role: str = "hrbp"
+    employee_id: Optional[str] = None
     workspace_id: Optional[str] = "default"
 
 
@@ -61,6 +62,7 @@ class UserUpdateRequest(BaseModel):
     role: Optional[str] = None
     is_active: Optional[bool] = None
     full_name: Optional[str] = None
+    employee_id: Optional[str] = None
 
 
 # ── CURRENT USER DEPENDENCY ──────────────────────────────────────────────────
@@ -76,6 +78,7 @@ def get_current_user(
             "email": "admin@company.com",
             "full_name": "Sarah Jenkins",
             "role": "admin",
+            "employee_id": "PANW-1002",
             "workspace_id": "default",
             "permissions": ROLE_PERMISSIONS["admin"]
         }
@@ -86,6 +89,10 @@ def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired session token"
         )
+    if not payload.get("employee_id") and payload.get("email"):
+        user = db.query(User).filter(User.email == payload["email"]).first()
+        if user and user.employee_id:
+            payload["employee_id"] = user.employee_id
     return payload
 
 
@@ -234,6 +241,7 @@ def login(req: LoginRequest, request: Request, db: Session = Depends(get_db)):
         "email": user.email,
         "full_name": user.full_name,
         "role": user.role,
+        "employee_id": user.employee_id,
         "workspace_id": user.workspace_id,
         "permissions": ROLE_PERMISSIONS.get(user.role, [])
     }
@@ -266,6 +274,7 @@ def refresh_token(req: RefreshTokenRequest, db: Session = Depends(get_db)):
         "email": user.email,
         "full_name": user.full_name,
         "role": user.role,
+        "employee_id": user.employee_id,
         "workspace_id": user.workspace_id,
         "permissions": ROLE_PERMISSIONS.get(user.role, [])
     }
@@ -433,6 +442,7 @@ def create_user(
         password_hash=hash_password(req.password),
         full_name=req.full_name,
         role=req.role,
+        employee_id=req.employee_id,
         is_active=True
     )
     db.add(new_user)
@@ -474,6 +484,8 @@ def update_user(
         user.is_active = req.is_active
     if req.full_name:
         user.full_name = req.full_name
+    if req.employee_id is not None:
+        user.employee_id = req.employee_id
 
     audit = AuditLog(
         workspace_id=user.workspace_id,

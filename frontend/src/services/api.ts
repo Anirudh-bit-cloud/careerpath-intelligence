@@ -759,5 +759,72 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to seed historical snapshots');
     return res.json();
+  },
+
+  // ── Role-Based Manager Experience & Follow-ups ──────────────────────
+  async getMyTeam(managerId?: string): Promise<any> {
+    const url = managerId ? `${API_BASE}/manager/my-team?manager_id=${encodeURIComponent(managerId)}` : `${API_BASE}/manager/my-team`;
+    const res = await authFetch(url);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to fetch manager team data');
+    }
+    return res.json();
+  },
+
+  async recordManagerAcknowledgement(statement?: string): Promise<any> {
+    const res = await authFetch(`${API_BASE}/manager/acknowledgement`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        acknowledged: true,
+        statement: statement || 'I understand these indicators are meant to support employee growth and retention, not to evaluate performance or justify discipline.'
+      })
+    });
+    if (!res.ok) throw new Error('Failed to record diagnostic acknowledgement');
+    return res.json();
+  },
+
+  async listFollowUps(): Promise<any[]> {
+    const res = await authFetch(`${API_BASE}/manager/follow-ups`);
+    if (!res.ok) throw new Error('Failed to list 1-on-1 follow-ups');
+    return res.json();
+  },
+
+  async createFollowUp(data: {
+    employee_id: string;
+    planned_date: string;
+    topic: string;
+    talking_points_discussed?: string;
+    notes?: string;
+    create_hr_intervention?: boolean;
+  }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/manager/follow-ups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to create follow-up');
+    }
+    return res.json();
+  },
+
+  async updateFollowUp(id: number, data: {
+    status?: string;
+    notes?: string;
+    talking_points_discussed?: string;
+  }): Promise<any> {
+    const res = await authFetch(`${API_BASE}/manager/follow-ups/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to update follow-up');
+    }
+    return res.json();
   }
 };

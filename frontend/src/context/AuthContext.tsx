@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type UserRole = 'admin' | 'hrbp' | 'hr_analyst' | 'talent_committee';
+export type UserRole = 'admin' | 'hrbp' | 'hr_analyst' | 'talent_committee' | 'manager';
 
 export interface UserProfile {
   id: string;
@@ -40,7 +40,8 @@ export const ROLE_CONFIGS: Record<UserRole, RoleConfig> = {
       'connectors',
       'data-management',
       'design-system',
-      'settings'
+      'settings',
+      'my-team'
     ]
   },
   hrbp: {
@@ -60,7 +61,8 @@ export const ROLE_CONFIGS: Record<UserRole, RoleConfig> = {
       'employees',
       'fairness-audit',
       'trust-center',
-      'settings'
+      'settings',
+      'my-team'
     ]
   },
   hr_analyst: {
@@ -93,6 +95,16 @@ export const ROLE_CONFIGS: Record<UserRole, RoleConfig> = {
       'succession',
       'committee',
       'employees',
+      'trust-center'
+    ]
+  },
+  manager: {
+    role: 'manager',
+    label: 'People Manager',
+    description: 'Direct team progression review, supportive 1-on-1 development conversations, and follow-up tracking',
+    permittedTabs: [
+      'my-team',
+      'overview',
       'trust-center'
     ]
   }
@@ -130,6 +142,14 @@ const DEFAULT_USERS: Record<UserRole, UserProfile> = {
     name: 'David Sterling',
     workspaceId: 'default',
     avatarInitials: 'DS'
+  },
+  manager: {
+    id: 'usr-mgr-01',
+    email: 'manager@paloaltonetworks.com',
+    name: 'Alex Morgan',
+    role: 'manager',
+    workspaceId: 'default',
+    avatarInitials: 'AM'
   }
 };
 

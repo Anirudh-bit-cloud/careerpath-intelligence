@@ -260,6 +260,9 @@ ROLE_PERMISSIONS: Dict[str, List[str]] = {
     ],
     "talent_committee": [
         "view:analytics", "participate:committee", "record:decisions", "view:reports"
+    ],
+    "manager": [
+        "view:team", "manage:team_plans", "view:reports", "record:team_followup"
     ]
 }
 

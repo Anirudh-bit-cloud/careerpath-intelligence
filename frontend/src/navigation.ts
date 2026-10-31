@@ -49,6 +49,13 @@ export const NAVIGATION_MAP: Record<string, NavigationItem> = {
     description: 'Span of control, managerial continuity, and promotion velocity distributions',
     defaultTitle: 'Manager Insights'
   },
+  'my-team': {
+    id: 'my-team',
+    title: 'My Team & 1-on-1s',
+    group: 'Decisions',
+    description: 'Direct team progression diagnostics, supportive 1-on-1 talking points, and follow-up tracking',
+    defaultTitle: 'My Team & 1-on-1s'
+  },
   'retention-opportunities': {
     id: 'retention-opportunities',
     title: 'Retention Opportunities',

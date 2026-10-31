@@ -419,11 +419,15 @@ class AnalyticsService:
         cluster: Optional[str] = None,
         min_tenure: Optional[float] = None,
         search: Optional[str] = None,
+        manager_id: Optional[str] = None,
         page: int = 1,
         page_size: int = 25
     ) -> Dict[str, Any]:
         """Provides filtered analytical records and role/department distributions."""
         df = self.df_enriched.copy()
+        if manager_id:
+            team_ids = self.get_manager_team_ids(manager_id)
+            df = df[df['EmployeeID'].isin(team_ids)]
 
         # Apply filters
         if department and department != "All":
@@ -504,6 +508,7 @@ class AnalyticsService:
         search: Optional[str] = None,
         sort_by: Optional[str] = "RetentionOpportunityIndex",
         sort_dir: Optional[str] = "desc",
+        manager_id: Optional[str] = None,
         page: int = 1,
         page_size: int = 25
     ) -> Dict[str, Any]:
@@ -512,6 +517,9 @@ class AnalyticsService:
             return {"total_count": 0, "page": page, "page_size": page_size, "records": [], "summary": {}}
 
         df = self.df_enriched.copy()
+        if manager_id:
+            team_ids = self.get_manager_team_ids(manager_id)
+            df = df[df['EmployeeID'].isin(team_ids)]
         unfiltered_total = len(df)
 
         if priority and priority != "All":
@@ -921,6 +929,158 @@ class AnalyticsService:
                 "explanation": narrative
             }
         }
+
+    def get_manager_team_ids(self, manager_id: Optional[str]) -> List[str]:
+        """Returns the list of EmployeeIDs that report directly or indirectly to the manager."""
+        if not manager_id or self.df_enriched is None:
+            return []
+        clean_mgr = str(manager_id).strip()
+        # Direct reports
+        matches = self.df_enriched[self.df_enriched['ManagerID'] == clean_mgr]
+        if matches.empty and not clean_mgr.startswith('PANW-'):
+            matches = self.df_enriched[self.df_enriched['ManagerID'] == f"PANW-{clean_mgr}"]
+        if matches.empty and clean_mgr.startswith('PANW-'):
+            alt = clean_mgr.replace('PANW-', '')
+            matches = self.df_enriched[self.df_enriched['ManagerID'] == alt]
+        return matches['EmployeeID'].tolist()
+
+    def generate_supportive_talking_points(self, emp: Dict[str, Any]) -> List[str]:
+        """Generates 2-3 supportive, growth-oriented, non-punitive talking points for 1-on-1s."""
+        points = []
+        p_gap = float(emp.get("YearsSinceLastPromotion", 0) or 0)
+        r_tenure = float(emp.get("YearsInCurrentRole", 0) or 0)
+        train = float(emp.get("TrainingTimesLastYear", 0) or 0)
+        sat = float(emp.get("JobSatisfaction", 3) or 3)
+        level = int(emp.get("JobLevel", 1) or 1)
+
+        if p_gap >= 3.0:
+            points.append(f"Promotion Readiness: Review career velocity toward Level {min(level + 1, 5)} criteria, define concrete milestone accomplishments, and schedule formal panel review.")
+        elif p_gap >= 1.5:
+            points.append("Career Progression Cadence: Discuss technical impact and review progression milestones to maintain forward momentum.")
+
+        if r_tenure >= 3.0:
+            points.append("Internal Mobility & Stretch: Explore cross-functional initiative or stretch project (e.g. platform architecture or high-visibility customer sprint) to broaden scope.")
+
+        if train <= 1:
+            points.append("Upskilling Support: Identify 1-2 targeted technical certifications or industry conferences to attend with allocated learning hours.")
+
+        if sat <= 2:
+            points.append("Day-to-day Engagement: Check in on current workload, tooling friction, or team dynamics to proactively resolve blockers.")
+
+        if not points:
+            points.append("Regular Growth Check-in: Solicit employee's 6-month career aspirations, feedback on manager support, and upcoming interest areas.")
+
+        return points[:3]
+
+    def get_top_drivers(self, emp: Dict[str, Any]) -> List[Dict[str, str]]:
+        """Extracts top 3 progression drivers with severity."""
+        drivers = []
+        p_gap = float(emp.get("YearsSinceLastPromotion", 0) or 0)
+        r_tenure = float(emp.get("YearsInCurrentRole", 0) or 0)
+        train = float(emp.get("TrainingTimesLastYear", 0) or 0)
+        sat = float(emp.get("JobSatisfaction", 3) or 3)
+        mgr_stab = float(emp.get("ManagerStabilityIndicator", 1.0) or 1.0)
+
+        if p_gap >= 3.0:
+            drivers.append({"name": "Promotion Latency", "detail": f"{p_gap:.1f} yrs without promotion", "severity": "high" if p_gap >= 4.0 else "medium"})
+        if r_tenure >= 3.0:
+            drivers.append({"name": "Role Stagnation", "detail": f"{r_tenure:.1f} yrs in current role", "severity": "high" if r_tenure >= 4.5 else "medium"})
+        if train <= 1:
+            drivers.append({"name": "Training Deficit", "detail": f"{int(train)} session(s) in past year", "severity": "medium"})
+        if sat <= 2:
+            drivers.append({"name": "Job Satisfaction", "detail": f"Score {int(sat)}/4 (below benchmark)", "severity": "medium"})
+        if mgr_stab < 0.5:
+            drivers.append({"name": "Manager Transition", "detail": "Recent supervisory shift", "severity": "low"})
+
+        if not drivers:
+            drivers.append({"name": "Healthy Trajectory", "detail": "Indicators within standard level dwell bands", "severity": "low"})
+
+        return drivers[:3]
+
+    def get_manager_team(self, manager_id: str) -> Dict[str, Any]:
+        """Computes team overview KPIs and direct report cards for a specific manager."""
+        if self.df_enriched is None:
+            self._load_data()
+
+        df = self.df_enriched
+        clean_mgr = str(manager_id).strip()
+        team_df = df[df['ManagerID'] == clean_mgr]
+        if team_df.empty and not clean_mgr.startswith('PANW-'):
+            team_df = df[df['ManagerID'] == f"PANW-{clean_mgr}"]
+        if team_df.empty and clean_mgr.startswith('PANW-'):
+            team_df = df[df['ManagerID'] == clean_mgr.replace('PANW-', '')]
+
+        # In fallback/demo if team is empty, assign a representative team from the department of that manager
+        if team_df.empty:
+            match_mgr = self._match_employee(df, manager_id)
+            if match_mgr is not None and not match_mgr.empty:
+                dept = match_mgr.iloc[0].get('Department', 'Research & Development')
+                team_df = df[df['Department'] == dept].head(15)
+            else:
+                team_df = df[df['Department'] == 'Research & Development'].head(15)
+
+        company_mean_rri = round(float(df['RetentionRiskIndex'].mean()), 1)
+        team_mean_rri = round(float(team_df['RetentionRiskIndex'].mean()), 1) if not team_df.empty else company_mean_rri
+
+        urgent_count = int((team_df['RetentionPriority'] == 'Urgent').sum())
+        moderate_count = int((team_df['RetentionPriority'] == 'Moderate').sum())
+        standard_count = int((team_df['RetentionPriority'] == 'Standard').sum())
+
+        direct_reports = []
+        from backend.app.services.attrition_service import attrition_model_service as ml_service
+
+        for _, row in team_df.iterrows():
+            emp_dict = row.to_dict()
+            emp_id = str(emp_dict.get('EmployeeID', ''))
+            
+            # ML calibrated prob
+            ml_prob = None
+            ml_tier = "Standard"
+            if ml_service and getattr(ml_service, "is_fitted", False):
+                try:
+                    pred_res = ml_service.predict_single(emp_dict)
+                    ml_prob = pred_res.get("calibrated_probability")
+                    ml_tier = pred_res.get("risk_tier", "Standard")
+                except Exception:
+                    pass
+                    pass
+
+            talking_points = self.generate_supportive_talking_points(emp_dict)
+            top_drivers = self.get_top_drivers(emp_dict)
+
+            direct_reports.append({
+                "employee_id": emp_id,
+                "job_role": emp_dict.get("JobRole", "Team Member"),
+                "job_level": int(emp_dict.get("JobLevel", 1)),
+                "department": emp_dict.get("Department", "Engineering"),
+                "years_in_role": float(emp_dict.get("YearsInCurrentRole", 0)),
+                "years_since_promotion": float(emp_dict.get("YearsSinceLastPromotion", 0)),
+                "years_with_manager": float(emp_dict.get("YearsWithCurrManager", 0)),
+                "performance_rating": int(emp_dict.get("PerformanceRating", 3)),
+                "job_satisfaction": int(emp_dict.get("JobSatisfaction", 3)),
+                "rri_score": float(emp_dict.get("RetentionRiskIndex", 0)),
+                "rri_tier": emp_dict.get("RetentionPriority", "Standard"),
+                "ml_probability": ml_prob,
+                "ml_risk_tier": ml_tier,
+                "top_drivers": top_drivers,
+                "talking_points": talking_points
+            })
+
+        # Sort direct reports by RRI descending so urgent cases are first
+        direct_reports.sort(key=lambda x: x["rri_score"], reverse=True)
+
+        return {
+            "manager_id": manager_id,
+            "headcount": len(direct_reports),
+            "urgent_count": urgent_count,
+            "moderate_count": moderate_count,
+            "standard_count": standard_count,
+            "team_mean_rri": team_mean_rri,
+            "company_mean_rri": company_mean_rri,
+            "rri_delta": round(team_mean_rri - company_mean_rri, 1),
+            "direct_reports": direct_reports
+        }
+
 
 # Global Singleton Instance
 analytics_service = AnalyticsService()

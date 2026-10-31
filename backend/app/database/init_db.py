@@ -87,14 +87,16 @@ def init_and_migrate_db():
             )
             db.add(ws)
 
-        # B. Default Users (Admin, Analyst, HRBP, Committee)
+        # B. Default Users (Admin, Analyst, HRBP, Committee, Manager)
         default_users = [
-            ("admin@company.com", "admin123", "Sarah Jenkins", "admin"),
-            ("analyst@company.com", "analyst123", "Marcus Vance", "hr_analyst"),
-            ("hrbp@company.com", "hrbp123", "Elena Rostova", "hrbp"),
-            ("committee@company.com", "committee123", "David Chen", "talent_committee")
+            ("admin@company.com", "admin123", "Sarah Jenkins", "admin", "PANW-1002"),
+            ("analyst@company.com", "analyst123", "Marcus Vance", "hr_analyst", "PANW-1004"),
+            ("hrbp@company.com", "hrbp123", "Elena Rostova", "hrbp", "PANW-1007"),
+            ("committee@company.com", "committee123", "David Chen", "talent_committee", "PANW-1010"),
+            ("manager@company.com", "manager123", "Alex Morgan (Engineering Manager)", "manager", "PANW-1044"),
+            ("manager@paloaltonetworks.com", "manager123", "Alex Morgan (Engineering Manager)", "manager", "PANW-1044")
         ]
-        for email, pwd, name, role in default_users:
+        for email, pwd, name, role, emp_id in default_users:
             existing = db.query(User).filter(User.email == email).first()
             if not existing:
                 u = User(
@@ -103,9 +105,13 @@ def init_and_migrate_db():
                     password_hash=hash_password(pwd),
                     full_name=name,
                     role=role,
+                    employee_id=emp_id,
                     is_active=True
                 )
                 db.add(u)
+            elif not existing.employee_id:
+                existing.employee_id = emp_id
+                db.commit()
 
         # C. Default Scoring Policy
         existing_policy = db.query(ScoringPolicy).filter(

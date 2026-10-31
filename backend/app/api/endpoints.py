@@ -5,13 +5,15 @@ FastAPI Route Handlers for CareerPath Intelligence.
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
 import os
 import shutil
+import json
+from datetime import datetime
 
 from backend.app.database.connection import get_db
-from backend.app.models.entities import InterventionRecord
+from backend.app.models.entities import InterventionRecord, AuditLog
 from backend.app.schemas.domain import (
     InterventionCreate, InterventionUpdate, InterventionResponse
 )
@@ -20,6 +22,54 @@ from backend.app.services.attrition_service import attrition_model_service
 from backend.app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api")
+
+
+def check_manager_employee_access(
+    current_user: Dict[str, Any],
+    employee_id: str,
+    db: Optional[Session] = None,
+    purpose: str = "manager_direct_report_review"
+):
+    """Enforces manager team scoping and audit logs individual employee score lookups."""
+    clean_id = str(employee_id).strip()
+    if current_user.get("role") == "manager":
+        mgr_id = str(current_user.get("employee_id") or "").strip()
+        team_ids = analytics_service.get_manager_team_ids(mgr_id)
+        # Check direct team membership
+        allowed = (
+            clean_id in team_ids or
+            clean_id == mgr_id or
+            f"PANW-{clean_id}" in team_ids or
+            clean_id.replace("PANW-", "") in team_ids or
+            (mgr_id and (f"PANW-{mgr_id}" == clean_id or mgr_id.replace("PANW-", "") == clean_id))
+        )
+        if not allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied: employee {employee_id} is not on your direct team"
+            )
+
+    # Audit log the individual employee view
+    if db is not None:
+        try:
+            audit = AuditLog(
+                workspace_id=current_user.get("workspace_id", "default"),
+                user_email=current_user.get("email", "system"),
+                action="employee_score.viewed",
+                entity_type="employee",
+                entity_id=clean_id,
+                details_json=json.dumps({
+                    "viewer_id": current_user.get("employee_id") or current_user.get("email"),
+                    "target_employee_id": clean_id,
+                    "purpose": purpose if current_user.get("role") == "manager" else "talent_analytics_review",
+                    "timestamp": datetime.utcnow().isoformat()
+                })
+            )
+            db.add(audit)
+            db.commit()
+        except Exception:
+            pass
+
 
 
 @router.get("/health")
@@ -82,8 +132,10 @@ def get_promotion_gap(
     min_tenure: Optional[float] = None,
     search: Optional[str] = None,
     page: int = Query(1, ge=1),
-    page_size: int = Query(25, ge=1, le=100)
+    page_size: int = Query(25, ge=1, le=100),
+    current_user: dict = Depends(get_current_user)
 ):
+    mgr_id = current_user.get("employee_id") if current_user.get("role") == "manager" else None
     return analytics_service.get_promotion_gap_monitor(
         department=department,
         job_role=job_role,
@@ -92,6 +144,7 @@ def get_promotion_gap(
         cluster=cluster,
         min_tenure=min_tenure,
         search=search,
+        manager_id=mgr_id,
         page=page,
         page_size=page_size
     )
@@ -110,8 +163,10 @@ def get_retention_opportunities(
     sort_by: Optional[str] = "RetentionOpportunityIndex",
     sort_dir: Optional[str] = "desc",
     page: int = Query(1, ge=1),
-    page_size: int = Query(25, ge=1, le=100)
+    page_size: int = Query(25, ge=1, le=100),
+    current_user: dict = Depends(get_current_user)
 ):
+    mgr_id = current_user.get("employee_id") if current_user.get("role") == "manager" else None
     return analytics_service.get_retention_opportunities(
         priority=priority,
         department=department,
@@ -123,6 +178,7 @@ def get_retention_opportunities(
         search=search,
         sort_by=sort_by,
         sort_dir=sort_dir,
+        manager_id=mgr_id,
         page=page,
         page_size=page_size
     )
@@ -134,12 +190,25 @@ def get_manager_insights():
 
 
 @router.get("/employees")
-def search_employees(query: Optional[str] = "", limit: int = Query(20, ge=1, le=100)):
-    return analytics_service.search_employees(query=query, limit=limit)
+def search_employees(
+    query: Optional[str] = "",
+    limit: int = Query(20, ge=1, le=100),
+    current_user: dict = Depends(get_current_user)
+):
+    res = analytics_service.search_employees(query=query, limit=limit)
+    if current_user.get("role") == "manager":
+        team_ids = set(analytics_service.get_manager_team_ids(current_user.get("employee_id")))
+        res = [e for e in res if e.get("EmployeeID") in team_ids]
+    return res
 
 
 @router.get("/employees/{employee_id}")
-def get_employee_profile(employee_id: str, db: Session = Depends(get_db)):
+def get_employee_profile(
+    employee_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_direct_report_review")
     profile = analytics_service.get_employee_profile(employee_id)
     if not profile:
         raise HTTPException(status_code=404, detail=f"Employee {employee_id} not found")
@@ -166,11 +235,16 @@ def get_employee_profile(employee_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/employees/{employee_id}/score-explanation")
-def get_employee_score_explanation(employee_id: str):
+def get_employee_score_explanation(
+    employee_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     """
     Returns explainable component points waterfall and counterfactual analysis
     showing how the employee can transition down one retention risk tier.
     """
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_score_explanation_review")
     explanation = analytics_service.explain_score(employee_id)
     if not explanation:
         raise HTTPException(status_code=404, detail=f"Score explanation for employee {employee_id} not found")
@@ -178,12 +252,17 @@ def get_employee_score_explanation(employee_id: str):
 
 
 @router.get("/employees/{employee_id}/ml-explanation")
-def get_employee_ml_explanation(employee_id: str):
+def get_employee_ml_explanation(
+    employee_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     """
     Returns supervised ML attrition probability, calibrated risk tier,
     concurrence/disagreement with RRI, and top positive/protective SHAP feature drivers.
     Decision support only — never automates adverse employment decisions.
     """
+    check_manager_employee_access(current_user, employee_id, db, purpose="manager_ml_explanation_review")
     res = attrition_model_service.get_employee_ml_explanation(employee_id)
     if "error" in res:
         raise HTTPException(status_code=404, detail=res["error"])
@@ -365,7 +444,12 @@ class CareerSimulationPayload(BaseModel):
 
 
 @router.post("/simulate-career")
-def simulate_career(payload: CareerSimulationPayload):
+def simulate_career(
+    payload: CareerSimulationPayload,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    check_manager_employee_access(current_user, payload.employee_id, db, purpose="manager_career_simulation")
     result = analytics_service.simulate_career_intervention(
         employee_id=payload.employee_id,
         promote_now=payload.promote_now,

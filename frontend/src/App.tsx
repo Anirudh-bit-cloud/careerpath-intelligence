@@ -20,6 +20,7 @@ const TrustCenterView = React.lazy(() => import('./views/TrustCenterView').then(
 const DesignSystemView = React.lazy(() => import('./views/DesignSystemView').then(m => ({ default: m.DesignSystemView })));
 const FairnessAuditView = React.lazy(() => import('./views/FairnessAuditView').then(m => ({ default: m.FairnessAuditView })));
 const SuccessionView = React.lazy(() => import('./views/SuccessionView').then(m => ({ default: m.SuccessionView })));
+const MyTeamView = React.lazy(() => import('./views/MyTeamView').then(m => ({ default: m.MyTeamView })));
 
 const ViewLoadingFallback = () => (
   <div className="p-8 space-y-6 max-w-7xl mx-auto animate-pulse">
@@ -263,6 +264,10 @@ function AppContent() {
 
                 {currentTab === 'trends' && (
                   <TrendsView dataVersion={dataVersion} />
+                )}
+
+                {currentTab === 'my-team' && (
+                  <MyTeamView />
                 )}
 
                 {currentTab === 'retention-opportunities' && (
