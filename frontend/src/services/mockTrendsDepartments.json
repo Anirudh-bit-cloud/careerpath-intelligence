@@ -1,0 +1,313 @@
+{
+  "workspace_id": "default",
+  "dates": [
+    "2025-11-05",
+    "2025-12-05",
+    "2026-01-04",
+    "2026-02-03",
+    "2026-03-05",
+    "2026-04-04",
+    "2026-05-04",
+    "2026-06-03",
+    "2026-07-03",
+    "2026-08-02",
+    "2026-09-01",
+    "2026-10-01",
+    "2026-10-31"
+  ],
+  "departments": [
+    "Human Resources",
+    "Research & Development",
+    "Sales"
+  ],
+  "matrix": [
+    {
+      "department": "Human Resources",
+      "trajectory": [
+        {
+          "date": "2025-11-05",
+          "mean_rri": 47.5,
+          "mean_gap_years": 1,
+          "headcount": 17,
+          "urgent_count": 4
+        },
+        {
+          "date": "2025-12-05",
+          "mean_rri": 47.9,
+          "mean_gap_years": 1.1,
+          "headcount": 17,
+          "urgent_count": 5
+        },
+        {
+          "date": "2026-01-04",
+          "mean_rri": 47.3,
+          "mean_gap_years": 1.2,
+          "headcount": 17,
+          "urgent_count": 5
+        },
+        {
+          "date": "2026-02-03",
+          "mean_rri": 46.3,
+          "mean_gap_years": 1.2,
+          "headcount": 17,
+          "urgent_count": 4
+        },
+        {
+          "date": "2026-03-05",
+          "mean_rri": 47.4,
+          "mean_gap_years": 1.2,
+          "headcount": 17,
+          "urgent_count": 4
+        },
+        {
+          "date": "2026-04-04",
+          "mean_rri": 47.5,
+          "mean_gap_years": 1.3,
+          "headcount": 17,
+          "urgent_count": 4
+        },
+        {
+          "date": "2026-05-04",
+          "mean_rri": 46.4,
+          "mean_gap_years": 1.4,
+          "headcount": 17,
+          "urgent_count": 2
+        },
+        {
+          "date": "2026-06-03",
+          "mean_rri": 46.6,
+          "mean_gap_years": 1.5,
+          "headcount": 17,
+          "urgent_count": 3
+        },
+        {
+          "date": "2026-07-03",
+          "mean_rri": 45.9,
+          "mean_gap_years": 1.6,
+          "headcount": 17,
+          "urgent_count": 3
+        },
+        {
+          "date": "2026-08-02",
+          "mean_rri": 47.6,
+          "mean_gap_years": 1.7,
+          "headcount": 17,
+          "urgent_count": 4
+        },
+        {
+          "date": "2026-09-01",
+          "mean_rri": 46.2,
+          "mean_gap_years": 1.7,
+          "headcount": 17,
+          "urgent_count": 5
+        },
+        {
+          "date": "2026-10-01",
+          "mean_rri": 46.8,
+          "mean_gap_years": 1.7,
+          "headcount": 17,
+          "urgent_count": 6
+        },
+        {
+          "date": "2026-10-31",
+          "mean_rri": 47.1,
+          "mean_gap_years": 1.8,
+          "headcount": 17,
+          "urgent_count": 4
+        }
+      ]
+    },
+    {
+      "department": "Research & Development",
+      "trajectory": [
+        {
+          "date": "2025-11-05",
+          "mean_rri": 46.1,
+          "mean_gap_years": 1.1,
+          "headcount": 190,
+          "urgent_count": 40
+        },
+        {
+          "date": "2025-12-05",
+          "mean_rri": 46,
+          "mean_gap_years": 1.1,
+          "headcount": 190,
+          "urgent_count": 40
+        },
+        {
+          "date": "2026-01-04",
+          "mean_rri": 46.2,
+          "mean_gap_years": 1.2,
+          "headcount": 190,
+          "urgent_count": 47
+        },
+        {
+          "date": "2026-02-03",
+          "mean_rri": 46,
+          "mean_gap_years": 1.3,
+          "headcount": 190,
+          "urgent_count": 42
+        },
+        {
+          "date": "2026-03-05",
+          "mean_rri": 46.1,
+          "mean_gap_years": 1.3,
+          "headcount": 190,
+          "urgent_count": 43
+        },
+        {
+          "date": "2026-04-04",
+          "mean_rri": 46.2,
+          "mean_gap_years": 1.3,
+          "headcount": 190,
+          "urgent_count": 45
+        },
+        {
+          "date": "2026-05-04",
+          "mean_rri": 46,
+          "mean_gap_years": 1.4,
+          "headcount": 190,
+          "urgent_count": 47
+        },
+        {
+          "date": "2026-06-03",
+          "mean_rri": 46.1,
+          "mean_gap_years": 1.5,
+          "headcount": 190,
+          "urgent_count": 48
+        },
+        {
+          "date": "2026-07-03",
+          "mean_rri": 46.2,
+          "mean_gap_years": 1.5,
+          "headcount": 190,
+          "urgent_count": 43
+        },
+        {
+          "date": "2026-08-02",
+          "mean_rri": 46.3,
+          "mean_gap_years": 1.6,
+          "headcount": 190,
+          "urgent_count": 44
+        },
+        {
+          "date": "2026-09-01",
+          "mean_rri": 46,
+          "mean_gap_years": 1.6,
+          "headcount": 190,
+          "urgent_count": 42
+        },
+        {
+          "date": "2026-10-01",
+          "mean_rri": 46.2,
+          "mean_gap_years": 1.7,
+          "headcount": 190,
+          "urgent_count": 42
+        },
+        {
+          "date": "2026-10-31",
+          "mean_rri": 46.1,
+          "mean_gap_years": 1.7,
+          "headcount": 190,
+          "urgent_count": 44
+        }
+      ]
+    },
+    {
+      "department": "Sales",
+      "trajectory": [
+        {
+          "date": "2025-11-05",
+          "mean_rri": 43,
+          "mean_gap_years": 1.3,
+          "headcount": 93,
+          "urgent_count": 20
+        },
+        {
+          "date": "2025-12-05",
+          "mean_rri": 43.2,
+          "mean_gap_years": 1.4,
+          "headcount": 93,
+          "urgent_count": 21
+        },
+        {
+          "date": "2026-01-04",
+          "mean_rri": 43.2,
+          "mean_gap_years": 1.4,
+          "headcount": 93,
+          "urgent_count": 20
+        },
+        {
+          "date": "2026-02-03",
+          "mean_rri": 42.6,
+          "mean_gap_years": 1.5,
+          "headcount": 93,
+          "urgent_count": 18
+        },
+        {
+          "date": "2026-03-05",
+          "mean_rri": 42.5,
+          "mean_gap_years": 1.5,
+          "headcount": 93,
+          "urgent_count": 20
+        },
+        {
+          "date": "2026-04-04",
+          "mean_rri": 43,
+          "mean_gap_years": 1.6,
+          "headcount": 93,
+          "urgent_count": 21
+        },
+        {
+          "date": "2026-05-04",
+          "mean_rri": 43.6,
+          "mean_gap_years": 1.6,
+          "headcount": 93,
+          "urgent_count": 20
+        },
+        {
+          "date": "2026-06-03",
+          "mean_rri": 43.2,
+          "mean_gap_years": 1.7,
+          "headcount": 93,
+          "urgent_count": 18
+        },
+        {
+          "date": "2026-07-03",
+          "mean_rri": 43,
+          "mean_gap_years": 1.8,
+          "headcount": 93,
+          "urgent_count": 22
+        },
+        {
+          "date": "2026-08-02",
+          "mean_rri": 43.1,
+          "mean_gap_years": 1.8,
+          "headcount": 93,
+          "urgent_count": 21
+        },
+        {
+          "date": "2026-09-01",
+          "mean_rri": 43.1,
+          "mean_gap_years": 1.8,
+          "headcount": 93,
+          "urgent_count": 20
+        },
+        {
+          "date": "2026-10-01",
+          "mean_rri": 43.1,
+          "mean_gap_years": 1.9,
+          "headcount": 93,
+          "urgent_count": 18
+        },
+        {
+          "date": "2026-10-31",
+          "mean_rri": 43.1,
+          "mean_gap_years": 2,
+          "headcount": 93,
+          "urgent_count": 23
+        }
+      ]
+    }
+  ]
+}

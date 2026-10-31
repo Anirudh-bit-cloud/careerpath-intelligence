@@ -1,0 +1,81 @@
+{
+  "workspace_id": "default",
+  "from_date": "2025-11-05",
+  "to_date": "2026-10-31",
+  "cohort_size": 300,
+  "new_entrants_count": 0,
+  "departures_count": 0,
+  "transition_matrix": {
+    "Standard": {
+      "Standard": 154,
+      "Moderate": 5,
+      "Urgent": 0
+    },
+    "Moderate": {
+      "Standard": 5,
+      "Moderate": 62,
+      "Urgent": 10
+    },
+    "Urgent": {
+      "Standard": 0,
+      "Moderate": 3,
+      "Urgent": 61
+    }
+  },
+  "escalated_to_urgent_count": 10,
+  "deescalated_from_urgent_count": 3,
+  "net_urgent_change": 7,
+  "sample_escalated": [
+    {
+      "employee_id": "PANW-1219",
+      "previous_tier": "Moderate",
+      "previous_rri": 61.5,
+      "new_rri": 66.4
+    },
+    {
+      "employee_id": "PANW-1216",
+      "previous_tier": "Moderate",
+      "previous_rri": 64.8,
+      "new_rri": 65
+    },
+    {
+      "employee_id": "PANW-1214",
+      "previous_tier": "Moderate",
+      "previous_rri": 63.3,
+      "new_rri": 67
+    },
+    {
+      "employee_id": "PANW-1015",
+      "previous_tier": "Moderate",
+      "previous_rri": 63.1,
+      "new_rri": 65.8
+    },
+    {
+      "employee_id": "PANW-1114",
+      "previous_tier": "Moderate",
+      "previous_rri": 60.6,
+      "new_rri": 66.6
+    }
+  ],
+  "sample_resolved": [
+    {
+      "employee_id": "PANW-1200",
+      "resolved_tier": "Moderate",
+      "previous_rri": 66.7,
+      "new_rri": 64.6
+    },
+    {
+      "employee_id": "PANW-1042",
+      "resolved_tier": "Moderate",
+      "previous_rri": 66,
+      "new_rri": 62.5
+    },
+    {
+      "employee_id": "PANW-1283",
+      "resolved_tier": "Moderate",
+      "previous_rri": 65.2,
+      "new_rri": 64.2
+    }
+  ],
+  "is_synthetic": true
+}

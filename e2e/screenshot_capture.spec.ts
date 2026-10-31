@@ -20,17 +20,22 @@ test('Capture full-resolution polished screenshots of all primary enterprise vie
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(artifactDir, 'screenshot_3_promotion_gap.png') });
 
-  // 4. Retention Opportunities
+  // 4. Workforce Trends (Populated)
+  await page.click('button:has-text("Workforce Trends")');
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: path.join(artifactDir, 'screenshot_trends_populated.png') });
+
+  // 5. Retention Opportunities
   await page.click('button:has-text("Retention Opportunities")');
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(artifactDir, 'screenshot_4_retention.png') });
 
-  // 5. Fairness & Bias Audit
+  // 6. Fairness & Bias Audit
   await page.click('button:has-text("Fairness & Bias Audit")');
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(artifactDir, 'screenshot_5_fairness.png') });
 
-  // 6. Trust Center & Governance
+  // 7. Trust Center & Governance
   await page.click('button:has-text("Trust Center & Governance")');
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(artifactDir, 'screenshot_6_trust_center.png') });

@@ -1,0 +1,213 @@
+[
+  {
+    "id": 15,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 1,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T15:30:47.750223"
+  },
+  {
+    "id": 14,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T14:29:56.661790"
+  },
+  {
+    "id": 13,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T13:50:05.456495"
+  },
+  {
+    "id": 12,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T13:30:12.581401"
+  },
+  {
+    "id": 11,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T13:01:12.533434"
+  },
+  {
+    "id": 10,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T12:44:39.488959"
+  },
+  {
+    "id": 9,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T12:03:31.602191"
+  },
+  {
+    "id": 8,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T11:57:57.592493"
+  },
+  {
+    "id": 7,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 1,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T11:55:36.399680"
+  },
+  {
+    "id": 6,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T11:34:56.829803"
+  },
+  {
+    "id": 5,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-31T11:13:40.687852"
+  },
+  {
+    "id": 4,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-30T00:15:53.968502"
+  },
+  {
+    "id": 3,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Completed",
+    "decision_count": 2,
+    "minutes_text": "Session completed with 1 candidate approved.",
+    "created_at": "2026-10-29T23:46:05.712507"
+  },
+  {
+    "id": 2,
+    "title": "Q4 Talent Review Board",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "Committee Chair",
+      "HRBP Lead"
+    ],
+    "department_scope": "All",
+    "status": "Scheduled",
+    "decision_count": 0,
+    "minutes_text": null,
+    "created_at": "2026-10-29T23:37:24.145081"
+  },
+  {
+    "id": 1,
+    "title": "Q4 Talent Calibration & Career Mobility Review",
+    "session_date": "2026-11-15",
+    "attendees": [
+      "David Chen (VP People)",
+      "Sarah Jenkins (Head Talent)",
+      "Elena Rostova (Lead HRBP)"
+    ],
+    "department_scope": "Research & Development",
+    "status": "Scheduled",
+    "decision_count": 3,
+    "minutes_text": "Committee reviewed top 10 urgent candidates in Research & Development. Two immediate actions ratified.",
+    "created_at": "2026-10-22T20:54:27.776110"
+  }
+]

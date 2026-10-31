@@ -1,0 +1,460 @@
+{
+  "manager_id": "PANW-1002",
+  "headcount": 15,
+  "urgent_count": 3,
+  "moderate_count": 9,
+  "standard_count": 3,
+  "team_mean_rri": 53.3,
+  "company_mean_rri": 45.2,
+  "rri_delta": 8.1,
+  "direct_reports": [
+    {
+      "employee_id": "PANW-1017",
+      "job_role": "Research Scientist",
+      "job_level": 2,
+      "department": "Research & Development",
+      "years_in_role": 4,
+      "years_since_promotion": 4,
+      "years_with_manager": 3,
+      "performance_rating": 3,
+      "job_satisfaction": 4,
+      "rri_score": 96.2,
+      "rri_tier": "Urgent",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Promotion Latency",
+          "detail": "4.0 yrs without promotion",
+          "severity": "high"
+        },
+        {
+          "name": "Role Stagnation",
+          "detail": "4.0 yrs in current role",
+          "severity": "medium"
+        },
+        {
+          "name": "Training Deficit",
+          "detail": "0 session(s) in past year",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Promotion Readiness: Review career velocity toward Level 3 criteria, define concrete milestone accomplishments, and schedule formal panel review.",
+        "Internal Mobility & Stretch: Explore cross-functional initiative or stretch project (e.g. platform architecture or high-visibility customer sprint) to broaden scope.",
+        "Upskilling Support: Identify 1-2 targeted technical certifications or industry conferences to attend with allocated learning hours."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1014",
+      "job_role": "Research Director",
+      "job_level": 3,
+      "department": "Research & Development",
+      "years_in_role": 7,
+      "years_since_promotion": 7,
+      "years_with_manager": 7,
+      "performance_rating": 3,
+      "job_satisfaction": 2,
+      "rri_score": 82.5,
+      "rri_tier": "Urgent",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Promotion Latency",
+          "detail": "7.0 yrs without promotion",
+          "severity": "high"
+        },
+        {
+          "name": "Role Stagnation",
+          "detail": "7.0 yrs in current role",
+          "severity": "high"
+        },
+        {
+          "name": "Job Satisfaction",
+          "detail": "Score 2/4 (below benchmark)",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Promotion Readiness: Review career velocity toward Level 4 criteria, define concrete milestone accomplishments, and schedule formal panel review.",
+        "Internal Mobility & Stretch: Explore cross-functional initiative or stretch project (e.g. platform architecture or high-visibility customer sprint) to broaden scope.",
+        "Day-to-day Engagement: Check in on current workload, tooling friction, or team dynamics to proactively resolve blockers."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1010",
+      "job_role": "Healthcare Representative",
+      "job_level": 1,
+      "department": "Research & Development",
+      "years_in_role": 2,
+      "years_since_promotion": 1,
+      "years_with_manager": 0,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 72.5,
+      "rri_tier": "Urgent",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Healthy Trajectory",
+          "detail": "Indicators within standard level dwell bands",
+          "severity": "low"
+        }
+      ],
+      "talking_points": [
+        "Regular Growth Check-in: Solicit employee's 6-month career aspirations, feedback on manager support, and upcoming interest areas."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1005",
+      "job_role": "Healthcare Representative",
+      "job_level": 2,
+      "department": "Research & Development",
+      "years_in_role": 0,
+      "years_since_promotion": 1,
+      "years_with_manager": 0,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 60,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Healthy Trajectory",
+          "detail": "Indicators within standard level dwell bands",
+          "severity": "low"
+        }
+      ],
+      "talking_points": [
+        "Regular Growth Check-in: Solicit employee's 6-month career aspirations, feedback on manager support, and upcoming interest areas."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1019",
+      "job_role": "Research Director",
+      "job_level": 3,
+      "department": "Research & Development",
+      "years_in_role": 2,
+      "years_since_promotion": 3,
+      "years_with_manager": 2,
+      "performance_rating": 3,
+      "job_satisfaction": 2,
+      "rri_score": 57.6,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Promotion Latency",
+          "detail": "3.0 yrs without promotion",
+          "severity": "medium"
+        },
+        {
+          "name": "Job Satisfaction",
+          "detail": "Score 2/4 (below benchmark)",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Promotion Readiness: Review career velocity toward Level 4 criteria, define concrete milestone accomplishments, and schedule formal panel review.",
+        "Day-to-day Engagement: Check in on current workload, tooling friction, or team dynamics to proactively resolve blockers."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1020",
+      "job_role": "Manufacturing Director",
+      "job_level": 4,
+      "department": "Research & Development",
+      "years_in_role": 8,
+      "years_since_promotion": 1,
+      "years_with_manager": 11,
+      "performance_rating": 3,
+      "job_satisfaction": 4,
+      "rri_score": 56.9,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Role Stagnation",
+          "detail": "8.0 yrs in current role",
+          "severity": "high"
+        }
+      ],
+      "talking_points": [
+        "Internal Mobility & Stretch: Explore cross-functional initiative or stretch project (e.g. platform architecture or high-visibility customer sprint) to broaden scope."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1002",
+      "job_role": "Healthcare Representative",
+      "job_level": 2,
+      "department": "Research & Development",
+      "years_in_role": 2,
+      "years_since_promotion": 0,
+      "years_with_manager": 1,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 54.2,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Training Deficit",
+          "detail": "1 session(s) in past year",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Upskilling Support: Identify 1-2 targeted technical certifications or industry conferences to attend with allocated learning hours."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1013",
+      "job_role": "Healthcare Representative",
+      "job_level": 2,
+      "department": "Research & Development",
+      "years_in_role": 0,
+      "years_since_promotion": 2,
+      "years_with_manager": 2,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 52.9,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Healthy Trajectory",
+          "detail": "Indicators within standard level dwell bands",
+          "severity": "low"
+        }
+      ],
+      "talking_points": [
+        "Career Progression Cadence: Discuss technical impact and review progression milestones to maintain forward momentum."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1012",
+      "job_role": "Research Director",
+      "job_level": 3,
+      "department": "Research & Development",
+      "years_in_role": 0,
+      "years_since_promotion": 6,
+      "years_with_manager": 6,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 52.7,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Promotion Latency",
+          "detail": "6.0 yrs without promotion",
+          "severity": "high"
+        }
+      ],
+      "talking_points": [
+        "Promotion Readiness: Review career velocity toward Level 4 criteria, define concrete milestone accomplishments, and schedule formal panel review."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1018",
+      "job_role": "Research Scientist",
+      "job_level": 1,
+      "department": "Research & Development",
+      "years_in_role": 4,
+      "years_since_promotion": 0,
+      "years_with_manager": 0,
+      "performance_rating": 4,
+      "job_satisfaction": 2,
+      "rri_score": 50.4,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Role Stagnation",
+          "detail": "4.0 yrs in current role",
+          "severity": "medium"
+        },
+        {
+          "name": "Training Deficit",
+          "detail": "1 session(s) in past year",
+          "severity": "medium"
+        },
+        {
+          "name": "Job Satisfaction",
+          "detail": "Score 2/4 (below benchmark)",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Internal Mobility & Stretch: Explore cross-functional initiative or stretch project (e.g. platform architecture or high-visibility customer sprint) to broaden scope.",
+        "Upskilling Support: Identify 1-2 targeted technical certifications or industry conferences to attend with allocated learning hours.",
+        "Day-to-day Engagement: Check in on current workload, tooling friction, or team dynamics to proactively resolve blockers."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1011",
+      "job_role": "Research Director",
+      "job_level": 3,
+      "department": "Research & Development",
+      "years_in_role": 0,
+      "years_since_promotion": 1,
+      "years_with_manager": 0,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 47.9,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Training Deficit",
+          "detail": "0 session(s) in past year",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Upskilling Support: Identify 1-2 targeted technical certifications or industry conferences to attend with allocated learning hours."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1022",
+      "job_role": "Research Director",
+      "job_level": 4,
+      "department": "Research & Development",
+      "years_in_role": 3,
+      "years_since_promotion": 2,
+      "years_with_manager": 2,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 47,
+      "rri_tier": "Moderate",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Role Stagnation",
+          "detail": "3.0 yrs in current role",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Career Progression Cadence: Discuss technical impact and review progression milestones to maintain forward momentum.",
+        "Internal Mobility & Stretch: Explore cross-functional initiative or stretch project (e.g. platform architecture or high-visibility customer sprint) to broaden scope."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1016",
+      "job_role": "Research Scientist",
+      "job_level": 1,
+      "department": "Research & Development",
+      "years_in_role": 1,
+      "years_since_promotion": 1,
+      "years_with_manager": 0,
+      "performance_rating": 3,
+      "job_satisfaction": 1,
+      "rri_score": 30.6,
+      "rri_tier": "Standard",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Job Satisfaction",
+          "detail": "Score 1/4 (below benchmark)",
+          "severity": "medium"
+        }
+      ],
+      "talking_points": [
+        "Day-to-day Engagement: Check in on current workload, tooling friction, or team dynamics to proactively resolve blockers."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1006",
+      "job_role": "Manufacturing Director",
+      "job_level": 3,
+      "department": "Research & Development",
+      "years_in_role": 0,
+      "years_since_promotion": 0,
+      "years_with_manager": 1,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 22.1,
+      "rri_tier": "Standard",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Healthy Trajectory",
+          "detail": "Indicators within standard level dwell bands",
+          "severity": "low"
+        }
+      ],
+      "talking_points": [
+        "Regular Growth Check-in: Solicit employee's 6-month career aspirations, feedback on manager support, and upcoming interest areas."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    },
+    {
+      "employee_id": "PANW-1021",
+      "job_role": "Laboratory Technician",
+      "job_level": 1,
+      "department": "Research & Development",
+      "years_in_role": 0,
+      "years_since_promotion": 0,
+      "years_with_manager": 0,
+      "performance_rating": 3,
+      "job_satisfaction": 3,
+      "rri_score": 16.3,
+      "rri_tier": "Standard",
+      "ml_probability": null,
+      "ml_risk_tier": "Standard",
+      "top_drivers": [
+        {
+          "name": "Healthy Trajectory",
+          "detail": "Indicators within standard level dwell bands",
+          "severity": "low"
+        }
+      ],
+      "talking_points": [
+        "Regular Growth Check-in: Solicit employee's 6-month career aspirations, feedback on manager support, and upcoming interest areas."
+      ],
+      "active_interventions": [],
+      "follow_ups": []
+    }
+  ]
+}

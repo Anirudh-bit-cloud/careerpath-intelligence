@@ -1,0 +1,153 @@
+{
+  "employee_id": "PANW-1042",
+  "found": true,
+  "total_snapshots": 13,
+  "department": "Human Resources",
+  "current_rri": 62.5,
+  "current_tier": "Moderate",
+  "trajectory": [
+    {
+      "snapshot_date": "2025-11-05",
+      "rri": 66,
+      "rri_tier": "Urgent",
+      "ml_probability": 0.1847,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2025-12-05",
+      "rri": 60.4,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1847,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.1,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-01-04",
+      "rri": 65.8,
+      "rri_tier": "Urgent",
+      "ml_probability": 0.1847,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.2,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-02-03",
+      "rri": 60.8,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1847,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.3,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-03-05",
+      "rri": 64.7,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1847,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.3,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-04-04",
+      "rri": 64.4,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1847,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.4,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-05-04",
+      "rri": 60.8,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.5,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-06-03",
+      "rri": 59.1,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.6,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-07-03",
+      "rri": 64,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.7,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-08-02",
+      "rri": 64.2,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.8,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-09-01",
+      "rri": 57.3,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.8,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-10-01",
+      "rri": 65.5,
+      "rri_tier": "Urgent",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 3.9,
+      "satisfaction": 2,
+      "is_synthetic": true
+    },
+    {
+      "snapshot_date": "2026-10-31",
+      "rri": 62.5,
+      "rri_tier": "Moderate",
+      "ml_probability": 0.1917,
+      "job_level": 3,
+      "department": "Human Resources",
+      "promotion_gap_years": 4,
+      "satisfaction": 2,
+      "is_synthetic": false
+    }
+  ]
+}
