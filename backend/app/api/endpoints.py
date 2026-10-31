@@ -19,6 +19,7 @@ from backend.app.schemas.domain import (
 )
 from backend.app.services.analytics_service import analytics_service
 from backend.app.services.attrition_service import attrition_model_service
+from backend.app.services.backtest_service import backtest_service
 from backend.app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api")
@@ -434,6 +435,77 @@ def get_sample_template():
         content=csv_template,
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=template_workforce_data.csv"}
+    )
+
+
+@router.post("/dataset/upload-exits")
+async def upload_historical_exits(
+    file: UploadFile = File(...),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Ingests a CSV of historical exits for temporal backtesting.
+    Restricted to admin and hrbp roles. Multi-tenant isolated by workspace_id.
+    """
+    if current_user.get("role") not in ["admin", "hrbp"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admin and hrbp roles may upload historical exit logs."
+        )
+
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="Only CSV files are supported.")
+
+    content = await file.read()
+    try:
+        csv_text = content.decode('utf-8')
+    except UnicodeDecodeError:
+        csv_text = content.decode('latin-1')
+
+    ws_id = current_user.get("workspace_id", "default")
+    result = backtest_service.upload_exits_csv(
+        db=db,
+        workspace_id=ws_id,
+        csv_text=csv_text,
+        created_by=current_user.get("email", "system")
+    )
+
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    db.add(AuditLog(
+        workspace_id=ws_id,
+        user_email=current_user.get("email", "system"),
+        action="dataset.historical_exits_uploaded",
+        entity_type="historical_exits",
+        details_json=json.dumps({
+            "filename": file.filename,
+            "created_count": result.get("created_count", 0),
+            "matched_employees": result.get("matched_employees", 0),
+            "unmatched_employees": result.get("unmatched_employees", 0)
+        })
+    ))
+    db.commit()
+
+    return result
+
+
+@router.get("/dataset/sample-exits-template")
+def get_sample_exits_template():
+    """Returns sample CSV template for historical exit ingestion."""
+    sample_csv = (
+        "employee_id,exit_date,exit_reason\n"
+        "EMP-101,2026-03-15,Voluntary - Career Progression\n"
+        "EMP-102,2026-05-20,Voluntary - Compensation\n"
+        "EMP-103,2026-07-10,Involuntary - Restructuring\n"
+        "EMP-104,2026-08-01,Voluntary - Relocation\n"
+        "EMP-105,2026-09-12,Retirement\n"
+    )
+    return PlainTextResponse(
+        content=sample_csv,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=template_historical_exits.csv"}
     )
 
 

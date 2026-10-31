@@ -864,5 +864,28 @@ export const api = {
     const res = await authFetch(`${API_BASE}/models/${id}/drift`);
     if (!res.ok) throw new Error(`Failed to compute drift for model ${id}`);
     return res.json();
+  },
+
+  // ── Temporal Backtesting & Historical Exits (Phase 2) ───────────────
+  async getTemporalBacktest(horizonMonths: number = 6): Promise<any> {
+    const res = await authFetch(`${API_BASE}/validation/temporal-backtest?horizon_months=${horizonMonths}`);
+    if (!res.ok) throw new Error('Failed to fetch temporal backtest telemetry');
+    return res.json();
+  },
+
+  async uploadHistoricalExits(file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const token = localStorage.getItem('cp_session_token');
+    const res = await authFetch(`${API_BASE}/dataset/upload-exits`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: formData
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Historical exits upload failed');
+    }
+    return res.json();
   }
 };

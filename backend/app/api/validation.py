@@ -5,11 +5,16 @@ Endpoints under /api/validation
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Dict, Any
+import json
+from sqlalchemy.orm import Session
 
 from backend.app.api.auth import get_current_user
+from backend.app.database.connection import get_db
+from backend.app.models.entities import AuditLog
 from backend.app.services.analytics_service import analytics_service
 from backend.app.services.validation_service import ValidationService
 from backend.app.services.attrition_service import attrition_model_service
+from backend.app.services.backtest_service import backtest_service
 
 router = APIRouter(prefix="/api/validation", tags=["Survival Analysis & Model Validation"])
 validation_service = ValidationService(analytics_service=analytics_service)
@@ -109,6 +114,40 @@ def get_backtest(
 ):
     """Runs a stratified backtest split on workforce data reporting precision, recall, F1, accuracy, Brier score, and C-index."""
     return validation_service.run_backtest_evaluation(train_fraction=train_fraction)
+
+
+@router.get("/temporal-backtest")
+def get_temporal_backtest(
+    horizon_months: int = Query(6, ge=1, le=24),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Runs rolling-origin temporal backtesting across historical snapshots and exits.
+    Evaluates Transparent RRI, Supervised ML (HistGBDT), and Naive Baseline.
+    Audit logged and multi-tenant isolated.
+    """
+    ws_id = current_user.get("workspace_id", "default")
+    results = backtest_service.get_temporal_backtest(
+        db=db,
+        workspace_id=ws_id,
+        horizon_months=horizon_months
+    )
+
+    db.add(AuditLog(
+        workspace_id=ws_id,
+        user_email=current_user.get("email", "system"),
+        action="validation.temporal_backtest_viewed",
+        entity_type="backtest_evaluation",
+        details_json=json.dumps({
+            "horizon_months": horizon_months,
+            "status": results.get("status"),
+            "origins_count": results.get("origins_count", 0)
+        })
+    ))
+    db.commit()
+
+    return results
 
 
 @router.get("/calibration-plot")

@@ -55,6 +55,47 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({ metadata
   const [reclustering, setReclustering] = useState<boolean>(false);
   const [reclusterResult, setReclusterResult] = useState<any | null>(null);
 
+  // Historical Exits Upload State (Phase 2)
+  const [selectedExitsFile, setSelectedExitsFile] = useState<File | null>(null);
+  const [uploadingExits, setUploadingExits] = useState<boolean>(false);
+  const [exitsResult, setExitsResult] = useState<any | null>(null);
+  const [exitsError, setExitsError] = useState<string | null>(null);
+  const [showExitsSummary, setShowExitsSummary] = useState<boolean>(false);
+
+  const handleExitsFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (!file.name.endsWith('.csv')) {
+        setExitsError('Only CSV (.csv) files are supported.');
+        setSelectedExitsFile(null);
+        return;
+      }
+      setSelectedExitsFile(file);
+      setExitsError(null);
+      setExitsResult(null);
+    }
+  };
+
+  const handleExitsUploadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedExitsFile) return;
+
+    setUploadingExits(true);
+    setExitsError(null);
+    setExitsResult(null);
+
+    try {
+      const res = await api.uploadHistoricalExits(selectedExitsFile);
+      setExitsResult(res);
+      setSelectedExitsFile(null);
+      setShowExitsSummary(true);
+    } catch (err: any) {
+      setExitsError(err.message || 'Historical exits upload failed.');
+    } finally {
+      setUploadingExits(false);
+    }
+  };
+
   React.useEffect(() => {
     const fetchQuality = async () => {
       try {
@@ -402,6 +443,113 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({ metadata
             })}
           </div>
         </div>
+      </div>
+
+      {/* ── BRING YOUR OWN HISTORICAL EXITS (PHASE 2) ── */}
+      <div className="rounded-xl border border-cp-border bg-cp-bg-surface p-6 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <Upload className="w-4 h-4 text-amber-400" />
+              <h2 className="text-sm font-semibold text-cp-text-primary">Bring Your Own Historical Exits (Temporal Backtesting)</h2>
+            </div>
+            <p className="text-xs text-cp-text-muted mt-1 leading-relaxed">
+              Upload historical exit dates to evaluate true out-of-time predictive validity across rolling workforce snapshots.
+              Required columns: <code className="text-cp-accent font-mono">employee_id</code>, <code className="text-cp-accent font-mono">exit_date (YYYY-MM-DD)</code>.
+            </p>
+          </div>
+          <a
+            href="/api/dataset/sample-exits-template"
+            download="template_historical_exits.csv"
+            className="px-3.5 py-1.5 rounded-lg border border-cp-border bg-cp-bg-elevated hover:bg-cp-bg-hover text-cp-text-primary text-xs font-semibold shrink-0 transition-colors flex items-center gap-1.5 shadow-xs"
+          >
+            <span>Download Exits CSV Template</span>
+          </a>
+        </div>
+
+        {exitsError && (
+          <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/25 text-xs text-rose-400 flex items-center justify-between">
+            <span>{exitsError}</span>
+            <button type="button" onClick={() => setExitsError(null)}>
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
+
+        {exitsResult && showExitsSummary && (
+          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Historical Exits Uploaded Successfully</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowExitsSummary(false)}
+                className="text-cp-text-muted hover:text-cp-text-primary"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-cp-text-primary">
+              <div className="p-2.5 rounded-lg bg-cp-bg-surface/80 border border-cp-border">
+                <div className="text-[10px] text-cp-text-muted uppercase font-bold">Total Rows</div>
+                <div className="text-lg font-bold font-mono text-cp-text-primary mt-0.5">{exitsResult.total_rows}</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-cp-bg-surface/80 border border-cp-border">
+                <div className="text-[10px] text-cp-text-muted uppercase font-bold">Matched Active IDs</div>
+                <div className="text-lg font-bold font-mono text-emerald-400 mt-0.5">{exitsResult.matched_employees}</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-cp-bg-surface/80 border border-cp-border">
+                <div className="text-[10px] text-cp-text-muted uppercase font-bold">Unmatched / Past IDs</div>
+                <div className="text-lg font-bold font-mono text-amber-400 mt-0.5">{exitsResult.unmatched_employees}</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-cp-bg-surface/80 border border-cp-border">
+                <div className="text-[10px] text-cp-text-muted uppercase font-bold">Date Range</div>
+                <div className="text-xs font-mono text-cp-accent mt-1.5 truncate">
+                  {exitsResult.date_range?.min_date || 'N/A'} &rarr; {exitsResult.date_range?.max_date || 'N/A'}
+                </div>
+              </div>
+            </div>
+
+            {exitsResult.reasons_summary && Object.keys(exitsResult.reasons_summary).length > 0 && (
+              <div className="text-[11px] text-cp-text-secondary flex flex-wrap gap-2 pt-1">
+                <span className="font-semibold text-cp-text-muted">Exit Reasons:</span>
+                {Object.entries(exitsResult.reasons_summary).map(([reason, count]) => (
+                  <span key={reason} className="px-2 py-0.5 rounded-md bg-cp-bg-surface border border-cp-border font-mono">
+                    {reason}: <strong>{String(count)}</strong>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        <form onSubmit={handleExitsUploadSubmit} className="flex flex-col sm:flex-row items-center gap-3">
+          <label className="flex-1 w-full border border-dashed border-cp-border hover:border-amber-400 rounded-lg p-3 flex items-center justify-between cursor-pointer bg-cp-bg-elevated/40 hover:bg-cp-bg-elevated transition-colors text-xs">
+            <span className="text-cp-text-secondary truncate">
+              {selectedExitsFile ? selectedExitsFile.name : 'Choose historical exits CSV (employee_id, exit_date, exit_reason)'}
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-cp-bg-surface border border-cp-border text-[11px] font-semibold text-cp-text-primary ml-2 shrink-0">
+              Browse...
+            </span>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleExitsFileChange}
+              className="hidden"
+            />
+          </label>
+
+          <button
+            type="submit"
+            disabled={!selectedExitsFile || uploadingExits}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold disabled:opacity-40 transition-colors shadow-xs shrink-0"
+          >
+            {uploadingExits ? 'Ingesting Exits...' : 'Ingest Historical Exits'}
+          </button>
+        </form>
       </div>
 
       {/* ── ML PIPELINE CONFIGURATOR ── */}

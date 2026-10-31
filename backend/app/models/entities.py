@@ -298,3 +298,16 @@ class ModelVersion(Base):
     notes = Column(Text, nullable=True)
 
 
+class HistoricalExit(Base):
+    __tablename__ = "historical_exits"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workspace_id = Column(String(64), default="default", index=True, nullable=False)
+    employee_id = Column(String(64), index=True, nullable=False)
+    exit_date = Column(String(10), index=True, nullable=False)  # YYYY-MM-DD
+    exit_reason = Column(String(128), nullable=True)  # Voluntary, Involuntary, Career Progression, etc.
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(128), nullable=False, default="system")
+
+
+

@@ -35,7 +35,7 @@ test.describe('End-to-End Enterprise Verification: Sample CSV Upload & All Views
 
     // Set sample CSV
     const sampleCsvPath = path.resolve('data/uploads/careerpath_sample_hr_dataset.csv');
-    const fileInput = page.locator('input[type="file"]');
+    const fileInput = page.locator('input[type="file"]').first();
     await fileInput.setInputFiles(sampleCsvPath);
     await page.waitForTimeout(200);
 

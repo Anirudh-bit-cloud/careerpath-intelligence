@@ -26,10 +26,15 @@ import {
   FileText,
   Layers,
   RotateCcw,
-  CheckCheck
+  CheckCheck,
+  History,
+  Calendar,
+  TrendingUp,
+  Target
 } from 'lucide-react';
 import { useTheme, THEMES, ThemeKey } from '../context/ThemeContext';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
+import { EmptyState } from '../components/ui/EmptyState';
 import { api } from '../services/api';
 
 type TabKey = 'appearance' | 'security' | 'validation' | 'registry' | 'governance' | 'notifications';
@@ -63,6 +68,12 @@ export const SettingsView: React.FC = () => {
   const [mlImportanceData, setMlImportanceData] = useState<any>(null);
   const [policySensitivityData, setPolicySensitivityData] = useState<any>(null);
   const [loadingValidation, setLoadingValidation] = useState(false);
+
+  // Temporal Backtest State (Phase 2)
+  const [validationSubTab, setValidationSubTab] = useState<'survival' | 'temporal_backtest'>('survival');
+  const [temporalBacktestData, setTemporalBacktestData] = useState<any>(null);
+  const [loadingBacktest, setLoadingBacktest] = useState<boolean>(false);
+  const [horizonMonths, setHorizonMonths] = useState<number>(6);
 
   // Notification settings state
   const [smtpHost, setSmtpHost] = useState('smtp.internal.corp');
@@ -147,13 +158,14 @@ export const SettingsView: React.FC = () => {
   const loadValidationData = async () => {
     setLoadingValidation(true);
     try {
-      const [overview, survival, cox, calib, mlImp, sensitivity] = await Promise.all([
+      const [overview, survival, cox, calib, mlImp, sensitivity, backtest] = await Promise.all([
         api.getValidationOverview().catch(() => null),
         api.getSurvivalCurves().catch(() => null),
         api.getCoxRegression().catch(() => null),
         api.getCalibrationPlot().catch(() => null),
         api.getMlImportance().catch(() => null),
-        api.getPolicySensitivity().catch(() => null)
+        api.getPolicySensitivity().catch(() => null),
+        api.getTemporalBacktest(horizonMonths).catch(() => null)
       ]);
       setValidationOverview(overview);
       setSurvivalData(survival);
@@ -161,10 +173,24 @@ export const SettingsView: React.FC = () => {
       setCalibrationData(calib);
       setMlImportanceData(mlImp);
       setPolicySensitivityData(sensitivity);
+      setTemporalBacktestData(backtest);
     } catch (e) {
       console.error('Failed to load validation metrics:', e);
     } finally {
       setLoadingValidation(false);
+    }
+  };
+
+  const handleRefreshBacktest = async (h?: number) => {
+    const targetHorizon = h !== undefined ? h : horizonMonths;
+    setLoadingBacktest(true);
+    try {
+      const res = await api.getTemporalBacktest(targetHorizon);
+      setTemporalBacktestData(res);
+    } catch (err) {
+      console.error('Failed to refresh temporal backtest:', err);
+    } finally {
+      setLoadingBacktest(false);
     }
   };
 
@@ -366,7 +392,39 @@ export const SettingsView: React.FC = () => {
       {/* ── TAB 2: MODEL VALIDATION & SURVIVAL ANALYSIS ── */}
       {activeTab === 'validation' && (
         <div className="space-y-6 pt-2">
-          {loadingValidation ? (
+          {/* Validation Sub-navigation Tabs */}
+          <div className="flex items-center gap-2 border-b border-cp-border pb-3">
+            <button
+              type="button"
+              onClick={() => setValidationSubTab('survival')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                validationSubTab === 'survival'
+                  ? 'bg-cp-accent text-white shadow-xs'
+                  : 'text-cp-text-muted hover:text-cp-text-primary hover:bg-cp-bg-hover'
+              }`}
+            >
+              Kaplan-Meier Survival & Model Calibration
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setValidationSubTab('temporal_backtest');
+                if (!temporalBacktestData) handleRefreshBacktest();
+              }}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                validationSubTab === 'temporal_backtest'
+                  ? 'bg-cp-accent text-white shadow-xs'
+                  : 'text-cp-text-muted hover:text-cp-text-primary hover:bg-cp-bg-hover'
+              }`}
+            >
+              <History className="w-3.5 h-3.5" />
+              Rolling-Origin Temporal Backtest
+            </button>
+          </div>
+
+          {validationSubTab === 'survival' && (
+            <div>
+              {loadingValidation ? (
             <div className="p-12 text-center text-xs text-cp-text-muted flex items-center justify-center gap-2">
               <RefreshCw className="w-4 h-4 animate-spin text-cp-accent" />
               <span>Computing survival curves and fitting Cox proportional hazards model...</span>
@@ -1061,6 +1119,221 @@ export const SettingsView: React.FC = () => {
                 )}
               </div>
             </>
+          )}
+            </div>
+          )}
+
+          {/* ── TEMPORAL BACKTEST SUBTAB ── */}
+          {validationSubTab === 'temporal_backtest' && (
+            <div className="space-y-6">
+              {/* Header & Horizon Controls */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-cp-border bg-cp-bg-surface shadow-xs">
+                <div>
+                  <h3 className="text-sm font-semibold text-cp-text-primary flex items-center gap-2">
+                    <History className="w-4 h-4 text-cp-accent" />
+                    <span>Rolling-Origin Temporal Backtesting on Historical Exits</span>
+                  </h3>
+                  <p className="text-xs text-cp-text-muted mt-1 leading-relaxed">
+                    Evaluates out-of-time predictive validity by training models on historical workforce snapshots
+                    and measuring event prediction against subsequent real employee exits.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-cp-text-muted font-medium">Evaluation Horizon:</span>
+                    <select
+                      value={horizonMonths}
+                      onChange={(e) => {
+                        const h = Number(e.target.value);
+                        setHorizonMonths(h);
+                        handleRefreshBacktest(h);
+                      }}
+                      className="text-xs bg-cp-bg-elevated border border-cp-border rounded-lg px-2.5 py-1 text-cp-text-primary font-medium focus:outline-none focus:border-cp-accent"
+                    >
+                      <option value={3}>3 Months</option>
+                      <option value={6}>6 Months</option>
+                      <option value={12}>12 Months</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleRefreshBacktest()}
+                    disabled={loadingBacktest}
+                    className="px-3 py-1.5 rounded-lg border border-cp-border bg-cp-bg-elevated hover:bg-cp-bg-hover text-cp-text-primary text-xs font-semibold flex items-center gap-1.5 shadow-xs disabled:opacity-40"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loadingBacktest ? 'animate-spin' : ''}`} />
+                    <span>Recalculate</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Data Provenance Banner */}
+              {temporalBacktestData?.provenance && (
+                <div className="p-4 rounded-xl border border-cp-border bg-cp-bg-surface flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xs font-semibold text-cp-text-secondary">Backtest Provenance:</span>
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        temporalBacktestData.provenance.badge === 'Uploaded'
+                          ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                          : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
+                      }`}
+                    >
+                      {temporalBacktestData.provenance.badge}
+                    </span>
+                    <span className="text-xs text-cp-text-muted font-mono">
+                      ({temporalBacktestData.provenance.total_snapshots_evaluated || 0} snapshot records &bull; {temporalBacktestData.provenance.total_exits_evaluated || 0} historical exits)
+                    </span>
+                  </div>
+                  {temporalBacktestData.provenance.is_synthetic && (
+                    <div className="flex items-center gap-1.5 text-[11px] text-amber-400 font-medium bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/25">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{temporalBacktestData.provenance.warning_banner}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {loadingBacktest ? (
+                <div className="p-12 text-center text-xs text-cp-text-muted flex items-center justify-center gap-2">
+                  <RefreshCw className="w-4 h-4 animate-spin text-cp-accent" />
+                  <span>Computing rolling-origin temporal backtest metrics across historical cohorts...</span>
+                </div>
+              ) : temporalBacktestData?.status === 'insufficient_data' ? (
+                <EmptyState
+                  icon={<History className="w-6 h-6 text-amber-400" />}
+                  title="Insufficient Historical Backtesting Data"
+                  description={temporalBacktestData.message || "Temporal backtesting requires at least 3 historical workforce snapshots and at least 5 recorded historical exits."}
+                />
+              ) : (
+                <>
+                  {/* Model Comparison Table */}
+                  <div className="rounded-xl border border-cp-border bg-cp-bg-surface p-5 shadow-xs space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-xs font-semibold text-cp-text-primary uppercase tracking-wider">
+                          Out-of-Time Model Predictive Comparison ({temporalBacktestData?.origins_count || 0} Historical Origins)
+                        </h4>
+                        <p className="text-[11px] text-cp-text-muted mt-0.5">
+                          Comparing transparent rules vs supervised gradient boosting vs tenure rank
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-mono text-cp-accent uppercase font-bold bg-cp-accent/10 px-2 py-0.5 rounded border border-cp-accent/20">
+                        {horizonMonths}-Month Forward Horizon
+                      </span>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="border-b border-cp-border text-cp-text-muted font-medium text-[11px]">
+                            <th className="py-2.5 px-3">Model Architecture</th>
+                            <th className="py-2.5 px-3">Mean ROC-AUC</th>
+                            <th className="py-2.5 px-3">Mean PR-AUC</th>
+                            <th className="py-2.5 px-3">Brier Score (MSE)</th>
+                            <th className="py-2.5 px-3">Precision @ Top 10%</th>
+                            <th className="py-2.5 px-3">Recall @ Top 10%</th>
+                            <th className="py-2.5 px-3 text-right">Empirical Lift</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-cp-border/50 text-cp-text-primary font-mono">
+                          {temporalBacktestData?.model_comparison?.map((m: any) => (
+                            <tr key={m.model_key} className="hover:bg-cp-bg-elevated/40 transition-colors">
+                              <td className="py-3 px-3 font-sans">
+                                <div className="font-semibold text-cp-text-primary">{m.model_name}</div>
+                                <div className="text-[10px] text-cp-text-muted mt-0.5 max-w-xs">{m.description}</div>
+                              </td>
+                              <td className="py-3 px-3 font-bold text-cp-accent">{m.mean_roc_auc?.toFixed(3)}</td>
+                              <td className="py-3 px-3 text-amber-400">{m.mean_pr_auc?.toFixed(3)}</td>
+                              <td className="py-3 px-3 text-emerald-400">{m.mean_brier_score?.toFixed(4)}</td>
+                              <td className="py-3 px-3">{(m.mean_precision_top10 * 100)?.toFixed(1)}%</td>
+                              <td className="py-3 px-3">{(m.mean_recall_top10 * 100)?.toFixed(1)}%</td>
+                              <td className="py-3 px-3 text-right font-bold text-emerald-400">{m.mean_lift?.toFixed(2)}x</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Lift Curve Visualization */}
+                  {temporalBacktestData?.lift_curve && temporalBacktestData.lift_curve.length > 0 && (
+                    <div className="rounded-xl border border-cp-border bg-cp-bg-surface p-5 shadow-xs space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="text-xs font-semibold text-cp-text-primary uppercase tracking-wider">
+                            Cumulative Lift & Exit Capture Curve by Population Decile
+                          </h4>
+                          <p className="text-[11px] text-cp-text-muted mt-0.5">
+                            Percentage of total historical exits captured when inspecting the top X% highest-risk employees
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3 text-[11px] font-sans">
+                          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block" /> Supervised ML</span>
+                          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block" /> Transparent RRI</span>
+                          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" /> Naive Baseline</span>
+                          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block" /> Random</span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-5 sm:grid-cols-10 gap-2 text-center text-xs">
+                        {temporalBacktestData.lift_curve.map((pt: any) => (
+                          <div key={pt.decile_percent} className="p-2.5 rounded-lg bg-cp-bg-elevated border border-cp-border space-y-1">
+                            <div className="text-[10px] uppercase font-bold text-cp-text-muted">Top {pt.decile_percent}%</div>
+                            <div className="text-sm font-bold font-mono text-cyan-400">{pt.ml_capture_rate}%</div>
+                            <div className="text-[10px] font-mono text-indigo-400">RRI: {pt.rri_capture_rate}%</div>
+                            <div className="text-[10px] font-mono text-amber-400">Naive: {pt.naive_capture_rate}%</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Origin-by-Origin Breakdown Table */}
+                  <div className="rounded-xl border border-cp-border bg-cp-bg-surface p-5 shadow-xs space-y-3">
+                    <div>
+                      <h4 className="text-xs font-semibold text-cp-text-primary uppercase tracking-wider">
+                        Rolling Origin Evaluation Timeline
+                      </h4>
+                      <p className="text-[11px] text-cp-text-muted mt-0.5">
+                        Performance breakdown across each individual historical origin snapshot date
+                      </p>
+                    </div>
+
+                    <div className="overflow-x-auto max-h-72">
+                      <table className="w-full text-left text-xs">
+                        <thead className="sticky top-0 bg-cp-bg-surface">
+                          <tr className="border-b border-cp-border text-cp-text-muted font-medium text-[11px]">
+                            <th className="py-2.5 px-3">Origin Date (T0)</th>
+                            <th className="py-2.5 px-3">Cohort Size</th>
+                            <th className="py-2.5 px-3">Window Exits</th>
+                            <th className="py-2.5 px-3">Base Rate</th>
+                            <th className="py-2.5 px-3">ML AUC / Lift</th>
+                            <th className="py-2.5 px-3">RRI AUC / Lift</th>
+                            <th className="py-2.5 px-3 text-right">Naive AUC / Lift</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-cp-border/50 text-cp-text-primary font-mono">
+                          {temporalBacktestData?.origins?.map((o: any) => (
+                            <tr key={o.origin_date} className="hover:bg-cp-bg-elevated/40 transition-colors">
+                              <td className="py-2 px-3 font-semibold text-cp-text-primary">{o.origin_date}</td>
+                              <td className="py-2 px-3">{o.cohort_size}</td>
+                              <td className="py-2 px-3 text-amber-400">{o.exit_count}</td>
+                              <td className="py-2 px-3">{(o.base_rate * 100)?.toFixed(1)}%</td>
+                              <td className="py-2 px-3 text-cyan-400">{o.supervised_ml?.roc_auc?.toFixed(3)} ({o.supervised_ml?.lift?.toFixed(1)}x)</td>
+                              <td className="py-2 px-3 text-indigo-400">{o.rri?.roc_auc?.toFixed(3)} ({o.rri?.lift?.toFixed(1)}x)</td>
+                              <td className="py-2 px-3 text-right text-cp-text-secondary">{o.naive_baseline?.roc_auc?.toFixed(3)} ({o.naive_baseline?.lift?.toFixed(1)}x)</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           )}
         </div>
       )}
